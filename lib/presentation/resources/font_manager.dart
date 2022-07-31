@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class FontConstants {
+  static const String fontFamily = "Montserrat";
+}
+
+class FontWeightManager {
+  static const FontWeight light = FontWeight.w300;
+  static const FontWeight regular = FontWeight.w400;
+  static const FontWeight medium = FontWeight.w500;
+  static const FontWeight semiBold = FontWeight.w600;
+  static const FontWeight bold = FontWeight.w700;
+}
+
+class FontSize {
+  ScreenUtil screenUtil = ScreenUtil();
+  static  double s1 = ScreenUtil().setSp(1);
+  static  double s6 = ScreenUtil().setSp(6);
+  static  double s12 = ScreenUtil().setSp(12);
+  static  double s14 =ScreenUtil().setSp(14);
+  static  double s16 = ScreenUtil().setSp(16);
+  static  double s17 = ScreenUtil().setSp(17);
+  static  double s18 = ScreenUtil().setSp(18);
+  static  double s20 = ScreenUtil().setSp(20);
+}
