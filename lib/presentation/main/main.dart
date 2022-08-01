@@ -39,8 +39,27 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: AppSize.s0,
+backgroundColor: ColorManager.backGroundColor,
+        leading: Padding(
+          padding:  EdgeInsets.all(AppSize.s8),
+          child: Image.asset(ImageAssets.userImage,height: AppSize.s40, width: AppSize.s40,fit: BoxFit.fitHeight,),
+        ),
+          actions: [
+
+            Padding(
+              padding:  EdgeInsets.all(AppSize.s8),
+              child: Image.asset(ImageAssets.notification,height: AppSize.s40, width: AppSize.s40,fit: BoxFit.fitHeight,),
+            ),
+          ],
+        title: Center(
+          child: Image.asset(ImageAssets.titleBarImage,height: AppSize.s32, width: AppSize.s110,fit: BoxFit.fill,),
+        ),
+      ),
       bottomNavigationBar:
       CupertinoTabBar(
+      
         backgroundColor: ColorManager.navColor,
         currentIndex: currentIndex,
         onTap: onTabTabbed,

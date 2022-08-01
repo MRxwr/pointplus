@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../resources/color_manager.dart';
 class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
 
@@ -9,6 +11,8 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: ColorManager.backGroundColor,
+    );
   }
 }

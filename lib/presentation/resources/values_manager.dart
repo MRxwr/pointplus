@@ -42,7 +42,8 @@ class AppSize {
   static double s120 = 120.w;
   static double s21 = 21.w;
   static double s17 = 17.w;
-
+  static double s110 = 110.w;
+  static double s32 = 32.w;
 }
 class DurationConstant{
   static const int d300 = 300;

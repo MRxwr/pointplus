@@ -18,4 +18,7 @@ class ImageAssets{
   static const String states = "$IMAGE_PATH/stats.png";
   static const String predict = "$IMAGE_PATH/predict.png";
   static const String settings = "$IMAGE_PATH/settings.png";
+  static const String notification = "$IMAGE_PATH/notification_image.png";
+  static const String userImage = "$IMAGE_PATH/user_image.png";
+  static const String titleBarImage = "$IMAGE_PATH/title_bar_image.png";
 }

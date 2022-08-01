@@ -12,6 +12,9 @@ BottomNavigationBarItem navigationitem(
 
   return BottomNavigationBarItem(
       icon: Container(
+        height: AppSize.s60,
+        alignment: AlignmentDirectional.center,
+
 
 
 

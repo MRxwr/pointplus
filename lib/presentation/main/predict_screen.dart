@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../resources/color_manager.dart';
 class PredictScreen extends StatefulWidget {
   const PredictScreen({Key? key}) : super(key: key);
 
@@ -9,6 +11,8 @@ class PredictScreen extends StatefulWidget {
 class _PredictScreenState extends State<PredictScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: ColorManager.backGroundColor,
+    );
   }
 }
