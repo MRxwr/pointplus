@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:point/domain/home_model.dart';
 import 'package:point/presentation/main/predict_screen.dart';
 import 'package:point/presentation/main/settings_screen.dart';
 import 'package:point/presentation/main/stats_screen.dart';
@@ -13,7 +14,8 @@ import 'package:provider/provider.dart';
 import '../../components/customNavigationItem.dart';
 import 'home_screen.dart';
 class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+
+   const MainView({Key? key}) : super(key: key);
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -21,6 +23,8 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   int currentIndex = 0;
+
+
 
   void onTabTabbed(int index) {
     setState(() {

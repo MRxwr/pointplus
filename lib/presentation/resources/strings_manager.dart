@@ -3,7 +3,11 @@ class AppStrings{
   static const String onBoardingTitle1 = "Join a League";
   static const String onBoardingTitle2 = "Predict";
   static const String onBoardingTitle3 = "Win Prizes";
-
+  static const String leagues = "Leagues";
+  static const String league = "League";
+  static const String currentRank = "currentRank";
+  static const String joinLeagues = "Join League";
+  static const String createLeagues = "Create League";
   static const String skip = "Skip";
   static const String onBoardingSubTitle1 = "Lorem ipsum lorem epsum lorem epsum";
   static const String onBoardingSubTitle2 = "Lorem ipsum lorem epsum lorem epsum";
@@ -30,4 +34,21 @@ class AppStrings{
   static const String states = "STATES";
   static const String predict = "PREDICT";
   static const String settings = "SETTINGS";
+  static const String roundOne = "Round 1 Winner";
+  static const String roundTwo = "Round 2 Winner";
+  static const String trainer = "Trainer : ";
+  static const String team = "Team : ";
+  static const String totalPoints = "Total Points";
+  static const String rank = "Rank";
+  static const String leaderShip = "Leadership Ranking";
+  static const String viewall = "View All";
+  static const String pts = "Pts";
+  static const String gameHistory = "Gameweek History";
+  static const String gw = "GW ";
+  static const String inActive = "Expire ";
+  static const String active = "active ";
+  static const String overAllPoints = "Overall Points: ";
+  static const String overAllRank = "Overall Rank: ";
+  static const String prediction = "Your Prediction ";
+  static const String join = "Join invitational league ";
   }

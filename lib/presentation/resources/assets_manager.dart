@@ -21,4 +21,10 @@ class ImageAssets{
   static const String notification = "$IMAGE_PATH/notification_image.png";
   static const String userImage = "$IMAGE_PATH/user_image.png";
   static const String titleBarImage = "$IMAGE_PATH/title_bar_image.png";
+  static const String prizeImage = "$IMAGE_PATH/prize.png";
+  static const String doubleDot = "$IMAGE_PATH/double_dot.png";
+  static const String header = "$IMAGE_PATH/header_image.png";
+  static const String downArrow = "$IMAGE_PATH/down_arrow.png";
+  static const String upArrow = "$IMAGE_PATH/up_arrow.png";
+  static const String equalArrow = "$IMAGE_PATH/equal_arrow.png";
 }

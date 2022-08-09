@@ -5,6 +5,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import 'package:point/domain/LoginModel.dart';
+import 'package:point/domain/home_model.dart';
 import 'package:point/presentation/forget_password/forget_password.dart';
 import 'package:point/presentation/register/register.dart';
 import 'package:point/presentation/resources/color_manager.dart';
@@ -377,6 +378,9 @@ class _LoginViewState extends State<LoginView> {
         sharedPreferences.setString('email', _emailController.text);
         sharedPreferences.setString('password', _passwordController.text);
         sharedPreferences.setBool('isUser', true);
+        // HomeModel? homeModel = await pointServices.home(id);
+
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainView()),

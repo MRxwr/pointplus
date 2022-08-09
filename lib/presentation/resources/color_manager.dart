@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 class ColorManager {
+  static Color cyan = HexColor.fromHex("#748D9E");
   static Color navColor = HexColor.fromHex("#122436");
   static Color primary = HexColor.fromHex("#0E3151");
+  static Color expire = HexColor.fromHex("#EE0E0E");
+  static Color active = HexColor.fromHex("#0B9F01");
   static Color secondary = HexColor.fromHex("#00CAD6");
   static Color darkGrey = HexColor.fromHex("#525252");
   static Color grey = HexColor.fromHex("#737477");
@@ -16,6 +19,10 @@ class ColorManager {
   static Color grey2 = HexColor.fromHex("#797979");
   static Color white = HexColor.fromHex("#FFFFFF");
   static Color error = HexColor.fromHex("#e61f34");
+  static Color background = HexColor.fromHex("#0E3151");
+  static Color rectangle = HexColor.fromHex("#00CAD6");
+  static Color selectedRectangle = HexColor.fromHex("#0A243B");
+  static Color selectedCircle = HexColor.fromHex("#0E3151");
   // red color
 }
 

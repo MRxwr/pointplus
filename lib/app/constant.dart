@@ -5,3 +5,5 @@ class Constant {
 const EMPTY="";
 const ZERO =0;
 const  LANG_CODE ="lang";
+const  TAG_IMAGE_URL ="https://createkwservers.com/points/admin/banners/";
+const  TAG_LOGO_URL ="https://createkwservers.com/points/admin/logos/";
