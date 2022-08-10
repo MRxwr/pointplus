@@ -12,6 +12,7 @@ import 'package:point/presentation/resources/values_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/customNavigationItem.dart';
+import '../../views/fab_bottom_app_bar.dart';
 import 'home_screen.dart';
 class MainView extends StatefulWidget {
 
@@ -21,23 +22,22 @@ class MainView extends StatefulWidget {
   State<MainView> createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
-  int currentIndex = 0;
+class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin{
+  int _currentIndex = 0;
+
+  final _page1 = GlobalKey<NavigatorState>();
+  final _page2 = GlobalKey<NavigatorState>();
+  final _page3 = GlobalKey<NavigatorState>();
+  final _page4 = GlobalKey<NavigatorState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
 
-
-  void onTabTabbed(int index) {
-    setState(() {
-      currentIndex = index;
-    });
   }
 
-  final List<Widget> _children = [
-    HomeScreen(),
-    StatsScreen(),
-    PredictScreen(),
-    SettingsScreen()
-  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,33 +60,145 @@ backgroundColor: ColorManager.backGroundColor,
         title: Center(
           child: Image.asset(ImageAssets.titleBarImage,height: AppSize.s32, width: AppSize.s110,fit: BoxFit.fill,),
         ),
+
       ),
-      bottomNavigationBar:
-      CupertinoTabBar(
-      
+      bottomNavigationBar: FABBottomAppBar(
+
+
         backgroundColor: ColorManager.navColor,
-        currentIndex: currentIndex,
-        onTap: onTabTabbed,
-        activeColor: ColorManager.primary,
+        centerItemText: "",
+
+        color:ColorManager.white,
+        selectedColor: ColorManager.white,
+
+
+        onTabSelected: (val) {
+
+          return  _onTap(val, context);
+        },
         items: [
-          navigationitem(
-              ImageAssets.home,
-              AppSize.s21,AppSize.s21 ,context,AppStrings.home),
 
-          navigationitem(
-              ImageAssets.states,
-              AppSize.s20,AppSize.s20 ,context,AppStrings.states),
-          navigationitem(
-              ImageAssets.predict,
-             AppSize.s17 , AppSize.s21,context,AppStrings.predict),
-          navigationitem(
-              ImageAssets.settings,
-              AppSize.s20,AppSize.s20 ,context,AppStrings.settings),
 
+
+
+
+          FABBottomAppBarItem(iconPath:  ImageAssets.home, text: AppStrings.home),
+          FABBottomAppBarItem(iconPath: ImageAssets.states, text: AppStrings.states),
+          FABBottomAppBarItem(iconPath:  ImageAssets.predict, text: AppStrings.predict),
+          FABBottomAppBarItem(iconPath:
+          ImageAssets.settings, text:AppStrings.settings),
         ],
-      )
-      ,
-      body: _children[currentIndex],
+      ),
+
+
+
+    body: IndexedStack(
+      index: _currentIndex,
+      children: <Widget>[
+        Navigator(
+          key: _page1,
+          onGenerateRoute: (route) => MaterialPageRoute(
+            settings: route,
+            builder: (context) => const HomeScreen(),
+          ),
+        ),
+        Navigator(
+          key: _page2,
+          onGenerateRoute: (route) => MaterialPageRoute(
+            settings: route,
+            builder: (context) =>  StatsScreen(page: _page2,),
+          ),
+        ),
+        Navigator(
+          key: _page3,
+          onGenerateRoute: (route) => MaterialPageRoute(
+            settings: route,
+            builder: (context) => const PredictScreen(),
+          ),
+        ),
+        Navigator(
+          key: _page4,
+          onGenerateRoute: (route) => MaterialPageRoute(
+            settings: route,
+            builder: (context) => const SettingsScreen(),
+          ),
+        ),
+      ],
+    ),
+
+
     );
+  }
+  void _onTap(int val, BuildContext context) {
+    if (_currentIndex == val) {
+      switch (val) {
+        case 0:
+          print(val);
+
+          _page1.currentState?.popUntil((route) => route.isFirst);
+
+          setState(() {
+
+          });
+
+          break;
+        case 1:
+          print(val);
+          _page2.currentState?.popUntil((route) => route.isFirst);
+          setState(() {
+
+          });
+
+          break;
+        case 2:
+          print(val);
+          _page3.currentState?.popUntil((route) => route.isFirst);
+          setState(() {
+
+          });
+          break;
+        case 3:
+          _page4.currentState?.popUntil((route) => route.isFirst);
+          setState(() {
+
+          });
+          break;
+
+        default:
+      }
+    } else {
+      _currentIndex = val;
+      if(_currentIndex ==3){
+        _page4.currentState?.popUntil((route) => route.isFirst);
+        setState(() {
+
+        });
+
+
+      }else if(_currentIndex == 2){
+        _page4.currentState?.popUntil((route) => route.isFirst);
+        setState(() {
+
+        });
+
+      }else if(_currentIndex == 1){
+        _page2.currentState?.popUntil((route) => route.isFirst);
+        setState(() {
+
+        });
+
+      }else if(_currentIndex == 0){
+        _page1.currentState?.popUntil((route) => route.isFirst);
+        setState(() {
+
+        });
+
+      }
+      _currentIndex = val;
+      print('index ${_currentIndex}');
+
+
+
+    }
   }
 }

@@ -85,5 +85,6 @@ BottomNavigationBarItem navigationitem(
             ],
           ),
 
-          ));
+          ),
+  label: title);
 }

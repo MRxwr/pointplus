@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:point/domain/leagues_model.dart';
+import 'package:point/presentation/main/join_league_screen.dart';
 import 'package:point/presentation/resources/font_manager.dart';
 import 'package:point/presentation/resources/strings_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,8 @@ import '../resources/assets_manager.dart';
 import '../resources/color_manager.dart';
 import '../resources/values_manager.dart';
 class StatsScreen extends StatefulWidget {
-  const StatsScreen({Key? key}) : super(key: key);
+  GlobalKey<NavigatorState> page;
+   StatsScreen({Key? key, required this.page}) : super(key: key);
 
   @override
   State<StatsScreen> createState() => _StatsScreenState();
@@ -114,23 +116,32 @@ class _StatsScreenState extends State<StatsScreen> {
                   child: Row(
                     children: [
                       Expanded(flex:1,
-                          child: Container(
-                            alignment: AlignmentDirectional.center,
-                            decoration: BoxDecoration(
-                                color: ColorManager.rectangle,
+                          child: GestureDetector(
+                            onTap: (){
+                              widget.page.currentState!.push(MaterialPageRoute(builder: (context) => const JoinLeagueScreen()));
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => const JoinLeagueScreen()),
+                              // );
+                            },
+                            child: Container(
+                              alignment: AlignmentDirectional.center,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.rectangle,
 
-                                borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                            ),
-                            child: Text(
-                              AppStrings.joinLeagues,
-                              style: TextStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12,
-                                fontWeight: FontWeight.w500
+                                  borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
                               ),
+                              child: Text(
+                                AppStrings.joinLeagues,
+                                style: TextStyle(
+                                  color: ColorManager.black,
+                                  fontSize: FontSize.s12,
+                                  fontWeight: FontWeight.w500
+                                ),
+                              ),
+
+
                             ),
-
-
                           )),
                       SizedBox(width: AppSize.s10,),
                       Expanded(flex:1,

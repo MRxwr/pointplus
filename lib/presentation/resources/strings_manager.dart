@@ -51,4 +51,8 @@ class AppStrings{
   static const String overAllRank = "Overall Rank: ";
   static const String prediction = "Your Prediction ";
   static const String join = "Join invitational league ";
+
+  static const String invitation="Join invitational league";
+
+  static const String leagueCode ="League code";
   }
