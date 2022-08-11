@@ -54,12 +54,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     collapsed: Text("collapse", softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
     expanded: Text("expand", softWrap: true, ),
                   theme: ExpandableThemeData(
-                    
+
                     iconSize: AppSize.s25,
                       iconColor: ColorManager.rectangle,
                       animationDuration: const Duration(milliseconds: 500)
                   ),
-                  controller: ExpandedC,
+                 
 
     ),
               ),
