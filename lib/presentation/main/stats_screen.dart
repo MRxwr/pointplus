@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:point/domain/leagues_model.dart';
+import 'package:point/presentation/main/create_invitation_league_screen.dart';
 import 'package:point/presentation/main/join_league_screen.dart';
 import 'package:point/presentation/resources/font_manager.dart';
 import 'package:point/presentation/resources/strings_manager.dart';
@@ -118,7 +119,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       Expanded(flex:1,
                           child: GestureDetector(
                             onTap: (){
-                              widget.page.currentState!.push(MaterialPageRoute(builder: (context) => const JoinLeagueScreen()));
+                              widget.page.currentState!.push(MaterialPageRoute(builder: (context) =>  JoinLeagueScreen(page: widget.page,)));
                               // Navigator.push(
                               //   context,
                               //   MaterialPageRoute(builder: (context) => const JoinLeagueScreen()),
@@ -145,23 +146,29 @@ class _StatsScreenState extends State<StatsScreen> {
                           )),
                       SizedBox(width: AppSize.s10,),
                       Expanded(flex:1,
-                          child: Container(
-                            alignment: AlignmentDirectional.center,
-                            decoration: BoxDecoration(
-                                color: ColorManager.rectangle,
+                          child: GestureDetector(
+                            onTap: (){
+                              widget.page.currentState!.push(MaterialPageRoute(builder: (context) =>  CreateInvitationLeagueScreen(page: widget.page,)));
 
-                                borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                            ),
-                            child: Text(
-                              AppStrings.createLeagues,
-                              style: TextStyle(
-                                  color: ColorManager.black,
-                                  fontSize: FontSize.s12,
-                                  fontWeight: FontWeight.w500
+                            },
+                            child: Container(
+                              alignment: AlignmentDirectional.center,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.rectangle,
+
+                                  borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
                               ),
+                              child: Text(
+                                AppStrings.createLeagues,
+                                style: TextStyle(
+                                    color: ColorManager.black,
+                                    fontSize: FontSize.s12,
+                                    fontWeight: FontWeight.w500
+                                ),
+                              ),
+
+
                             ),
-
-
                           )),
                     ],
                   ),

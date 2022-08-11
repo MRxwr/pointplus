@@ -55,4 +55,24 @@ class AppStrings{
   static const String invitation="Join invitational league";
 
   static const String leagueCode ="League code";
+
+  static const String createInvitation="Create Invitational League";
+
+  static const String leagueName="League name";
+
+  static const String maxChratcters ="Maximum 30 characters";
+
+  static const String notes ="Please think carefully before entering your league name. Leagues with names that are deemed inappropriate or offensive may result in your account being deleted. Please refer to the Terms & Conditions of entry for more information.";
+
+  static const String create="Create";
+
+  static const String  leageNameError ="Please Verify League Name";
+
+  static const String Joined = "Joined";
+
+  static const String copyCode ="Copy Code";
+  static const String copied ="Copied!";
+  static const String invite ="Invite players to join \n";
+
+  static const String codeCopied ="Code Copied to Clipboard";
   }

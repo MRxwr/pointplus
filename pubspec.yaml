@@ -71,6 +71,7 @@ dependencies:
   firebase_messaging: ^11.2.6
   firebase_core: ^1.12.0
   firebase_database: ^9.0.6
+  expandable: ^5.0.1
 
 
 

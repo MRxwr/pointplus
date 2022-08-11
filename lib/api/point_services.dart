@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:point/app/constant.dart';
 import 'package:point/domain/home_model.dart';
+import 'package:point/domain/league_details_model.dart';
 import 'package:point/domain/leagues_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,6 +115,37 @@ class PointServices{
     }
 
     return resp;
+
+  }
+  Future<LeagueDetailsModel?> addLeague(Map<String,dynamic> map) async{
+    LeagueDetailsModel? leagueDetailsModel;
+    var resp ;
+    var dio = Dio();
+    dio.options.headers['content-Type'] = 'multipart/form-data';
+    dio.options.headers['pointsheader'] = "pointsCreateKW";
+    // dio.options.headers["ezyocreate"] = "CreateEZYo";
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String language = sharedPreferences.getString(LANG_CODE)??"en";
+    String mToken =sharedPreferences.getString("token")??"";
+    print('mToken --> ${mToken}');
+
+    FormData formData = FormData.fromMap(map);
+    String body = json.encode(map);
+    var response = await dio.post(TAG_BASE_URL + "?action=league&type=create",data: formData);
+
+    if (response.statusCode == 200) {
+
+
+
+
+      resp =
+          response.data;
+      leagueDetailsModel =
+          LeagueDetailsModel.fromJson(Map<String, dynamic>.from(response.data));
+      print(resp);
+    }
+
+    return leagueDetailsModel;
 
   }
 }

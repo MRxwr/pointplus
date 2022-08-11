@@ -6,13 +6,15 @@ import '../resources/font_manager.dart';
 import '../resources/strings_manager.dart';
 import '../resources/values_manager.dart';
 class JoinLeagueScreen extends StatefulWidget {
-  const JoinLeagueScreen({Key? key}) : super(key: key);
+  GlobalKey<NavigatorState> page;
+   JoinLeagueScreen({Key? key,required this.page}) : super(key: key);
 
   @override
   State<JoinLeagueScreen> createState() => _JoinLeagueScreenState();
 }
 
 class _JoinLeagueScreenState extends State<JoinLeagueScreen> {
+
   final TextEditingController _codeController =  TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -107,12 +109,40 @@ class _JoinLeagueScreenState extends State<JoinLeagueScreen> {
           ),
           Container(height: AppSize.s40,),
           Container(height: AppSize.s70,
+          alignment: AlignmentDirectional.center,
           margin: EdgeInsets.symmetric(horizontal: AppSize.s30),
           decoration: BoxDecoration(
             color: ColorManager.rectangle,
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s35))
           ),
-          ),
+            child: Text(AppStrings.joinLeagues,
+            style: TextStyle(
+              color: ColorManager.black,
+              fontSize: FontSize.s16,
+              fontWeight: FontWeight.w500,
+
+            ),),
+          ), Container(height: AppSize.s10,),
+          GestureDetector(
+            onTap: (){
+              widget.page.currentState!.pop();
+            },
+            child: Container(height: AppSize.s70,
+              alignment: AlignmentDirectional.center,
+              margin: EdgeInsets.symmetric(horizontal: AppSize.s30),
+              decoration: BoxDecoration(
+                  color: ColorManager.rectangle,
+                  borderRadius: BorderRadius.all(Radius.circular(AppSize.s35))
+              ),
+              child: Text(AppStrings.back,
+                style: TextStyle(
+                  color: ColorManager.black,
+                  fontSize: FontSize.s16,
+                  fontWeight: FontWeight.w500,
+
+                ),),
+            ),
+          )
 
         ],
       ),

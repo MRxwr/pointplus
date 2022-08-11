@@ -20,6 +20,7 @@ class AppPadding {
 
 class AppSize {
   ScreenUtil screenUtil = ScreenUtil();
+  static  double s34 = 34.w;
   static  double s35 = 35.w;
   static  double s70 = 70.w;
   static  double s7 = 7.w;

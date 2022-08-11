@@ -23,6 +23,7 @@ class ColorManager {
   static Color rectangle = HexColor.fromHex("#00CAD6");
   static Color selectedRectangle = HexColor.fromHex("#0A243B");
   static Color selectedCircle = HexColor.fromHex("#0E3151");
+  static Color expandedColor = HexColor.fromHex("#103B63");
   // red color
 }
 
