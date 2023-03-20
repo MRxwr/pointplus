@@ -136,14 +136,21 @@ class User {
   String? points;
   String? rank;
   String? pRank;
+  List<Stats>? stats;
 
-  User({this.notifications, this.points, this.rank, this.pRank});
+  User({this.notifications, this.points, this.rank, this.pRank, this.stats});
 
   User.fromJson(Map<String, dynamic> json) {
     notifications = json['notifications'];
     points = json['points'];
     rank = json['rank'];
     pRank = json['pRank'];
+    if (json['stats'] != null) {
+      stats = <Stats>[];
+      json['stats'].forEach((v) {
+        stats!.add(new Stats.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -152,6 +159,28 @@ class User {
     data['points'] = this.points;
     data['rank'] = this.rank;
     data['pRank'] = this.pRank;
+    if (this.stats != null) {
+      data['stats'] = this.stats!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Stats {
+  String? round;
+  String? totalPoints;
+
+  Stats({this.round, this.totalPoints});
+
+  Stats.fromJson(Map<String, dynamic> json) {
+    round = json['round'];
+    totalPoints = json['totalPoints'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['round'] = this.round;
+    data['totalPoints'] = this.totalPoints;
     return data;
   }
 }
@@ -225,7 +254,7 @@ class Matches {
   List<Team1>? team1;
   List<Team1>? team2;
   Result? result;
-  List<Predictions>? predictions;
+  Predictions? predictions;
 
   Matches(
       {this.id,
@@ -252,12 +281,9 @@ class Matches {
     }
     result =
     json['result'] != null ? new Result.fromJson(json['result']) : null;
-    if (json['predictions'] != null) {
-      predictions = <Predictions>[];
-      json['predictions'].forEach((v) {
-        predictions!.add(new Predictions.fromJson(v));
-      });
-    }
+    predictions = json['predictions'] != null
+        ? new Predictions.fromJson(json['predictions'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -274,7 +300,7 @@ class Matches {
       data['result'] = this.result!.toJson();
     }
     if (this.predictions != null) {
-      data['predictions'] = this.predictions!.map((v) => v.toJson()).toList();
+      data['predictions'] = this.predictions!.toJson();
     }
     return data;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class ColorManager {
+  static Color blueBlack = HexColor.fromHex("#14283B");
   static Color cyan = HexColor.fromHex("#748D9E");
   static Color navColor = HexColor.fromHex("#122436");
   static Color primary = HexColor.fromHex("#0E3151");

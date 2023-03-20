@@ -25,82 +25,91 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     final modelHud = Provider.of<ModelHud>(context,listen: false);
-    return Scaffold(
-      backgroundColor:ColorManager.white,
-        appBar:   AppBar(
-          elevation: AppSize.s0,
-          backgroundColor: ColorManager.backGroundColor,
-          centerTitle: true,
-          title:Container(
-            width: screenUtil.screenWidth,
-            child: Center(
-              child: Text(widget.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: ColorManager.white,
-                    fontWeight: FontWeight.w500,
+    return WillPopScope(
+      onWillPop: () async {
+        if (Navigator.of(context).userGestureInProgress) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        backgroundColor:ColorManager.white,
+          appBar:   AppBar(
+            elevation: AppSize.s0,
+            backgroundColor: ColorManager.backGroundColor,
+            centerTitle: true,
+            title:Container(
+              width: screenUtil.screenWidth,
+              child: Center(
+                child: Text(widget.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: ColorManager.white,
+                      fontWeight: FontWeight.w500,
 
-                    fontSize: FontSize.s16
-                ),),
-            ),
-          ),
-
-          leading:
-          GestureDetector(
-            onTap: (){
-              Navigator.pop(context);
-
-            },
-            child: Icon(Icons.arrow_back_ios_outlined,color: ColorManager.white,size:AppSize.s20,),
-          ),
-
-          actions: [
-
-
-
-
-
-
-          ],
-
-        ),
-      body: Container(
-        child:    Stack(
-          children: <Widget>[
-            InAppWebView(
-
-              initialUrlRequest:
-              URLRequest(url: Uri.parse(widget.url)),
-
-
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-
-
-                  preferredContentMode: UserPreferredContentMode.MOBILE,
-
-                ),
+                      fontSize: FontSize.s16
+                  ),),
               ),
-              onWebViewCreated: (InAppWebViewController controller) {
-                webView = controller;
-              },
-
-
-              onLoadStart: (InAppWebViewController controller, Uri? url) {
-                modelHud.changeIsLoading(true);
-              },
-              onLoadStop: (InAppWebViewController controller, Uri? url) async {
-                modelHud.changeIsLoading(false);
-                // print(url);
-
-              },
             ),
 
-          ],
-        ) ,
+            leading:
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+
+              },
+              child: Icon(Icons.arrow_back_ios_outlined,color: ColorManager.white,size:AppSize.s20,),
+            ),
+
+            actions: [
+
+
+
+
+
+
+            ],
+
+          ),
+        body: Container(
+          child:    Stack(
+            children: <Widget>[
+              InAppWebView(
+
+                initialUrlRequest:
+                URLRequest(url: Uri.parse(widget.url)),
+
+
+                initialOptions: InAppWebViewGroupOptions(
+                  crossPlatform: InAppWebViewOptions(
+
+
+                    preferredContentMode: UserPreferredContentMode.MOBILE,
+
+                  ),
+                ),
+                onWebViewCreated: (InAppWebViewController controller) {
+                  webView = controller;
+                },
+
+
+                onLoadStart: (InAppWebViewController controller, Uri? url) {
+                  modelHud.changeIsLoading(true);
+                },
+                onLoadStop: (InAppWebViewController controller, Uri? url) async {
+                  modelHud.changeIsLoading(false);
+                  // print(url);
+
+                },
+              ),
+
+            ],
+          ) ,
+        ),
+
+
       ),
-
-
     );
   }
 }

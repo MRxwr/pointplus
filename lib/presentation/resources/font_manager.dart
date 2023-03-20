@@ -15,7 +15,9 @@ class FontWeightManager {
 
 class FontSize {
   ScreenUtil screenUtil = ScreenUtil();
+  static  double s8 = ScreenUtil().setSp(8);
   static  double s11 = ScreenUtil().setSp(11);
+  static  double s15 = ScreenUtil().setSp(15);
   static  double s21 = ScreenUtil().setSp(21);
   static  double s1 = ScreenUtil().setSp(1);
   static  double s6 = ScreenUtil().setSp(6);

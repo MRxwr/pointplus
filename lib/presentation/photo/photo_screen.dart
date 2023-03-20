@@ -28,45 +28,54 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton:  FloatingActionButton(
-        backgroundColor: ColorManager.primary,
-        onPressed: () {
-          print("true");
-          Navigator.pop(context);
-        },
-        tooltip: 'Increment',
-        child:Container(
+    return WillPopScope(
+      onWillPop: () async {
+        if (Navigator.of(context).userGestureInProgress) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton:  FloatingActionButton(
+          backgroundColor: ColorManager.primary,
+          onPressed: () {
+            print("true");
+            Navigator.pop(context);
+          },
+          tooltip: 'Increment',
+          child:Container(
 
-            alignment: AlignmentDirectional.center,
-            width:AppSize.s60, height: AppSize.s60, child: Center(child: Icon(Icons.close,color: ColorManager.white,))),
-        elevation: 2.0,
-      ),
-      body:
-      Container(
-        color: ColorManager.white,
-        child: Stack(
-          fit: StackFit.expand,
-
-          children: [
-            Container(
-              color: ColorManager.white,
-              constraints: BoxConstraints.expand(
-                height: MediaQuery.of(context).size.height,
-              ),
-              child: PhotoView(
-                imageProvider: widget.imageProvider,
-
-                minScale: widget.minScale,
-                maxScale: widget.maxScale,
-                heroAttributes: const PhotoViewHeroAttributes(tag: "someTag"),
-              ),
-            ),
-
-          ],
+              alignment: AlignmentDirectional.center,
+              width:AppSize.s60, height: AppSize.s60, child: Center(child: Icon(Icons.close,color: ColorManager.white,))),
+          elevation: 2.0,
         ),
-      ) ,
+        body:
+        Container(
+          color: ColorManager.white,
+          child: Stack(
+            fit: StackFit.expand,
+
+            children: [
+              Container(
+                color: ColorManager.white,
+                constraints: BoxConstraints.expand(
+                  height: MediaQuery.of(context).size.height,
+                ),
+                child: PhotoView(
+                  imageProvider: widget.imageProvider,
+
+                  minScale: widget.minScale,
+                  maxScale: widget.maxScale,
+                  heroAttributes: const PhotoViewHeroAttributes(tag: "someTag"),
+                ),
+              ),
+
+            ],
+          ),
+        ) ,
+      ),
     );
   }
 }

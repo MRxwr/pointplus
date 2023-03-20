@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>25953648734-oc62889e4hhb69fr51l6g32schpgf3pf.apps.googleusercontent.com</string>
+	<string>25953648734-ogb1s2jmuhfijso5fefs08tal74lj5fp.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.25953648734-oc62889e4hhb69fr51l6g32schpgf3pf</string>
+	<string>com.googleusercontent.apps.25953648734-ogb1s2jmuhfijso5fefs08tal74lj5fp</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>25953648734-1f6f1hm32od0rkp6paq70aul0n14dgrm.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.createq8.point</string>
+	<string>com.createco.pointplus</string>
 	<key>PROJECT_ID</key>
 	<string>points-a1a14</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:25953648734:ios:da8c5abd605b4ac7c674cf</string>
+	<string>1:25953648734:ios:824b3223086b222ec674cf</string>
 </dict>
 </plist>

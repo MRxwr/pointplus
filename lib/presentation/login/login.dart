@@ -1,6 +1,8 @@
 import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -46,11 +48,20 @@ class _LoginViewState extends State<LoginView> {
     });
   }
   bool isBioEnabled = false;
+  bool biometric= false;
   Future<String> isUserLogIn()async{
 
     isBioEnabled = await checkingForBioMetrics();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    biometric =   sharedPreferences.getBool('biometric')??false;
     isLoggedIn = sharedPreferences.getBool("isLoggedIn")??false;
+    String id = sharedPreferences.getString("id")??"";
+    if(id ==""){
+      isLoggedIn = false;
+    }else{
+      isLoggedIn = true;
+    }
+
   String  email = sharedPreferences.getString("email")??"";
     password = sharedPreferences.getString("password")??"";
     return email;
@@ -59,216 +70,234 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: Provider.of<ModelHud>(context).isLoading,
-      child: Scaffold(
-        body: Container(
-          decoration:   const BoxDecoration(
-              image:  DecorationImage(
-                image: AssetImage(ImageAssets.background),
-                fit: BoxFit.cover,
-              )),
-          child: Column(
-            children: [
-              Container(
-                height: AppSize.s120,
-                alignment: AlignmentDirectional.center,
-                child: Text(
-                  AppStrings.login,
-                  style: TextStyle(
-                    color: ColorManager.secondary,
-                    fontSize: FontSize.s20,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),
-              Container(
-                height: AppSize.s60,
-                alignment: AlignmentDirectional.center,
-                child: Image.asset(ImageAssets.loginLogo),
-              ),
-              SizedBox(height: AppSize.s60,),
-              SizedBox(
-                height: AppSize.s40,
+    return WillPopScope(
+      onWillPop: () async {
+        if (Navigator.of(context).userGestureInProgress) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: ModalProgressHUD(
+        inAsyncCall: Provider.of<ModelHud>(context).isLoading,
+        child: Scaffold(
+            resizeToAvoidBottomInset: true,
 
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                  child: TextField(
-                    textAlignVertical: TextAlignVertical.center,
+          body: Container(
+            decoration:   const BoxDecoration(
+                image:  DecorationImage(
+                  image: AssetImage(ImageAssets.background),
+                  fit: BoxFit.cover,
+                )),
+            child: ListView(
 
-
-
-                    style: TextStyle(color:ColorManager.white,fontSize: FontSize.s12),
-                    textAlign: TextAlign.start,
-                    textCapitalization: TextCapitalization.words,
-                    keyboardType: TextInputType.emailAddress ,
-
-                    textInputAction: TextInputAction.next,
-                    maxLines: 1,
-                    minLines: 1,
-                    controller: _emailController,
-                    decoration:  InputDecoration(
-                      prefixIcon: Container(
-                        margin: EdgeInsets.all(10),
-                          child: Image.asset(ImageAssets.emailLogin,height: 5,width: 5,fit: BoxFit.fitHeight,)),
-                      hintText: AppStrings.email,
-
-                      hintStyle: TextStyle(
-                          color: ColorManager.white,
-                          fontSize: FontSize.s12,
-                          fontWeight: FontWeight.normal
-                      ),
-
-
-                      labelStyle:  TextStyle(color: ColorManager.white,
-                      fontSize: FontSize.s12),
-
-                      enabledBorder:      UnderlineInputBorder(
-
-                          borderSide: BorderSide(
-                              color: ColorManager.white
-                              ,width: AppSize.s1
-                          )
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-
-                          borderSide: BorderSide(
-                              color: ColorManager.white
-                              ,width: AppSize.s1
-                          )
-                      ),
-                      border: UnderlineInputBorder(
-
-                          borderSide: BorderSide(
-                              color: ColorManager.white
-                              ,width:AppSize.s1
-                          )
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSize.s20,),
-              SizedBox(
-                height: AppSize.s40,
-
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                  child: TextField(
-                    textAlignVertical: TextAlignVertical.center,
-
-
-
-                    style: TextStyle(color:ColorManager.white,fontSize: FontSize.s12),
-                    textAlign: TextAlign.start,
-                    textCapitalization: TextCapitalization.words,
-                    keyboardType: TextInputType.visiblePassword ,
-                    obscureText: true,
-
-                    textInputAction: TextInputAction.done,
-                    maxLines: 1,
-                    minLines: 1,
-                    controller: _passwordController,
-                    decoration:  InputDecoration(
-                      prefixIcon: Container(
-                          margin: EdgeInsets.all(10),
-                          child: Image.asset(ImageAssets.passwordLogin,height: 5,width: 5,fit: BoxFit.fitHeight,)),
-                      hintText: AppStrings.password,
-
-                      hintStyle: TextStyle(
-                          color: ColorManager.white,
-                          fontSize: FontSize.s12,
-                          fontWeight: FontWeight.normal
-                      ),
-
-
-                      labelStyle:  TextStyle(color: ColorManager.white,
-                          fontSize: FontSize.s12),
-
-                      enabledBorder:      UnderlineInputBorder(
-
-                          borderSide: BorderSide(
-                              color: ColorManager.white
-                              ,width: AppSize.s1
-                          )
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-
-                          borderSide: BorderSide(
-                              color: ColorManager.white
-                              ,width: AppSize.s1
-                          )
-                      ),
-                      border: UnderlineInputBorder(
-
-                          borderSide: BorderSide(
-                              color: ColorManager.white
-                              ,width:AppSize.s1
-                          )
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSize.s40,),
-              Container(
-                alignment: AlignmentDirectional.center,
-                child: isLoggedIn?isBioEnabled?
-                GestureDetector(
-                  onTap: (){
-                    _authenticateMe();
-                  },
-                  child: Image.asset(ImageAssets.faceIdLogin,height: AppSize.s57,width: AppSize.s57,
-                  fit: BoxFit.fill,),
-                ):Container(height:AppSize.s57 ,):Container(height:AppSize.s57 ,)
-              ),
-              SizedBox(height: AppSize.s40,),
-              Container(
+              children: [
+                Container(
+                  height: AppSize.s120,
                   alignment: AlignmentDirectional.center,
-                  margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                  child: loginButton(AppStrings.login,context)
-              ),
-              SizedBox(height: AppSize.s20,),
-              Container(
-                alignment: AlignmentDirectional.center,
-                child: GestureDetector(
-                  onTap: (){
-                    Navigator.of(context,rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (BuildContext context){
-                      return  const RegisterView();
-                    }));
-                  },
-                  child: Text(AppStrings.register,
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-
-                    color: ColorManager.white,
-                    fontSize: FontSize.s16,
-                    fontWeight: FontWeight.normal
-                  ),),
-                ),
-              ),
-              SizedBox(height: AppSize.s20,),
-              Container(
-                alignment: AlignmentDirectional.center,
-                child: GestureDetector(
-                  onTap: (){
-                    Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
-                      return  const ForgetPassworView();
-                    }));
-                  },
-                  child: Text(AppStrings.forgetPassword,
+                  child: Text(
+                    "login".tr(),
                     style: TextStyle(
-                        color: ColorManager.white,
-                        fontSize: FontSize.s16,
-                        fontWeight: FontWeight.normal
-                    ),),
+                      color: ColorManager.secondary,
+                      fontSize: FontSize.s20,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
                 ),
-              ),
-              Container()
+                Container(
+                  height: AppSize.s60,
+                  alignment: AlignmentDirectional.center,
+                  child: SvgPicture.asset(
+                    'assets/images/app_logo.svg',
+                    height: AppSize.s60,
 
-            ],
+
+                  ),
+                ),
+                SizedBox(height: AppSize.s60,),
+                SizedBox(
+                  height: AppSize.s40,
+
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
+                    child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
+
+
+
+                      style: TextStyle(color:ColorManager.white,fontSize: FontSize.s12),
+                      textAlign: TextAlign.start,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.emailAddress ,
+
+                      textInputAction: TextInputAction.next,
+                      maxLines: 1,
+                      minLines: 1,
+                      controller: _emailController,
+                      decoration:  InputDecoration(
+                        prefixIcon: Container(
+                          margin: EdgeInsets.all(10),
+                            child: Image.asset(ImageAssets.emailLogin,height: 5,width: 5,fit: BoxFit.fitHeight,)),
+                        hintText: "email".tr(),
+
+                        hintStyle: TextStyle(
+                            color: ColorManager.white,
+                            fontSize: FontSize.s12,
+                            fontWeight: FontWeight.normal
+                        ),
+
+
+                        labelStyle:  TextStyle(color: ColorManager.white,
+                        fontSize: FontSize.s12),
+
+                        enabledBorder:      UnderlineInputBorder(
+
+                            borderSide: BorderSide(
+                                color: ColorManager.white
+                                ,width: AppSize.s1
+                            )
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+
+                            borderSide: BorderSide(
+                                color: ColorManager.white
+                                ,width: AppSize.s1
+                            )
+                        ),
+                        border: UnderlineInputBorder(
+
+                            borderSide: BorderSide(
+                                color: ColorManager.white
+                                ,width:AppSize.s1
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: AppSize.s20,),
+                SizedBox(
+                  height: AppSize.s40,
+
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
+                    child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
+
+
+
+                      style: TextStyle(color:ColorManager.white,fontSize: FontSize.s12),
+                      textAlign: TextAlign.start,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.visiblePassword ,
+                      obscureText: true,
+
+                      textInputAction: TextInputAction.done,
+                      maxLines: 1,
+                      minLines: 1,
+                      controller: _passwordController,
+                      decoration:  InputDecoration(
+                        prefixIcon: Container(
+                            margin: EdgeInsets.all(10),
+                            child: Image.asset(ImageAssets.passwordLogin,height: 5,width: 5,fit: BoxFit.fitHeight,)),
+                        hintText: "password".tr(),
+
+                        hintStyle: TextStyle(
+                            color: ColorManager.white,
+                            fontSize: FontSize.s12,
+                            fontWeight: FontWeight.normal
+                        ),
+
+
+                        labelStyle:  TextStyle(color: ColorManager.white,
+                            fontSize: FontSize.s12),
+
+                        enabledBorder:      UnderlineInputBorder(
+
+                            borderSide: BorderSide(
+                                color: ColorManager.white
+                                ,width: AppSize.s1
+                            )
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+
+                            borderSide: BorderSide(
+                                color: ColorManager.white
+                                ,width: AppSize.s1
+                            )
+                        ),
+                        border: UnderlineInputBorder(
+
+                            borderSide: BorderSide(
+                                color: ColorManager.white
+                                ,width:AppSize.s1
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: AppSize.s40,),
+                Container(
+                  alignment: AlignmentDirectional.center,
+                  child: isLoggedIn?isBioEnabled?
+                  GestureDetector(
+                    onTap: (){
+                      _authenticateMe();
+                    },
+                    child: Image.asset(ImageAssets.faceIdLogin,height: AppSize.s57,width: AppSize.s57,
+                    fit: BoxFit.fill,),
+                  ):Container(height:AppSize.s57 ,):Container(height:AppSize.s57 ,)
+                ),
+                SizedBox(height: AppSize.s40,),
+                Container(
+                    alignment: AlignmentDirectional.center,
+                    margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
+                    child: loginButton("login".tr(),context)
+                ),
+                SizedBox(height: AppSize.s20,),
+                Container(
+                  alignment: AlignmentDirectional.center,
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.of(context,rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (BuildContext context){
+                        return  const RegisterView();
+                      }));
+                    },
+                    child:
+                    Text("register".tr(),
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+
+                      color: ColorManager.white,
+                      fontSize: FontSize.s16,
+                      fontWeight: FontWeight.normal
+                    ),),
+                  ),
+                ),
+                SizedBox(height: AppSize.s20,),
+                Container(
+                  alignment: AlignmentDirectional.center,
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                        return  const ForgetPassworView();
+                      }));
+                    },
+                    child: Text("forgetPassword".tr(),
+                      style: TextStyle(
+                          color: ColorManager.white,
+                          fontSize: FontSize.s16,
+                          fontWeight: FontWeight.normal
+                      ),),
+                  ),
+                ),
+                Container()
+
+              ],
+            ),
+
           ),
-
         ),
       ),
     );
@@ -355,10 +384,10 @@ class _LoginViewState extends State<LoginView> {
           context: context,
           artDialogArgs: ArtDialogArgs(
               type: ArtSweetAlertType.danger,
-              title: AppStrings.error,
-              text:AppStrings.passwordError,
+              title: "error".tr(),
+              text:"passwordError".tr(),
               confirmButtonColor: ColorManager.primary,
-              confirmButtonText: AppStrings.ok
+              confirmButtonText: "ok".tr()
           )
       );
     }else{
@@ -374,10 +403,12 @@ class _LoginViewState extends State<LoginView> {
         String? id = loginModel?.data!.id;
         sharedPreferences.setString("id", id!);
         sharedPreferences.setBool("isLoggedIn", true);
-
+        sharedPreferences.setBool("isLoggedOff", false);
         sharedPreferences.setString('email', _emailController.text);
         sharedPreferences.setString('password', _passwordController.text);
         sharedPreferences.setBool('isUser', true);
+        sharedPreferences.setBool('biometric', true);
+
         // HomeModel? homeModel = await pointServices.home(id);
 
 
@@ -391,10 +422,10 @@ class _LoginViewState extends State<LoginView> {
             context: context,
             artDialogArgs: ArtDialogArgs(
                 type: ArtSweetAlertType.danger,
-                title: AppStrings.error,
+                title: "error".tr(),
                 text:errorModel?.data!.msg,
                 confirmButtonColor: ColorManager.primary,
-                confirmButtonText: AppStrings.ok
+                confirmButtonText: "ok".tr()
             )
         );
 
@@ -430,10 +461,10 @@ class _LoginViewState extends State<LoginView> {
             context: context,
             artDialogArgs: ArtDialogArgs(
                 type: ArtSweetAlertType.danger,
-                title: AppStrings.error,
-                text:AppStrings.notAuthorized,
+                title: "error".tr(),
+                text:"notAuthorized".tr(),
                 confirmButtonColor: ColorManager.primary,
-                confirmButtonText: AppStrings.ok
+                confirmButtonText: "ok".tr()
             )
         );
 

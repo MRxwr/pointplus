@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:point/presentation/resources/color_manager.dart';
+import 'package:point/presentation/resources/values_manager.dart';
 
 class FABBottomAppBarItem {
   FABBottomAppBarItem({required this.iconPath,  required this.text});
@@ -97,7 +99,13 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
     Color color = _selectedIndex == index ? widget.selectedColor : widget.color;
     return Expanded(
       child:
-      SizedBox(
+      Container(
+        decoration: _selectedIndex == index?BoxDecoration(
+          border:Border(
+            top: BorderSide(width: AppSize.s1,color: ColorManager.secondary),
+            bottom: BorderSide(width: AppSize.s1,color: ColorManager.secondary),
+          )
+        ):null,
         height: 55.h,
         child: Material(
           type: MaterialType.transparency,

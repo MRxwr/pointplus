@@ -20,10 +20,18 @@ class AppPadding {
 
 class AppSize {
   ScreenUtil screenUtil = ScreenUtil();
+  static  double s90 = 90.w;
+  static  double s170 = 170.w;
+  static  double s19 = 19.w;
+  static  double s36 = 36.w;
+  static  double s180 = 180.w;
+  static  double s200 = 200.w;
+  static  double s12 = 12.w;
   static  double s34 = 34.w;
   static  double s35 = 35.w;
   static  double s70 = 70.w;
   static  double s7 = 7.w;
+  static  double s300 = 300.w;
   static  double s0 = 0.w;
   static  double s24 = 24.w;
   static  double s9 = 9.w;
@@ -39,7 +47,7 @@ class AppSize {
   static  double s4 = 4.w;
   static  double s8 = 8.w;
   static  double s10 = 10.w;
-  static  double s12 = 12.w;
+
   static  double s14 = 14.w;
   static  double s16 = 16.w;
   static  double s18 = 18.w;
@@ -66,6 +74,8 @@ class AppSize {
   static double s126 = 126.w;
   static double s150 = 150.w;
   static double s80 = 80.w;
+  static double s220 = 220.w;
+  static double s350 = 350.w;
   static double s5 = 5.w;
   static double width = ScreenUtil().screenWidth;
   static double height = ScreenUtil().screenHeight;
