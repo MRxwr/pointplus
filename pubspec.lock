@@ -37,10 +37,10 @@ packages:
     dependency: transitive
     description:
       name: async
-      sha256: bfe67ef28df125b7dddcea62755991f807aa39a2492a23e1550161692950bbe0
+      sha256: "947bfcf187f74dbc5e146c9eb9c0f10c9f8b30743e341481c1e2ed3ecc18c20c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.10.0"
+    version: "2.11.0"
   audio_session:
     dependency: transitive
     description:
@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: characters
-      sha256: e6a326c8af69605aec75ed6c187d06b349707a27fbff8222ca9cc2cff167975c
+      sha256: "04a925763edad70e8443c99234dc3328f442e811f1d8fd1a72f1c8ad0f69a605"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.3.0"
   chewie:
     dependency: transitive
     description:
@@ -133,10 +133,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: cfc915e6923fe5ce6e153b0723c753045de46de1b4d63771530504004a45fae0
+      sha256: f092b211a4319e98e5ff58223576de6c2803db36221657b46c82574721240687
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.2"
   convert:
     dependency: transitive
     description:
@@ -177,14 +177,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  date_time_picker:
-    dependency: "direct main"
-    description:
-      name: date_time_picker
-      sha256: "6923c568bcb67a66ab7e083708d0adbcae8214b41bb84d49febc17e89e06fc4a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   dbus:
     dependency: transitive
     description:
@@ -213,10 +205,10 @@ packages:
     dependency: "direct main"
     description:
       name: easy_localization
-      sha256: "6a2e99fa0bfe5765bf4c6ca9b137d5de2c75593007178c5e4cd2ae985f870080"
+      sha256: "30ebf25448ffe169e0bd9bc4b5da94faa8398967a2ad2ca09f438be8b6953645"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   easy_logger:
     dependency: transitive
     description:
@@ -366,14 +358,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
-  flutter_datetime_picker:
-    dependency: "direct main"
-    description:
-      name: flutter_datetime_picker
-      sha256: "8e695c63c769350e541951227c2775190ec73ceda774a315b1dc9a99d5facfe5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.1"
   flutter_inappwebview:
     dependency: "direct main"
     description:
@@ -456,18 +440,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_screenutil
-      sha256: "154a1abec9f047d9cdaf71856163315d9d7def5167409361a7f13a5bcd650017"
+      sha256: "1b61f8c4cbf965104b6ca7160880ff1af6755aad7fec70b58444245132453745"
       url: "https://pub.dev"
     source: hosted
-    version: "5.6.0"
-  flutter_sequence_animation:
-    dependency: transitive
-    description:
-      name: flutter_sequence_animation
-      sha256: "48f28a8395e410f5b4a47a86fe77974ee8fbab3db935d22933dbb3af27447d01"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
+    version: "5.8.4"
   flutter_sim_country_code:
     dependency: transitive
     description:
@@ -518,6 +494,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.1"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      sha256: "474f7d506230897a3cd28c965ec21c5328ae5605fc9c400cd330e9e9d6ac175c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.2.2"
   fwfh_cached_network_image:
     dependency: transitive
     description:
@@ -626,18 +610,18 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.1"
   js:
     dependency: transitive
     description:
       name: js
-      sha256: "5528c2f391ededb7775ec1daa69e65a2d61276f7552de2b5f7b8d34ee9fd4ab7"
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.5"
+    version: "0.6.7"
   just_audio:
     dependency: transitive
     description:
@@ -722,26 +706,26 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: "16db949ceee371e9b99d22f88fa3a73c4e59fd0afed0bd25fc336eb76c198b72"
+      sha256: "1803e76e6653768d64ed8ff2e1e67bea3ad4b923eb5c56a295c3e634bad5960e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.13"
+    version: "0.12.16"
   material_color_utilities:
     dependency: transitive
     description:
       name: material_color_utilities
-      sha256: d92141dc6fe1dad30722f9aa826c7fbc896d021d792f80678280601aff8cf724
+      sha256: "9528f2f296073ff54cb9fee677df673ace1218163c3bc7628093e7eed5203d41"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.5.0"
   meta:
     dependency: transitive
     description:
       name: meta
-      sha256: "6c268b42ed578a53088d834796959e4a1814b5e9e164f147f580a386e5decf42"
+      sha256: "3c74dbf8763d36539f114c799d8a2d87343b5067e9d796ca22b5eb8437090ee3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.0"
+    version: "1.9.1"
   modal_progress_hud_nsn:
     dependency: "direct main"
     description:
@@ -786,10 +770,10 @@ packages:
     dependency: transitive
     description:
       name: path
-      sha256: db9d4f58c908a4ba5953fcee2ae317c94889433e5024c27ce74a37f94267945b
+      sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.2"
+    version: "1.8.3"
   path_drawing:
     dependency: transitive
     description:
@@ -934,22 +918,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
-  rating_bar:
-    dependency: "direct main"
-    description:
-      name: rating_bar
-      sha256: "490e7cfb64b19a18b94726d8381fa18cd698bd20be5e8241f9a1045a16823d6f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   rflutter_alert:
     dependency: "direct main"
     description:
       name: rflutter_alert
-      sha256: a77c8c937fad29e70565388c5934f678b92325047663367b985570ba101929fa
+      sha256: "8ff35e3f9712ba24c746499cfa95bf320385edf38901a1a4eab0fe555867f66c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.7"
   rive:
     dependency: transitive
     description:
@@ -1047,10 +1023,10 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      sha256: dd904f795d4b4f3b870833847c461801f6750a9fa8e61ea5ac53f9422b31f250
+      sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.1"
+    version: "1.10.0"
   sqflite:
     dependency: transitive
     description:
@@ -1091,30 +1067,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  sweetalert:
-    dependency: "direct main"
-    description:
-      name: sweetalert
-      sha256: a9c8f08aaf726186589e45e3a9bc985e82c448cb9eac8b9d7fb548c341f22152
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: d1188d83d92f2625cb80b2968c0b483b110ea468dc94e19f6966f763ba0ed996
+      sha256: "33a2e8a86ac013c7929ed2cffa83c44f45ff256e38122de97f3154cb04324a74"
       url: "https://pub.dev"
     source: hosted
-    version: "20.4.42"
+    version: "22.2.8"
   syncfusion_flutter_datepicker:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datepicker
-      sha256: "4a7543897a843414417aad50ffe4d021cb6171c2189e3da17b7693f2760ba0a9"
+      sha256: "570e754134ce1afd1409b9be166f8ec6b54f40521dd0f7c393f20bbc3d3e682c"
       url: "https://pub.dev"
     source: hosted
-    version: "20.4.42"
+    version: "22.2.8"
   synchronized:
     dependency: transitive
     description:
@@ -1135,18 +1103,18 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
+      sha256: "75760ffd7786fffdfb9597c35c5b27eaeec82be8edfb6d71d32651128ed7aab8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.16"
+    version: "0.6.0"
   time_picker_spinner_pop_up:
     dependency: "direct main"
     description:
       name: time_picker_spinner_pop_up
-      sha256: "97c7fae790eed7551ec0cd92739d3c88835c86266d26a2cfc54e3c36f0f9fc68"
+      sha256: "048f174e5043555b67456118355f448339a1e13ca045eaefc415aefd0c615098"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "1.2.1"
   timer_count_down:
     dependency: "direct main"
     description:
@@ -1339,6 +1307,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1"
+  web:
+    dependency: transitive
+    description:
+      name: web
+      sha256: dc8ccd225a2005c1be616fe02951e2e342092edf968cf0844220383757ef8f10
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4-beta"
   webview_flutter:
     dependency: transitive
     description:
@@ -1404,5 +1380,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.0 <3.0.0"
-  flutter: ">=3.3.0"
+  dart: ">=3.1.0-185.0.dev <4.0.0"
+  flutter: ">=3.10.0"

@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:point/domain/home_model.dart';
 import 'package:point/domain/league_details_model.dart';
 import 'package:point/domain/leagues_model.dart';
@@ -35,11 +36,14 @@ class LeaguesDetailsScreen extends StatefulWidget {
 
 class _LeaguesDetailsScreen extends State<LeaguesDetailsScreen> {
   bool isCopied = false;
-  List<Users> usersList =[];
+  bool isCurrentSelected = true;
+  bool isLastSelected = false;
+  late List<Users> usersList ;
   final CarouselController _controller = CarouselController();
   int _current =0;
   String mLanguage = "";
   ProfileModel? profileModel;
+  bool isEmpty=false;
   Future<LeaguesDetailsModel?> leagues() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String id = sharedPreferences.getString("id")??"";
@@ -333,10 +337,147 @@ class _LeaguesDetailsScreen extends State<LeaguesDetailsScreen> {
                       fontSize: FontSize.s17,
                     ),)),
               Container(height: AppSize.s10,),
+              Container(
+                width: ScreenUtil().screenWidth,
+                height: 50.h,
+                child:Row(
+                  children: [
+
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: ()async{
+                          if(!isCurrentSelected){
+                            isEmpty = false;
+                            isCurrentSelected = true;
+                            isLastSelected = false;
+                            usersList = [];
+                            setState(() {
+
+                            });
+                            PointServices pointServices = PointServices();
+
+                            LeaguesDetailsModel? leaguesModel = await pointServices.leaguesDetailsModel(widget.leagues.id);
+
+                            usersList =leaguesModel!.data!.users!;
+                            if(usersList.isEmpty){
+                              isEmpty = true;
+                            }
+
+                            setState(() {
+
+                            });
+
+                          }
+
+                        },
+                        child: Container(
+                          alignment: AlignmentDirectional.center,
+                          decoration: BoxDecoration(
+                          border: Border.symmetric(horizontal:isCurrentSelected?
+                          BorderSide(
+                            color: ColorManager.rectangle,
+                            width: 1.w,
+                          ): BorderSide.none,vertical: BorderSide.none)
+
+
+                          ),
+                          child: Text(
+                            "curr_week".tr(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: ScreenUtil().setSp(12)
+                            ),
+
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: ()async{
+                          if(!isLastSelected){
+                            isEmpty = false;
+                            isCurrentSelected = false;
+                            isLastSelected = true;
+                            usersList = [];
+                            setState(() {
+
+                            });
+
+                            PointServices pointServices = PointServices();
+
+                            LeaguesDetailsModel? leaguesModel = await pointServices.lastLeaguesDetailsModel(widget.leagues.id);
+
+                            usersList =leaguesModel!.data!.users!;
+                            if(usersList.isEmpty){
+                              isEmpty = true;
+                            }
+
+                            setState(() {
+
+                            });
+
+                          }
+                        },
+                        child: Container(
+                          alignment: AlignmentDirectional.center,
+                          decoration: BoxDecoration(
+                              border: Border.symmetric(horizontal: isLastSelected?
+                              BorderSide(
+                                color: ColorManager.rectangle,
+                                width: 1.w,
+                              ):BorderSide.none,vertical: BorderSide.none)
+
+
+                          ),
+                          child: Text(
+                            "las_week".tr(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: ScreenUtil().setSp(12)
+                            ),
+
+                          ),
+                        ),
+                      ),
+                    )
+
+                  ],
+                )
+              ),
+              Container(height: 10.h,),
 
               Container(
                 margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                child: ListView.separated(
+                child:usersList.isEmpty ?
+                    !isEmpty?
+
+                    Container(
+                      height: 100.h,
+                      width: ScreenUtil().screenWidth,
+                      child: const CircularProgressIndicator(
+
+
+                      ),
+                      alignment: AlignmentDirectional.center,
+                    ):Container(
+                      height: 100.h,
+                      alignment: AlignmentDirectional.center,
+                      width: ScreenUtil().screenWidth,
+                      child: Text(
+                        'no_data'.tr(),
+                        style: TextStyle(
+                          color: ColorManager.white,
+                          fontSize: ScreenUtil().setSp(15),
+                          fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    ):
+
+
+                ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {

@@ -100,24 +100,28 @@ class _MyAppState extends State<MyApp> {
 
     });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      SharedPreferences sharedPrefrences = await SharedPreferences.getInstance();
+      bool NotificationEnabled = sharedPrefrences.getBool(NotificationStatus )??true;
+      if(NotificationEnabled) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              NotificationDetails(
+                android: AndroidNotificationDetails(
+                  channel.id,
+                  channel.name,
 
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
-                icon: 'launch_background',
-              ),
-            ));
+                  // TODO add a proper drawable resource to android, for now using
+                  //      one that already exists in example app.
+                  icon: 'launch_background',
+                ),
+              ));
+        }
       }
     });
 

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:point/domain/notification_model.dart';
+import 'package:point/presentation/main/notification_details_screen.dart';
 import 'package:point/presentation/resources/font_manager.dart';
 import 'package:point/presentation/resources/strings_manager.dart';
 import 'package:provider/provider.dart';
@@ -122,44 +123,61 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
 
                 ListView.separated(itemBuilder: (context,index){
-                  return Container(
-                    height: AppSize.s50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFDFEBEE),
-                      borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned.directional(textDirection: Directionality.of(context),
-                            top: 0,
-                            bottom: 0,
-                            start: AppSize.s10,
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                        return  NotificationDetailsScreen(notification: notificationModel!.data!.notification![index]
+                          );
+                      }));
+                    },
+                    child: Container(
+                      height: AppSize.s50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDFEBEE),
+                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex:4,
                             child: Container(
-                              alignment: AlignmentDirectional.center,
-                          child: Text(
-                            notificationModel!.data!.notification![index].notification.toString(),
-                            style: TextStyle(
-                              color: Color(0xFF0E3151),
-                              fontSize: FontSize.s11,
-                              fontWeight: FontWeight.normal,
+                              margin: EdgeInsetsDirectional.only(start: AppSize.s5),
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
 
+
+
+                         notificationModel!.data!.notification![index].notification.toString(),
+
+                                style: TextStyle(
+                                  color: Color(0xFF0E3151),
+                                  fontSize: FontSize.s11,
+                                  fontWeight: FontWeight.normal,
+                                  overflow: TextOverflow.ellipsis,)
+
+                                ,),
+                              ),
                             ),
-                          ),
-                        )),
-                        Positioned.directional(textDirection: Directionality.of(context),
-                            bottom: AppSize.s10,
-                            end:AppSize.s10,
-                            child:
-                        Text(
-                            formatDuration(getRemainingTime(notificationModel!.data!.notification![index].date.toString())),
-                          style: TextStyle(
-                            color: ColorManager.secondary,
-                            fontSize: FontSize.s8
-                          ),
-                        ))
-                      ],
-                    ),
 
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: EdgeInsetsDirectional.only(end: AppSize.s5),
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text(
+                                  formatDuration(getRemainingTime(notificationModel!.data!.notification![index].date.toString())),
+
+                                style: TextStyle(
+                                  color: ColorManager.secondary,
+                                  fontSize: FontSize.s8
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+
+                    ),
                   );
                 }, separatorBuilder: (context,index){
                   return Container(height: AppSize.s10,);

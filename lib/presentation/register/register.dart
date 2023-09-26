@@ -3,8 +3,9 @@ import 'package:country_calling_code_picker/country.dart';
 import 'package:country_calling_code_picker/country_code_picker.dart';
 import 'package:country_calling_code_picker/functions.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:intl/intl.dart';
@@ -460,22 +461,32 @@ class _RegisterViewState extends State<RegisterView> {
 
     DateTime now = DateTime.now().subtract(const Duration(days: 356));
     DateTime start = now.subtract(const Duration(days: 356*100));
-    DatePicker.showDatePicker(context,
-
-        showTitleActions: true,
-        minTime: start,
-        maxTime: now, onChanged: (date) {
-          String formattedDate =
-          DateFormat('yyyy-MM-dd','en').format(date);
-          setState(() {
-            birthDay =
-                formattedDate; //set output date to TextField value.
-          });
-
-          print('change $date');
-        }, onConfirm: (date) {
-          print('confirm $date');
-        }, currentTime: now, locale: LocaleType.en);
+    final DateTime? pickedDate = await  showDatePicker(
+        initialEntryMode:DatePickerEntryMode.calendarOnly,context: context, initialDate: now, firstDate: start, lastDate: now);
+    if (pickedDate != null && pickedDate != now){
+             String formattedDate =
+             DateFormat('yyyy-MM-dd','en').format(pickedDate);
+             setState(() {
+               birthDay =
+                   formattedDate; //set output date to TextField value.
+             });
+    }
+   // DatePicker.showDatePicker(context,
+   //
+   //      showTitleActions: true,
+   //      minTime: start,
+   //      maxTime: now, onChanged: (date) {
+   //        String formattedDate =
+   //        DateFormat('yyyy-MM-dd','en').format(date);
+   //        setState(() {
+   //          birthDay =
+   //              formattedDate; //set output date to TextField value.
+   //        });
+   //
+   //        print('change $date');
+   //      }, onConfirm: (date) {
+   //        print('confirm $date');
+   //      }, currentTime: now, locale: LocaleType.en);
 
   }
   TextButton regsterButton(String text,BuildContext context){
@@ -523,6 +534,9 @@ class _RegisterViewState extends State<RegisterView> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String language = sharedPreferences.getString(LANG_CODE)??"en";
     String mToken =sharedPreferences.getString("token")??"";
+    if(mToken ==  ""){
+      mToken = (await   FirebaseMessaging.instance.getToken())??"";
+    }
     if(!validateName(name)){
       ArtSweetAlert.show(
           context: context,

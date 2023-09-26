@@ -5,8 +5,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:point/domain/coin_model.dart';
 import 'package:point/domain/profile_model.dart';
 import 'package:point/presentation/login/login.dart';
 import 'package:point/presentation/main/change_password_screen.dart';
@@ -24,6 +26,7 @@ import '../../providers/model_hud.dart';
 import '../resources/assets_manager.dart';
 import '../resources/color_manager.dart';
 import '../resources/values_manager.dart';
+import 'address_screen.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -47,6 +50,218 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     });
   }
+  void successDialog({required BuildContext context,required String id, required CoinModel coinModel}) {
+
+    showDialog(context: _scaffoldKey.currentState!.context,
+        barrierDismissible:false,builder: (context){
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s10)),
+
+
+        ),
+        child: Container(
+
+          width: AppSize.width,
+          height: AppSize.s180,
+          color: ColorManager.white,
+          child: Container(
+
+            child: Stack(
+              children: [
+                Positioned.directional(textDirection: Directionality.of(context), child:
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.all(AppSize.s4),
+                      child: Icon(Icons.close,size: AppSize.s20,
+                      color: ColorManager.primary,),
+                    ),
+                  ),top: 0, start: 0,
+                ),
+                Positioned.directional(
+                  textDirection: Directionality.of(context),
+                  start: 0,
+                  end: 0,
+                  top: 0,
+                  bottom: 0,
+
+                  child: Column(
+                    children: [
+
+                      Expanded(flex:1,child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: Text("no_of_points".tr(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorManager.rectangle,
+                                  fontSize: FontSize.s15,
+                                  fontWeight: FontWeight.w500
+                              ),),
+                          ),
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: Text(coinModel!.data!.points!.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorManager.black,
+                                  fontSize: FontSize.s15,
+                                  fontWeight: FontWeight.w500
+                              ),),
+                          ),
+                        ],
+                      )),
+                      Expanded(flex:1,child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: Text("pointsToBeRedeemed".tr(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorManager.rectangle,
+                                  fontSize: FontSize.s15,
+                                  fontWeight: FontWeight.w500
+                              ),),
+                          ),
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: Text(coinModel!.data!.pointsToBeRedeemed!.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorManager.black,
+                                  fontSize: FontSize.s15,
+                                  fontWeight: FontWeight.w500
+                              ),),
+                          ),
+                        ],
+                      )),
+                      Expanded(flex:1,child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: Text("no_of_coins".tr(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorManager.rectangle,
+                                  fontSize: FontSize.s15,
+                                  fontWeight: FontWeight.w500
+                              ),),
+                          ),
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: Text(coinModel!.data!.coins!.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorManager.black,
+                                  fontSize: FontSize.s15,
+                                  fontWeight: FontWeight.w500
+                              ),),
+                          ),
+                        ],
+                      )),
+                      Expanded(flex:1,child: Container(
+                          margin: EdgeInsets.symmetric(vertical: AppSize.s5,horizontal: AppSize.s20),
+                          alignment: AlignmentDirectional.center,
+                          child: addressButton("redeem".tr(),context,id)
+                      ))
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+  TextButton addressButton(String text,BuildContext context,String id){
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+      primary: ColorManager.secondary,
+
+
+      shape:  RoundedRectangleBorder(
+
+        borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
+      ),
+      backgroundColor: ColorManager.secondary,
+    );
+
+    return TextButton(
+      style: flatButtonStyle,
+      onPressed: () async{
+        Navigator.pop(context);
+        final modelHud = Provider.of<ModelHud>(context,listen: false);
+        modelHud.changeIsLoading(true);
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        String id = sharedPreferences.getString("id")??"";
+        Map<String,dynamic> map = {};
+        map['redeem']= "1";
+        PointServices pointServices = PointServices();
+        CoinModel? coinModel = await pointServices.coins(map,id);
+        modelHud.changeIsLoading(false);
+        bool? isOk = coinModel!.ok;
+        if(isOk!){
+          Fluttertoast.showToast(
+              msg: coinModel.status!,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: FontSize.s16
+          );
+          profileModel = null;
+          setState(() {
+
+          });
+          // sdd
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          String id = sharedPreferences.getString("id")??"";
+          Map<String,dynamic> map = {};
+          map['id']= id;
+          PointServices pointServices = PointServices();
+           profileModel = await pointServices.profile(map);
+           setState(() {
+
+           });
+
+        }else{
+          Fluttertoast.showToast(
+              msg: coinModel.status!,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: FontSize.s16
+          );
+        }
+
+        // validate(context);
+
+
+
+      },
+      child:
+      Center(
+        child: Text(text,style: TextStyle(
+            color: ColorManager.white,
+            fontSize: FontSize.s10,
+            fontWeight: FontWeight.bold
+        ),),
+      ),
+    );
+  }
   Future<ProfileModel?> profile() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String id = sharedPreferences.getString("id")??"";
@@ -57,6 +272,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return profileModel;
 
   }
+  Future<void> coins(String redeem) async{
+    final modelHud = Provider.of<ModelHud>(context,listen: false);
+    modelHud.changeIsLoading(true);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String id = sharedPreferences.getString("id")??"";
+    Map<String,dynamic> map = {};
+    map['redeem']= redeem;
+    PointServices pointServices = PointServices();
+    CoinModel? profileModel = await pointServices.coins(map,id);
+    modelHud.changeIsLoading(false);
+    bool? isOk = profileModel!.ok;
+    if(isOk!){
+      successDialog(context: context, id: id, coinModel: profileModel);
+
+    }
+
+  }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -70,6 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         child: Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             elevation: 0,
 
@@ -442,27 +676,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: ColorManager.secondary,
                             borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Stack(
                             children: [
-                              Image.asset(ImageAssets.prizeIcon,color: ColorManager.white,
-                              width: AppSize.s16,height: AppSize.s14,),
-                              SizedBox(width: AppSize.s2,),
-                              Text("coins".tr(),
-                              style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: FontSize.s12,
-                                fontWeight: FontWeight.normal
-                              ),),
-                              SizedBox(width: AppSize.s2,),
-                              Text('(${profileModel!.data!.user![0].coins.toString()})',
-                                style: TextStyle(
-                                    color: ColorManager.white,
-                                    fontSize: FontSize.s12,
-                                    fontWeight: FontWeight.normal
-                                ),),
-                            ],
+                              Positioned.directional(
+                                textDirection: Directionality.of(context),
+                                top: 0,
+                                bottom: 0,
+                                start: 0,
+                                end: 0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(ImageAssets.prizeIcon,color: ColorManager.white,
+                                    width: AppSize.s16,height: AppSize.s14,),
+                                    SizedBox(width: AppSize.s2,),
+                                    Text("coins".tr(),
+                                    style: TextStyle(
+                                      color: ColorManager.white,
+                                      fontSize: FontSize.s12,
+                                      fontWeight: FontWeight.normal
+                                    ),),
+                                    SizedBox(width: AppSize.s2,),
+                                    Text('(${profileModel!.data!.user![0].coins.toString()})',
+                                      style: TextStyle(
+                                          color: ColorManager.white,
+                                          fontSize: FontSize.s12,
+                                          fontWeight: FontWeight.normal
+                                      ),),
+                                  ],
 
+                                ),
+                              ),
+                              Positioned.directional(textDirection: Directionality.of(context),
+                                  start: 0,
+                                  end: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      coins("0");
+
+                                    },
+                                    child: Container(
+                                      width: AppSize.width,
+                                      height: AppSize.height,
+                                      color: Color(0x00000000),
+                                    ),
+                                  ))
+                            ],
                           ),
 
 

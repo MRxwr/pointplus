@@ -94,7 +94,7 @@
   "Joined": "انضم",
   "copyCode": "انسخ الرمز",
   "copied": "تم نسخ",
-  "invite": "ادعُ اللاعبين للانضمام",
+  "invite": "ادعُ اللاعبين للانضمام \n",
 
   "addressDetails": "سيتم تسليم جائزتك إلى العنوان أعلاه",
   "address": "العنوان",
@@ -116,6 +116,8 @@
   "minutesString": "الدقائق",
   "secondsString": "ثواني",
   "gwString": "الموعد النهائي لتوقع ",
+  "gwEnd": "انتهى زمن التوقع",
+  "stayTuned": "ترقبوا الجولة القادمة ",
   "userName": "اسم االمستخدم",
   "teamName": "اسم الفريق",
   "teamNameError": "Please Enter Team Name",
@@ -136,6 +138,14 @@
   "confirmNewPassword": "تأكيد كلمة السر الجديدة",
   "close": "إغلاق",
   "exit": "هل تريد الخروج",
-  "last_week": "الأسبوع الماضي",
-  "current_week": "الأسبوع الحالي"
+  "last_week": "الأسبوع",
+  "current_week": "الأسبوع",
+  "no_of_points": "عدد النقاط: ",
+  "pointsToBeRedeemed": "النقاط المراد استبدالها: ",
+  "no_of_coins": "عدد العملات :",
+  "redeem": "استبدال",
+  "loading_next_round": "تحميل الجولة القادمة",
+  "curr_week": "الكل",
+  "las_week": "المباراة الاخيرة",
+  "no_data": "لا يوجد بيانات"
 }

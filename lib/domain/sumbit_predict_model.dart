@@ -1,12 +1,12 @@
-class PredictionModel {
+class SumbitPredictModel {
   bool? ok;
   String? error;
   String? status;
   Data? data;
 
-  PredictionModel({this.ok, this.error, this.status, this.data});
+  SumbitPredictModel({this.ok, this.error, this.status, this.data});
 
-  PredictionModel.fromJson(Map<String, dynamic> json) {
+  SumbitPredictModel.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
     error = json['error'];
     status = json['status'];
@@ -27,12 +27,10 @@ class PredictionModel {
 
 class Data {
   List<Banners>? banners;
-  String? countdown;
-  String? startTime;
-  List<Teams>? teams;
+  List<Match>? match;
   User? user;
 
-  Data({this.banners, this.countdown, this.startTime, this.teams, this.user});
+  Data({this.banners, this.match, this.user});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['banners'] != null) {
@@ -41,12 +39,10 @@ class Data {
         banners!.add(new Banners.fromJson(v));
       });
     }
-    countdown = json['countdown'];
-    startTime = json['startTime'];
-    if (json['teams'] != null) {
-      teams = <Teams>[];
-      json['teams'].forEach((v) {
-        teams!.add(new Teams.fromJson(v));
+    if (json['match'] != null) {
+      match = <Match>[];
+      json['match'].forEach((v) {
+        match!.add(new Match.fromJson(v));
       });
     }
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
@@ -57,10 +53,8 @@ class Data {
     if (this.banners != null) {
       data['banners'] = this.banners!.map((v) => v.toJson()).toList();
     }
-    data['countdown'] = this.countdown;
-    data['startTime'] = this.startTime;
-    if (this.teams != null) {
-      data['teams'] = this.teams!.map((v) => v.toJson()).toList();
+    if (this.match != null) {
+      data['match'] = this.match!.map((v) => v.toJson()).toList();
     }
     if (this.user != null) {
       data['user'] = this.user!.toJson();
@@ -101,63 +95,18 @@ class Banners {
   }
 }
 
-class Teams {
-  String? matchId;
-  String? type;
-  String? enTitleTeam1;
-  String? arTitleTeam1;
-  String? logoTeam1;
-  String? enTitleTeam2;
-  String? arTitleTeam2;
-  String? logoTeam2;
-  String? leagueAr;
-  String? leagueEn;
-  String? goals1;
-  String? goals2;
+class Match {
+  String? msg;
 
-  Teams(
-      {this.matchId,
-        this.type,
-        this.enTitleTeam1,
-        this.arTitleTeam1,
-        this.logoTeam1,
-        this.enTitleTeam2,
-        this.arTitleTeam2,
-        this.logoTeam2,
-        this.leagueAr,
-        this.leagueEn,
-        this.goals1,
-        this.goals2});
+  Match({this.msg});
 
-  Teams.fromJson(Map<String, dynamic> json) {
-    matchId = json['matchId'];
-    type = json['type'];
-    enTitleTeam1 = json['enTitleTeam1'];
-    arTitleTeam1 = json['arTitleTeam1'];
-    logoTeam1 = json['logoTeam1'];
-    enTitleTeam2 = json['enTitleTeam2'];
-    arTitleTeam2 = json['arTitleTeam2'];
-    logoTeam2 = json['logoTeam2'];
-    leagueAr = json['leagueAr'];
-    leagueEn = json['leagueEn'];
-    goals1 = json['goals1'];
-    goals2 = json['goals2'];
+  Match.fromJson(Map<String, dynamic> json) {
+    msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['matchId'] = this.matchId;
-    data['type'] = this.type;
-    data['enTitleTeam1'] = this.enTitleTeam1;
-    data['arTitleTeam1'] = this.arTitleTeam1;
-    data['logoTeam1'] = this.logoTeam1;
-    data['enTitleTeam2'] = this.enTitleTeam2;
-    data['arTitleTeam2'] = this.arTitleTeam2;
-    data['logoTeam2'] = this.logoTeam2;
-    data['leagueAr'] = this.leagueAr;
-    data['leagueEn'] = this.leagueEn;
-    data['goals1'] = this.goals1;
-    data['goals2'] = this.goals2;
+    data['msg'] = this.msg;
     return data;
   }
 }

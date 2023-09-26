@@ -15,7 +15,7 @@ ThemeData getApplicationTheme() {
       primaryColorDark: ColorManager.darkPrimary,
       disabledColor: ColorManager
           .grey1, // will be used incase of disabled button for example
-      accentColor: ColorManager.grey,
+
     // card view theme
       cardTheme: CardTheme(
       color: ColorManager.white,

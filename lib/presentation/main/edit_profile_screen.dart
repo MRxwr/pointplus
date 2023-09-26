@@ -1,10 +1,10 @@
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:country_calling_code_picker/country.dart';
 import 'package:country_calling_code_picker/functions.dart';
-import 'package:date_time_picker/date_time_picker.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -461,23 +461,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     DateTime dt = DateTime.parse(birthDay);
     DateTime now = DateTime.now().subtract(const Duration(days: 356));
     DateTime start = now.subtract(const Duration(days: 356*100));
-
-    DatePicker.showDatePicker(context,
-
-        showTitleActions: true,
-        minTime: start,
-        maxTime: now, onChanged: (date) {
-            String formattedDate =
-            DateFormat('yyyy-MM-dd','en').format(date);
-            setState(() {
-                  birthDay =
-                      formattedDate; //set output date to TextField value.
-                });
-
-          print('change $date');
-        }, onConfirm: (date) {
-          print('confirm $date');
-        }, currentTime: dt, locale: LocaleType.en);
+    final DateTime? pickedDate = await  showDatePicker(initialEntryMode:DatePickerEntryMode.calendarOnly,
+        context: context, initialDate: dt, firstDate: start, lastDate: now);
+    if (pickedDate != null && pickedDate != now){
+      String formattedDate =
+      DateFormat('yyyy-MM-dd','en').format(pickedDate);
+      setState(() {
+        birthDay =
+            formattedDate; //set output date to TextField value.
+      });
+    }
+    // Picker.DatePicker.showDatePicker(context,
+    //
+    //     showTitleActions: true,
+    //     minTime: start,
+    //     maxTime: now, onChanged: (date) {
+    //         String formattedDate =
+    //         DateFormat('yyyy-MM-dd','en').format(date);
+    //         setState(() {
+    //               birthDay =
+    //                   formattedDate; //set output date to TextField value.
+    //             });
+    //
+    //       print('change $date');
+    //     }, onConfirm: (date) {
+    //       print('confirm $date');
+    //     }, currentTime: dt, locale: Picker.LocaleType.en);
     // DateTime? pickedDate = await showDatePicker(
     //     context: context,
     //     initialDate:dt,

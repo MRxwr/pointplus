@@ -119,7 +119,8 @@ backgroundColor: ColorManager.backGroundColor,
                   builder: (context, cart, child){
 
                     String notificationCount = cart.notification;
-                    if((notificationCount == "")| (notificationCount == "0")){
+                    if(notificationCount == ""){
+
                       return  GestureDetector(
                         onTap: (){
                           Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
@@ -131,7 +132,23 @@ backgroundColor: ColorManager.backGroundColor,
                           child: Image.asset(ImageAssets.notificationSilent,height: AppSize.s40, width: AppSize.s40,fit: BoxFit.fitHeight,),
                         ),
                       );
-                    }else{
+                    }else if(notificationCount == "0"){
+
+                      return  GestureDetector(
+                        onTap: (){
+                          Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
+                            return  const NotificationScreen();
+                          }));
+                        },
+                        child: Padding(
+                          padding:  EdgeInsets.all(AppSize.s8),
+                          child: Image.asset(ImageAssets.notificationSilent,height: AppSize.s40, width: AppSize.s40,fit: BoxFit.fitHeight,),
+                        ),
+                      );
+
+                    }
+
+                    else{
                       return  GestureDetector(
                         onTap: (){
                           Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){

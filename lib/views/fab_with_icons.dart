@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../presentation/resources/color_manager.dart';
+
 
 class FabWithIcons extends StatefulWidget {
   FabWithIcons({required this.icons, required this.onIconTapped});
@@ -36,7 +38,7 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
 
   Widget _buildChild(int index) {
     Color backgroundColor = Theme.of(context).cardColor;
-    Color foregroundColor = Theme.of(context).accentColor;
+    Color foregroundColor = ColorManager.grey;
     return Container(
       height: 70.0,
       width: 56.0,

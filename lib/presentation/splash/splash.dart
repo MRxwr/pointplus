@@ -92,7 +92,7 @@ class _SplashViewState extends State<SplashView> {
     }else{
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginView()),
+        MaterialPageRoute(builder: (context) => const MainView()),
       );
     }
 

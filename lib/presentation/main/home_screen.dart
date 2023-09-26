@@ -68,7 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
     map['id']= id;
 
   profileModel = await pointServices.profile(map);
+  if(homeModel!.data!.rounds!.isNotEmpty){
     sharedPreferences.setString('gw',"GW "+ homeModel!.data!.rounds![0].round.toString());
+  }
+
     Provider.of<NotificationProvider>(context,listen: false).changeNotification(homeModel!.data!.user!.notifications.toString());
     points = homeModel?.data!.user!.points ;
     rank = homeModel?.data!.user!.rank ;
@@ -801,7 +804,7 @@ children: [
             matches!.isEmpty?
             Container(
               alignment: AlignmentDirectional.center,
-              child: Text("noData".tr(),style: TextStyle(
+              child: Text("loading_next_round".tr(),style: TextStyle(
                   color: ColorManager.white,
                   fontSize: FontSize.s18,
                   fontWeight: FontWeight.normal
@@ -909,7 +912,7 @@ children: [
 
                                   ),
                                 ),
-                                SizedBox(height: AppSize.s4,),
+                                SizedBox(height: AppSize.s2,),
                                 Text(mLanguage == "en"?matches![index].team1![0].enTitle.toString():
                                 matches![index].team1![0].arTitle.toString(),
                                   style:TextStyle(
@@ -1009,7 +1012,7 @@ children: [
 
                                   ),
                                 ),
-                                SizedBox(height: AppSize.s4,),
+                                SizedBox(height: AppSize.s2,),
                                 Text(mLanguage == "en"?
                                 matches![index].team2![0].enTitle.toString():
                                 matches![index].team2![0].arTitle.toString(),

@@ -3,8 +3,10 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:point/domain/prediction_model.dart';
+import 'package:point/domain/sumbit_predict_model.dart';
 import 'package:point/presentation/resources/font_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +51,11 @@ class _PredictScreenState extends State<PredictScreen> {
       teams = predictionModel!.data!.teams!;
       x2 = predictionModel!.data!.user!.x2.toString();
       x3 = predictionModel!.data!.user!.x3.toString();
-      remaningTime = getRemainingTime(predictionModel!.data!.countdown.toString(),predictionModel!.data!.starttime.toString());
+      if(predictionModel!.data!.countdown.toString()!= "") {
+        remaningTime = getRemainingTime(
+            predictionModel!.data!.countdown.toString(),
+            predictionModel!.data!.startTime.toString());
+      }
       setState(() {
 
       });
@@ -234,408 +240,476 @@ class _PredictScreenState extends State<PredictScreen> {
                 ),
               ),
               Container(
-                height: AppSize.s70,
-                margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorManager.blueBlack,
-                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
-                  ),
+                child:predictionModel!.data!.countdown.toString() == ""?
+                Container():Container(
+                  height: AppSize.s70,
+                  margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: AppSize.s20,vertical: AppSize.s5),
-                    child: Row(
-                      children: [
-                        Expanded(flex:4,child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                           Expanded(
-                             flex: 1,
-                               child: Text(
-                                   gw+" "+ "gwString".tr() ,
-                                 style: TextStyle(
-                                   color: ColorManager.white,
-                                   fontSize: FontSize.s10,
-                                   fontWeight: FontWeight.normal
-                                 ),
-
-                               )),
-                              Expanded(flex:2,child:
-
-
-                              Countdown(
-                                  seconds: getRemainingTime(predictionModel!.data!.countdown.toString(),predictionModel!.data!.starttime.toString()),
-                                build: (BuildContext context, double time) {
-                                    print("time ---> ${time}");
-
-                                 return   Row(
-                                      children: [
-                                        Expanded(flex:1,child: Container(
-                                          alignment: AlignmentDirectional.center,
-                                          child: Text(time.toInt() <= 0 ?"00":
-                                            formatDuration(time.toInt())[0],
-                                            style: TextStyle(
-                                                color: ColorManager.secondary,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: FontSize.s16
-                                            ),
-                                          ),
-                                        )),
-                                        Text(':',
-                                          style: TextStyle(
-                                              color: ColorManager.secondary,
-                                              fontSize: FontSize.s16,
-                                              fontWeight: FontWeight.w500
-
-                                          ),),
-                                        Expanded(flex:1,child: Container(
-                                          alignment: AlignmentDirectional.center,
-                                          child: Text(remaningTime  <=0 ?"00":
-                                            formatDuration(time.toInt())[1],
-                                            style: TextStyle(
-                                                color: ColorManager.secondary,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: FontSize.s16
-                                            ),
-                                          ),
-                                        )),
-                                        Text(':',
-                                          style: TextStyle(
-                                              color: ColorManager.secondary,
-                                              fontSize: FontSize.s16,
-                                              fontWeight: FontWeight.w500
-
-                                          ),),
-                                        Expanded(flex:1,child: Container(
-                                          alignment: AlignmentDirectional.center,
-                                          child: Text(time.toInt()  <= 0 ?"00":
-                                            formatDuration(time.toInt())[2],
-                                            style: TextStyle(
-                                                color: ColorManager.secondary,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: FontSize.s16
-                                            ),
-                                          ),
-                                        )),
-                                        Text(':',
-                                          style: TextStyle(
-                                              color: ColorManager.secondary,
-                                              fontSize: FontSize.s16,
-                                              fontWeight: FontWeight.w500
-
-                                          ),),
-                                        Expanded(flex:1,child: Container(
-                                          alignment: AlignmentDirectional.center,
-                                          child: Text(time.toInt() <= 0 ?"00":
-                                            formatDuration(time.toInt())[3],
-                                            style: TextStyle(
-                                                color: ColorManager.secondary,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: FontSize.s16
-                                            ),
-                                          ),
-                                        )),
-
-                                      ],
-
-                                    );},
-                                interval: const Duration(seconds: 1),
-                                onFinished: () {
-                                    remaningTime = 0;
-                                    setState(() {
-
-                                    });
-                                  print('Timer is done!');
-                                },
-                              )),
-                              Expanded(flex:1,child:  Container(
-                                child: Row(
-                                  children: [
-                                    Expanded(flex:1,child: Container(
-                                      alignment: AlignmentDirectional.center,
-                                      child: Text(
-                                        "daysString".tr(),
-                                        style: TextStyle(
-                                            color: ColorManager.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: FontSize.s8
-                                        ),
-                                      ),
-                                    )),
-
-                                    Expanded(flex:1,child: Container(
-                                      alignment: AlignmentDirectional.center,
-                                      child: Text(
-                                        "hoursString".tr(),
-                                        style: TextStyle(
-                                            color: ColorManager.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: FontSize.s8
-                                        ),
-                                      ),
-                                    )),
-
-                                    Expanded(flex:1,child: Container(
-                                      alignment: AlignmentDirectional.center,
-                                      child: Text(
-                                        "minutesString".tr(),
-                                        style: TextStyle(
-                                            color: ColorManager.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: FontSize.s8
-                                        ),
-                                      ),
-                                    )),
-
-                                    Expanded(flex:1,child: Container(
-                                      alignment: AlignmentDirectional.center,
-                                      child: Text(
-                                        "secondsString".tr(),
-                                        style: TextStyle(
-                                            color: ColorManager.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: FontSize.s8
-                                        ),
-                                      ),
-                                    )),
-
-                                  ],
-
-                                ),
-                              ))
-
-                            ],
-                          ),
-                        )),
-
-                        Expanded(flex:1,child: Container(
-                          child: Image.asset(ImageAssets.clockLogo),
-                        )),
-                      ],
+                    decoration: BoxDecoration(
+                      color: ColorManager.blueBlack,
+                      borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
                     ),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: AppSize.s20,vertical: AppSize.s5),
+                      child: Row(
+                        children: [
+                          Expanded(flex:4,child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                             Expanded(
+                               flex: 1,
+                                 child:
+                                 Text(
+                                     gw+" "+ "gwString".tr() ,
+                                   style: TextStyle(
+                                     color: ColorManager.white,
+                                     fontSize: FontSize.s10,
+                                     fontWeight: FontWeight.normal
+                                   ),
 
+                                 )),
+                                Expanded(flex:2,child:predictionModel!.data!.countdown.toString().isEmpty?
+                                    Container():
+
+
+
+                                Countdown(
+                                    seconds: getRemainingTime(predictionModel!.data!.countdown.toString(),predictionModel!.data!.startTime.toString()),
+                                  build: (BuildContext context, double time) {
+                                      print("time ---> ${time}");
+
+                                   return   Row(
+                                        children: [
+                                          Expanded(flex:1,child: Container(
+                                            alignment: AlignmentDirectional.center,
+                                            child: Text(time.toInt() <= 0 ?"00":
+                                              formatDuration(time.toInt())[0],
+                                              style: TextStyle(
+                                                  color: ColorManager.secondary,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: FontSize.s16
+                                              ),
+                                            ),
+                                          )),
+                                          Text(':',
+                                            style: TextStyle(
+                                                color: ColorManager.secondary,
+                                                fontSize: FontSize.s16,
+                                                fontWeight: FontWeight.w500
+
+                                            ),),
+                                          Expanded(flex:1,child: Container(
+                                            alignment: AlignmentDirectional.center,
+                                            child: Text(remaningTime  <=0 ?"00":
+                                              formatDuration(time.toInt())[1],
+                                              style: TextStyle(
+                                                  color: ColorManager.secondary,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: FontSize.s16
+                                              ),
+                                            ),
+                                          )),
+                                          Text(':',
+                                            style: TextStyle(
+                                                color: ColorManager.secondary,
+                                                fontSize: FontSize.s16,
+                                                fontWeight: FontWeight.w500
+
+                                            ),),
+                                          Expanded(flex:1,child: Container(
+                                            alignment: AlignmentDirectional.center,
+                                            child: Text(time.toInt()  <= 0 ?"00":
+                                              formatDuration(time.toInt())[2],
+                                              style: TextStyle(
+                                                  color: ColorManager.secondary,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: FontSize.s16
+                                              ),
+                                            ),
+                                          )),
+                                          Text(':',
+                                            style: TextStyle(
+                                                color: ColorManager.secondary,
+                                                fontSize: FontSize.s16,
+                                                fontWeight: FontWeight.w500
+
+                                            ),),
+                                          Expanded(flex:1,child: Container(
+                                            alignment: AlignmentDirectional.center,
+                                            child: Text(time.toInt() <= 0 ?"00":
+                                              formatDuration(time.toInt())[3],
+                                              style: TextStyle(
+                                                  color: ColorManager.secondary,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: FontSize.s16
+                                              ),
+                                            ),
+                                          )),
+
+                                        ],
+
+                                      );},
+                                  interval: const Duration(seconds: 1),
+                                  onFinished: () {
+                                      remaningTime = 0;
+                                      setState(() {
+
+                                      });
+                                    print('Timer is done!');
+                                  },
+                                )),
+                                Expanded(flex:1,child:  Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(flex:1,child: Container(
+                                        alignment: AlignmentDirectional.center,
+                                        child: Text(
+                                          "daysString".tr(),
+                                          style: TextStyle(
+                                              color: ColorManager.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: FontSize.s8
+                                          ),
+                                        ),
+                                      )),
+
+                                      Expanded(flex:1,child: Container(
+                                        alignment: AlignmentDirectional.center,
+                                        child: Text(
+                                          "hoursString".tr(),
+                                          style: TextStyle(
+                                              color: ColorManager.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: FontSize.s8
+                                          ),
+                                        ),
+                                      )),
+
+                                      Expanded(flex:1,child: Container(
+                                        alignment: AlignmentDirectional.center,
+                                        child: Text(
+                                          "minutesString".tr(),
+                                          style: TextStyle(
+                                              color: ColorManager.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: FontSize.s8
+                                          ),
+                                        ),
+                                      )),
+
+                                      Expanded(flex:1,child: Container(
+                                        alignment: AlignmentDirectional.center,
+                                        child: Text(
+                                          "secondsString".tr(),
+                                          style: TextStyle(
+                                              color: ColorManager.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: FontSize.s8
+                                          ),
+                                        ),
+                                      )),
+
+                                    ],
+
+                                  ),
+                                ))
+
+                              ],
+                            ),
+                          )),
+
+                          Expanded(flex:1,child: Container(
+                            child: Image.asset(ImageAssets.clockLogo),
+                          )),
+                        ],
+                      ),
+
+                    ),
                   ),
                 ),
               ),
-              Container(height: AppSize.s20,),
+
               Container(
-                height: AppSize.s40,
-                margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                child:remaningTime > 0?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                child:remaningTime>0? Column(
                   children: [
+                    Container(height: AppSize.s20,),
                     Container(
-                      child:  predictionModel!.data!.user!.x2.toString() == "0"?
-                          x2=="0"?
+                      height: AppSize.s40,
+                      margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
+                      child:
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            child:  predictionModel!.data!.user!.x2.toString() == "0"?
+                                x2=="0"?
 
 
-                      GestureDetector(
-                        onTap: (){
+                            GestureDetector(
+                              onTap: (){
 
-                          x2 = "1";
-                          setState(() {
+                                x2 = "1";
+                                setState(() {
 
-                          });
-                        },
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          width: AppSize.s100,
-                          height: AppSize.s40,
-                          decoration: BoxDecoration(
-                            color: ColorManager.secondary,
-                            borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                          ),
-                          child: Text(
-                            "pointTwo".tr(),
-                            style: TextStyle(
-                              color: ColorManager.white,
-                              fontSize: FontSize.s10,
-                              fontWeight: FontWeight.normal
-
-                            ),
-
-                          ),
-                        ),
-                      ):
-                          GestureDetector(
-                            onTap: (){
-
-                              x2 = "0";
-                              setState(() {
-
-                              });
-                            },
-                            child: Container(
-                              alignment: AlignmentDirectional.center,
-                              width: AppSize.s100,
-                              height: AppSize.s40,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF07778E),
+                                });
+                              },
+                              child: Container(
+                                alignment: AlignmentDirectional.center,
+                                width: AppSize.s100,
+                                height: AppSize.s40,
+                                decoration: BoxDecoration(
+                                  color: ColorManager.secondary,
                                   borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                              ),
-                              child: Text(
-                                "pointTwo".tr(),
-                                style: TextStyle(
+                                ),
+                                child: Text(
+                                  "pointTwo".tr(),
+                                  style: TextStyle(
                                     color: ColorManager.white,
                                     fontSize: FontSize.s10,
                                     fontWeight: FontWeight.normal
 
-                                ),
+                                  ),
 
+                                ),
+                              ),
+                            ):
+                                GestureDetector(
+                                  onTap: (){
+
+                                    x2 = "0";
+                                    setState(() {
+
+                                    });
+                                  },
+                                  child: Container(
+                                    alignment: AlignmentDirectional.center,
+                                    width: AppSize.s100,
+                                    height: AppSize.s40,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF07778E),
+                                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
+                                    ),
+                                    child: Text(
+                                      "pointTwo".tr(),
+                                      style: TextStyle(
+                                          color: ColorManager.white,
+                                          fontSize: FontSize.s10,
+                                          fontWeight: FontWeight.normal
+
+                                      ),
+
+                                    ),
+                                  ),
+                                ):
+                            GestureDetector(
+
+                              child: Container(
+                                alignment: AlignmentDirectional.center,
+                                width: AppSize.s100,
+                                height: AppSize.s40,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF07778E),
+                                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
+                                ),
+                                child: Text(
+                                  "pointTwo".tr(),
+                                  style: TextStyle(
+                                      color: ColorManager.white,
+                                      fontSize: FontSize.s10,
+                                      fontWeight: FontWeight.normal
+
+                                  ),
+
+                                ),
+                              ),
+                            )
+                          ),
+                          Container(
+                            child: predictionModel!.data!.user!.x3.toString() == "0"?
+                                x3 == "0"?
+
+                            GestureDetector(
+                              onTap: (){
+                                x3 = "1";
+                                setState(() {
+
+                                });
+                              },
+                              child: Container(
+                                alignment: AlignmentDirectional.center,
+                                width: AppSize.s100,
+                                height: AppSize.s40,
+                                decoration: BoxDecoration(
+                                    color: ColorManager.secondary,
+                                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
+                                ),
+                                child: Text(
+                                  "pointThree".tr(),
+                                  style: TextStyle(
+                                      color: ColorManager.white,
+                                      fontSize: FontSize.s10,
+                                      fontWeight: FontWeight.normal
+
+                                  ),
+
+                                ),
+                              ),
+                            ):
+                            GestureDetector(
+                              onTap: (){
+                                x3 = "0";
+                                setState(() {
+
+                                });
+                              },
+                              child: Container(
+                                alignment: AlignmentDirectional.center,
+                                width: AppSize.s100,
+                                height: AppSize.s40,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF07778E),
+                                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
+                                ),
+                                child: Text(
+                                  "pointThree".tr(),
+                                  style: TextStyle(
+                                      color: ColorManager.white,
+                                      fontSize: FontSize.s10,
+                                      fontWeight: FontWeight.normal
+
+                                  ),
+
+                                ),
+                              ),
+                            ):
+                            GestureDetector(
+
+                              child: Container(
+                                alignment: AlignmentDirectional.center,
+                                width: AppSize.s100,
+                                height: AppSize.s40,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF07778E),
+                                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
+                                ),
+                                child: Text(
+                                  "pointThree".tr(),
+                                  style: TextStyle(
+                                      color: ColorManager.white,
+                                      fontSize: FontSize.s10,
+                                      fontWeight: FontWeight.normal
+
+                                  ),
+
+                                ),
                               ),
                             ),
-                          ):
-                      GestureDetector(
+                          )
 
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          width: AppSize.s100,
-                          height: AppSize.s40,
-                          decoration: BoxDecoration(
-                              color: Color(0xFF07778E),
-                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                          ),
-                          child: Text(
-                            "pointTwo".tr(),
-                            style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: FontSize.s10,
-                                fontWeight: FontWeight.normal
-
-                            ),
-
-                          ),
-                        ),
+                        ],
                       )
                     ),
+                    Container(height: AppSize.s20,),
                     Container(
-                      child: predictionModel!.data!.user!.x3.toString() == "0"?
-                          x3 == "0"?
+                      height: AppSize.s40,
+                      margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
+                      child:
+                      Container(
 
-                      GestureDetector(
-                        onTap: (){
-                          x3 = "1";
-                          setState(() {
-
-                          });
-                        },
+                        decoration: BoxDecoration(
+                            color: ColorManager.blueBlack,
+                            borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
+                        ),
                         child: Container(
-                          alignment: AlignmentDirectional.center,
-                          width: AppSize.s100,
-                          height: AppSize.s40,
-                          decoration: BoxDecoration(
-                              color: ColorManager.secondary,
-                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                          ),
-                          child: Text(
-                            "pointThree".tr(),
-                            style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: FontSize.s10,
-                                fontWeight: FontWeight.normal
+                          margin: EdgeInsets.all(AppSize.s5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
 
-                            ),
+                            children: [
+                              Expanded(flex:1,child: Text(
+                                "pointTwoDescription".tr(),
+                                style: TextStyle(
+                                  color: ColorManager.white,
+                                  fontSize: FontSize.s9,
+                                  fontWeight: FontWeight.normal
+                                ),
 
+                              )),
+                              Expanded(flex:1,child: Text(
+                                "pointThreeDescription".tr(),
+                                style: TextStyle(
+                                    color: ColorManager.white,
+                                    fontSize: FontSize.s9,
+                                    fontWeight: FontWeight.normal
+                                ),
+
+                              ))
+                            ],
                           ),
                         ),
-                      ):
-                      GestureDetector(
-                        onTap: (){
-                          x3 = "0";
-                          setState(() {
 
-                          });
-                        },
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          width: AppSize.s100,
-                          height: AppSize.s40,
-                          decoration: BoxDecoration(
-                              color: Color(0xFF07778E),
-                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                          ),
-                          child: Text(
-                            "pointThree".tr(),
-                            style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: FontSize.s10,
-                                fontWeight: FontWeight.normal
-
-                            ),
-
-                          ),
-                        ),
-                      ):
-                      GestureDetector(
-
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          width: AppSize.s100,
-                          height: AppSize.s40,
-                          decoration: BoxDecoration(
-                              color: Color(0xFF07778E),
-                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
-                          ),
-                          child: Text(
-                            "pointThree".tr(),
-                            style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: FontSize.s10,
-                                fontWeight: FontWeight.normal
-
-                            ),
-
-                          ),
-                        ),
-                      ),
-                    )
-
+                      )
+                    ),
+                    Container(height: AppSize.s20,),
                   ],
-                ):Container(),
-              ),
-              Container(height: AppSize.s20,),
-              Container(
-                height: AppSize.s40,
-                margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                child:remaningTime > 0?
-                Container(
-
+                ):Container(
+                  height: AppSize.s90,
+                  margin: EdgeInsets.symmetric(horizontal: AppSize.s20,vertical: AppSize.s20),
                   decoration: BoxDecoration(
                       color: ColorManager.blueBlack,
-                      borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
+                      borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
+                    border: Border.all(color: ColorManager.secondary,width: AppSize.s1)
                   ),
-                  child: Container(
-                    margin: EdgeInsets.all(AppSize.s5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.all(AppSize.s8),
+                        child: SvgPicture.asset('assets/images/no_predict.svg',width: AppSize.s30,height: AppSize.s30,),
+                      ),
+                      Text(
 
-                      children: [
-                        Expanded(flex:1,child: Text(
-                          "pointTwoDescription".tr(),
-                          style: TextStyle(
+                        gw+" "+ "gwEnd".tr() ,
+                        style: TextStyle(
                             color: ColorManager.white,
-                            fontSize: FontSize.s9,
+                            fontSize: FontSize.s12,
                             fontWeight: FontWeight.normal
-                          ),
+                        ),
+                        textAlign: TextAlign.center,
 
-                        )),
-                        Expanded(flex:1,child: Text(
-                          "pointThreeDescription".tr(),
-                          style: TextStyle(
-                              color: ColorManager.white,
-                              fontSize: FontSize.s9,
-                              fontWeight: FontWeight.normal
+                      ),
+                      SizedBox(height: AppSize.s4,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                           "stayTuned".tr() ,
+                            style: TextStyle(
+                                color: ColorManager.white,
+                                fontSize: FontSize.s12,
+                                fontWeight: FontWeight.normal
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-
-                        ))
-                      ],
-                    ),
+                          Text(
+                            " ... ! " ,
+                            style: TextStyle(
+                                color: ColorManager.secondary,
+                                fontSize: FontSize.s12,
+                                fontWeight: FontWeight.normal
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      )
+                      
+                    ],
                   ),
 
-                ):Container(),
+                )
               ),
-              Container(height: AppSize.s20,),
+
               Container(
                 margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                 child: ListView.separated(
@@ -644,7 +718,7 @@ class _PredictScreenState extends State<PredictScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context,index){
                   return Container(
-                    height: AppSize.s200,
+                    height: AppSize.s220,
                     decoration: BoxDecoration(
                       color: ColorManager.blueBlack,
                       borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
@@ -662,7 +736,7 @@ class _PredictScreenState extends State<PredictScreen> {
                             margin: EdgeInsets.all(AppSize.s20),
                             child: Column(
                               children: [
-                                Expanded(flex:1,child: Container(
+                                Expanded(flex:2,child: Container(
 
                                   child: Row(
 
@@ -685,8 +759,9 @@ class _PredictScreenState extends State<PredictScreen> {
                                                 },
                                                 child: Container(
                                                   child: Container(
+                                                    alignment: AlignmentDirectional.center,
                                                     margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s25,
+                                                    width: AppSize.s50,
                                                     decoration: BoxDecoration(
                                                         color: ColorManager.secondary,
                                                         borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
@@ -695,7 +770,7 @@ class _PredictScreenState extends State<PredictScreen> {
                                                     Icon(
                                                       Icons.add,
                                                       color: ColorManager.white,
-                                                      size: AppSize.s10,
+                                                      size: AppSize.s20,
                                                     ),
                                                   ),
                                                 ),
@@ -715,8 +790,9 @@ class _PredictScreenState extends State<PredictScreen> {
                                                 },
                                                 child: Container(
                                                   child: Container(
+                                                    alignment: AlignmentDirectional.center,
                                                     margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s25,
+                                                    width: AppSize.s50,
                                                     decoration: BoxDecoration(
                                                         color: ColorManager.secondary,
                                                         borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
@@ -724,7 +800,7 @@ class _PredictScreenState extends State<PredictScreen> {
                                                     child: Icon(
                                                       Icons.remove,
                                                       color: ColorManager.white,
-                                                      size: AppSize.s10,
+                                                      size: AppSize.s30,
                                                     ),
                                                   ),
                                                 ),
@@ -786,8 +862,9 @@ class _PredictScreenState extends State<PredictScreen> {
                                                 },
                                                 child: Container(
                                                   child: Container(
+                                                    alignment: AlignmentDirectional.center,
                                                     margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s25,
+                                                    width: AppSize.s50,
                                                     decoration: BoxDecoration(
                                                         color: ColorManager.secondary,
                                                         borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
@@ -795,7 +872,7 @@ class _PredictScreenState extends State<PredictScreen> {
                                                     child: Icon(
                                                       Icons.add,
                                                       color: ColorManager.white,
-                                                      size: AppSize.s10,
+                                                      size: AppSize.s20,
                                                     ),
                                                   ),
                                                 ),
@@ -815,8 +892,9 @@ class _PredictScreenState extends State<PredictScreen> {
                                                 },
                                                 child: Container(
                                                   child: Container(
+                                                    alignment: AlignmentDirectional.center,
                                                     margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s25,
+                                                    width: AppSize.s50,
                                                     decoration: BoxDecoration(
                                                         color: ColorManager.secondary,
                                                         borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
@@ -824,7 +902,7 @@ class _PredictScreenState extends State<PredictScreen> {
                                                     child: Icon(
                                                       Icons.remove,
                                                       color: ColorManager.white,
-                                                      size: AppSize.s10,
+                                                      size: AppSize.s30,
                                                     ),
                                                   ),
                                                 ),
@@ -918,7 +996,19 @@ class _PredictScreenState extends State<PredictScreen> {
                                                   ))
                                                 ],
                                               )),
-                                              SizedBox(width: AppSize.s20,),
+                                              Container(
+                                                alignment: AlignmentDirectional.topCenter,
+                                                child: Text(
+                                                  mLanguage == "en"?
+                                                  teams[index].leagueEn.toString():
+                                                  teams[index].leagueAr.toString(),
+                                                  style: TextStyle(
+                                                      color: ColorManager.black,
+                                                      fontSize: FontSize.s11,
+                                                      fontWeight: FontWeight.w500
+                                                  ),
+                                                ),
+                                              ),
                                               Expanded(flex:1,child: Column(
                                                 children: [
                                                   Expanded(flex:4,child: Container(
@@ -1002,7 +1092,8 @@ class _PredictScreenState extends State<PredictScreen> {
                                             width: AppSize.s14,
 
                                           ):Container(),
-                                        ))
+                                        )),
+
                                   ],
                                 )),
                               ],
@@ -1024,7 +1115,13 @@ class _PredictScreenState extends State<PredictScreen> {
               Container(
                   alignment: AlignmentDirectional.center,
                   margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
-                  child: remaningTime > 0?loginButton("sumbitPrediction".tr(),context):Container()
+                  child: remaningTime > 0?
+
+
+                  loginButton("sumbitPrediction".tr(),context):Container()
+
+
+
               ),
 
             ],
@@ -1122,11 +1219,24 @@ class _PredictScreenState extends State<PredictScreen> {
     modelHud.changeIsLoading(true);
     PointServices pointServices = PointServices();
 
+    if(predictionModel!.data!.user!.x2.toString()!= "0"){
+      x2 = "0";
+    }
+    if(predictionModel!.data!.user!.x3.toString()!="0"){
+      x3 = "0";
+    }
+
     Map<String, dynamic>   response = await pointServices.sumbitPrediction(teams, id,x2,x3);
     print('response ---> ${response}');
     modelHud.changeIsLoading(false);
     bool  isOk  = response['ok'];
     if(isOk){
+      SumbitPredictModel sumbitPredictModel = SumbitPredictModel.fromJson(response);
+      predictionModel!.data!.user!.x3 = sumbitPredictModel.data!.user!.x3;
+      predictionModel!.data!.user!.x2 = sumbitPredictModel.data!.user!.x2;
+      setState(() {
+
+      });
       successDialog(context: context);
     }
 

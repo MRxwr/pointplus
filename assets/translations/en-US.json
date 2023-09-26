@@ -139,6 +139,17 @@
  "confirmNewPassword": "Confirm New Password",
  "close": "Close",
  "exit": "Are You Want To Exit",
- "last_week": "Last Week",
- "current_week": "Current Week"
+ "last_week": "Week",
+ "current_week": "Week",
+ "no_of_points": "No Of Points : ",
+ "pointsToBeRedeemed": "points To Be Redeemed : ",
+ "no_of_coins": "No Of Coins :",
+ "redeem": "Redeem",
+ "gwEnd": "Prediction Time Ended",
+ "stayTuned": "Stay tuned for the next round ",
+ "loading_next_round": "Loading Next Round",
+ "curr_week": "OverAll",
+ "las_week": "Last GW",
+ "no_data": "No Data Available"
+
 }

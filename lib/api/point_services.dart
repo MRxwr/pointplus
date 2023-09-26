@@ -5,6 +5,7 @@ import 'package:point/app/constant.dart';
 import 'package:point/domain/add_address_model.dart';
 import 'package:point/domain/add_order_model.dart';
 import 'package:point/domain/change_password_model.dart';
+import 'package:point/domain/coin_model.dart';
 import 'package:point/domain/edit_profile_model.dart';
 import 'package:point/domain/home_model.dart';
 import 'package:point/domain/league_details_model.dart';
@@ -23,7 +24,8 @@ import '../domain/leagues_details_model.dart';
 import '../domain/prediction_model.dart';
 
 class PointServices{
-  static String TAG_BASE_URL= "https://createkwservers.com/points/request/";
+ static String TAG_BASE_URL= "https://createkwservers.com/points/request/";
+
   Future<dynamic> login(String email,String password) async{
     var resp ;
     var dio = Dio();
@@ -196,6 +198,7 @@ class PointServices{
     String language = sharedPreferences.getString(LANG_CODE)??"en";
     String mToken =sharedPreferences.getString("token")??"";
     print('mToken --> ${mToken}');
+    print(TAG_BASE_URL + "?action=home&id=${userId}");
 
 
     var response = await dio.get(TAG_BASE_URL + "?action=home&id=${userId}");
@@ -329,7 +332,9 @@ class PointServices{
     print('mToken --> ${mToken}');
 
 
-    var response = await dio.get(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}");
+    var response = await dio.get(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}&lastGm=0");
+    print(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}&lastGm=0");
+    print(response);
 
     if (response.statusCode == 200) {
 
@@ -343,6 +348,34 @@ class PointServices{
     return homeModel;
 
   }
+ Future<LeaguesDetailsModel?> lastLeaguesDetailsModel(String? userId) async{
+   LeaguesDetailsModel? homeModel ;
+   var dio = Dio();
+   dio.options.headers['content-Type'] = 'multipart/form-data';
+   dio.options.headers['pointsheader'] = "pointsCreateKW";
+   // dio.options.headers["ezyocreate"] = "CreateEZYo";
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String language = sharedPreferences.getString(LANG_CODE)??"en";
+   String mToken =sharedPreferences.getString("token")??"";
+   print('mToken --> ${mToken}');
+
+
+   var response = await dio.get(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}&lastGm=1");
+   print(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}");
+   print(response);
+
+   if (response.statusCode == 200) {
+
+
+
+
+     homeModel =
+         LeaguesDetailsModel.fromJson(Map<String, dynamic>.from(response.data));
+   }
+
+   return homeModel;
+
+ }
   Future<SettingsModel?> settings() async{
     SettingsModel? settingsModel ;
     var dio = Dio();
@@ -444,6 +477,7 @@ class PointServices{
       map['goals1[${i}]'] = teams[i].goals1;
       map['goals2[${i}]'] = teams[i].goals2;
     }
+    print(map);
 
     FormData formData = FormData.fromMap(map);
     String body = json.encode(map);
@@ -621,6 +655,37 @@ print('edit profile ---> ${response.data}');
     return updateTeamModel;
 
   }
+ Future<CoinModel?> coins(Map<String,dynamic> map,String userId) async{
+   CoinModel? addAddressModel;
+   var resp ;
+   var dio = Dio();
+   dio.options.headers['content-Type'] = 'multipart/form-data';
+   dio.options.headers['pointsheader'] = "pointsCreateKW";
+   // dio.options.headers["ezyocreate"] = "CreateEZYo";
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String language = sharedPreferences.getString(LANG_CODE)??"en";
+   String mToken =sharedPreferences.getString("token")??"";
+   print('mToken --> ${mToken}');
+
+   FormData formData = FormData.fromMap(map);
+   String body = json.encode(map);
+   var response = await dio.post(TAG_BASE_URL + "?action=coins&userId=${userId}",data: formData);
+
+   if (response.statusCode == 200) {
+
+
+
+
+     resp =
+         response.data;
+     addAddressModel =
+         CoinModel.fromJson(Map<String, dynamic>.from(response.data));
+     print(resp);
+   }
+
+   return addAddressModel;
+
+ }
   Future<AddAddressModel?> addAddress(Map<String,dynamic> map) async{
     AddAddressModel? addAddressModel;
     var resp ;

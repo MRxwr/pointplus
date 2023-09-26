@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:point/api/point_services.dart';
 import 'package:point/domain/profile_model.dart';
@@ -52,7 +53,7 @@ class _ShopScreenState extends State<ShopScreen> {
   Widget build(BuildContext context) {
 
     itemWidth = AppSize.width / 2;
-    itemHeight =AppSize.s220;
+    itemHeight =260.h;
     return WillPopScope(
       onWillPop: () async {
         if (Navigator.of(context).userGestureInProgress) {
@@ -209,7 +210,7 @@ class _ShopScreenState extends State<ShopScreen> {
           ),
           ),
           Expanded(
-              flex:3,child: Container(
+              flex:4,child: Container(
             color: ColorManager.white,
             child: Column(
               children: [
@@ -220,6 +221,8 @@ class _ShopScreenState extends State<ShopScreen> {
                       child: Text(
                         language == "en"?
                         items!.enTitle!:items!.arTitle!,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
                         style: TextStyle(
                           color: ColorManager.black,
                           fontSize: FontSize.s9,
