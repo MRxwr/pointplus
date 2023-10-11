@@ -95,6 +95,7 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 			$team2 = $team;
 		}
 		if( $prediction = selectDB("predictions","`matchId` = '{$matches[$i]["id"]}' AND `userId` = '{$_GET["id"]}'") ){
+			print_r($prediction);
 			$prediction = array(
 				"goals1" => $prediction[0]["goals1"],
 				"goals2" => $prediction[0]["goals2"],
