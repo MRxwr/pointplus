@@ -216,7 +216,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 
 <div class="col-md-3">
 <div class="form-group">
-<label class="control-label mb-10" for="exampleInputuname_1">Dat</label>
+<label class="control-label mb-10" for="exampleInputuname_1">Date</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
 	<input name="matchDate" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["matchDate"]}'";}else{echo "value=''";} ?> type="date">
@@ -367,6 +367,10 @@ for($i = 0; $i < 2 ; $i++ ){
 <th>Team 1</th>
 <th>Team 2</th>
 <th>Result</th>
+<th>Staduim</th>
+<th>Date</th>
+<th>Time</th>
+<th>Active?</th>
 <th>Type</th>
 <th>Actions</th>
 </tr>
@@ -393,6 +397,7 @@ while ( $row = $result->fetch_assoc() ){
 	$leagueTitle  = direction($row["lenTitle"],$row["larTitle"]);
 	$team1Name  = direction($row["t1enTitle"],$row["t1arTitle"]);
 	$team2Name  = direction($row["t2enTitle"],$row["t2arTitle"]);
+	$isActive = ( $row["isActive"] == 0 ) ? "Ended" : "Active";
 	if ( $row["type"] == 0 ){
 		$type = direction("Normal","عادية");
 	}else{
@@ -405,6 +410,10 @@ while ( $row = $result->fetch_assoc() ){
 <td><?php echo $team1Name ?></td>
 <td><?php echo $team2Name ?></td>
 <td><?php echo $row["goals1"] . " - " . $row["goals2"]?></td>
+<td><?php echo $row["staduim"] ?></td>
+<td><?php echo $row["matchDate"] ?></td>
+<td><?php echo $row["matchTime"] ?></td>
+<td><?php echo $isActive ?></td>
 <td><?php echo $type ?></td>
 <td>
 
