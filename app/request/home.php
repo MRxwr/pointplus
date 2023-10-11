@@ -123,7 +123,7 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 					}
 				}
 				//check for x2
-				if( $prediction["x2"] == 1 ){
+				if( $prediction[0]["x2"] == 1 ){
 					$points = $points * 2;
 				}
 				$prediction = array(
