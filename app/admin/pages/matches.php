@@ -185,6 +185,55 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 </div>
 </div>	
 
+<div class="col-md-3">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">Active?</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+	<select class="form-control" name="isActive" required>
+		<?php
+		$isActiveValue = [0,1];
+		$isActiveText = [direction("Ended","إنتهى"),direction("Active","فعال")];
+		for( $i = 0; $i < sizeof($isActiveText); $i++){
+			$isActiveSelected = ( $data[0]["isActive"] == $i ) ? "selected" : "";
+			echo "<option value='{$isActiveValue[$i]}' {$isActiveSelected}>{$isActiveText[$i]}</option>";
+		}
+		?>
+	</select>
+</div>
+</div>
+</div>	
+
+<div class="col-md-3">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">Staduim</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+	<input name="staduim" class="form-control" placeholder="Staduim Name" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["staduim"]}'";}else{echo "value=''";} ?> type="text">
+</div>
+</div>
+</div>	
+
+<div class="col-md-3">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">Dat</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+	<input name="matchDate" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["matchDate"]}'";}else{echo "value=''";} ?> type="date">
+</div>
+</div>
+</div>	
+
+<div class="col-md-3">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">Time</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+	<input name="matchTime" class="form-control" placeholder="04:00pm GMT+3" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["matchTime"]}'";}else{echo "value=''";} ?> type="text">
+</div>
+</div>
+</div>	
+
 <div class="col-md-6">
 <div class="form-group">
 <label class="control-label mb-10" for="exampleInputuname_1">Team 1</label>
