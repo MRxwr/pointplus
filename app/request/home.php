@@ -114,6 +114,7 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 				}elseif( $prediction["goals1"] == $prediction["goals2"]  &&  $matches[$i]["goals1"] == $matches[$i]["goals2"] ){
 					$points = $points + 5;
 				}
+				/*
 				//check for x3
 				if( $matches[$i]["type"] == 1 ){
 					if( $prediction["x3"] == 1 ){
@@ -123,9 +124,10 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 					}
 				}
 				//check for x2
-				if( $prediction[0]["x2"] == 1 ){
+				if( $prediction["x2"] == 1 ){
 					$points = $points * 2;
 				}
+				*/
 				$prediction = array(
 					"goals1" => $prediction["goals1"],
 					"goals2" => $prediction["goals2"],
