@@ -97,6 +97,7 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 		if( $prediction = selectDataDB("`goals1`,`goals2`,`points`","predictions","`matchId` = '{$matches[$i]["id"]}' AND `userId` = '{$_GET["id"]}'") ){
 			$prediction = $prediction[0];
 			if( $matches[$i]["isActive"] == 0 ){
+				var_dump($prediction);
 				$points = $prediction[0]["points"];
 				// match result points
 				if( $matches[$i]["goals1"] == $prediction[0]["golas1"] && $matches[$i]["goals2"] == $prediction[0]["golas2"] ){
