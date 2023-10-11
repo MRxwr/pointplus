@@ -95,41 +95,40 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 			$team2 = $team;
 		}
 		if( $prediction = selectDB("predictions","`matchId` = '{$matches[$i]["id"]}' AND `userId` = '{$_GET["id"]}'") ){
-			print_r($prediction);
 			$prediction = array(
 				"goals1" => $prediction[0]["goals1"],
 				"goals2" => $prediction[0]["goals2"],
-				"points" => (string)$prediction[0]["points"]
+				"points" => (string)$prediction["points"]
 			);
 			if( $matches[$i]["isActive"] == 0 ){
-				$points = $prediction[0]["points"];
+				$points = $prediction["points"];
 				// match result points
-				if( $matches[$i]["goals1"] == $prediction[0]["goals1"] && $matches[$i]["goals2"] == $prediction[0]["goals2"] ){
+				if( $matches[$i]["goals1"] == $prediction["goals1"] && $matches[$i]["goals2"] == $prediction["goals2"] ){
 					$points = $points + 5;
 				}
 				//match prediction points
-				if( $prediction[0]["goals1"] > $prediction[0]["goals2"]  &&  $matches[$i]["goals1"] > $matches[$i]["goals2"] ){
+				if( $prediction["goals1"] > $prediction["goals2"]  &&  $matches[$i]["goals1"] > $matches[$i]["goals2"] ){
 					$points = $points + 5;
-				}elseif( $prediction[0]["goals1"] < $prediction[0]["goals2"]  &&  $matches[$i]["goals1"] < $matches[$i]["goals2"] ){
+				}elseif( $prediction["goals1"] < $prediction["goals2"]  &&  $matches[$i]["goals1"] < $matches[$i]["goals2"] ){
 					$points = $points + 5;
-				}elseif( $prediction[0]["goals1"] == $prediction[0]["goals2"]  &&  $matches[$i]["goals1"] == $matches[$i]["goals2"] ){
+				}elseif( $prediction["goals1"] == $prediction["goals2"]  &&  $matches[$i]["goals1"] == $matches[$i]["goals2"] ){
 					$points = $points + 5;
 				}
 				//check for x3
 				if( $matches[$i]["type"] == 1 ){
-					if( $prediction[0]["x3"] == 1 ){
+					if( $prediction["x3"] == 1 ){
 						$points = $points * 3;
 					}else{
 						$points = $points * 2;
 					}
 				}
 				//check for x2
-				if( $prediction[0]["x2"] == 1 ){
+				if( $prediction["x2"] == 1 ){
 					$points = $points * 2;
 				}
 				$prediction = array(
-					"goals1" => $prediction[0]["goals1"],
-					"goals2" => $prediction[0]["goals2"],
+					"goals1" => $prediction["goals1"],
+					"goals2" => $prediction["goals2"],
 					"points" => (string)$points,
 				);
 			}
