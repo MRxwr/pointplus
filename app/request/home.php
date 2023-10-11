@@ -98,10 +98,10 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 			$prediction = array(
 				"goals1" => $prediction[0]["goals1"],
 				"goals2" => $prediction[0]["goals2"],
-				"points" => (string)$prediction["points"]
+				"points" => (string)$prediction[0]["points"]
 			);
 			if( $matches[$i]["isActive"] == 0 ){
-				$points = $prediction["points"];
+				$points = $prediction[0]["points"];
 				// match result points
 				if( $matches[$i]["goals1"] == $prediction["goals1"] && $matches[$i]["goals2"] == $prediction["goals2"] ){
 					$points = $points + 5;
