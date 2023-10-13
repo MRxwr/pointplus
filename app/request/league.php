@@ -129,7 +129,7 @@ if ( isset($_GET["type"]) ){
 					"join"=>["joinedLeagues"],
 					"on"=>["t.id = t1.userId"]
 				);
-				if( $joinedUsers = selectJoinDB("user",$data,"t1.leagueId = '{$_GET["leagueId"]}' ORDER BY (t1.rank = 0), t1.rank ASC") ){
+				if( $joinedUsers = selectJoinDB("user",$data,"t1.leagueId = '{$_GET["leagueId"]}' ORDER BY (t.points = 0), t.points ASC") ){
 					$response["users"] = $joinedUsers;
 					echo outputData($response);
 				}else{
