@@ -27,7 +27,7 @@ if ( isset($_GET["id"]) && !empty($_GET["id"]) ){
 				"join" => ["predictions"],
 				"on" => [" t.id = t1.matchId"]
 			);
-	if( $pastResults = selectJoinDB('matches',$data,"t1.userId = '{$_GET["id"]}' AND t.status = '0' GROUP BY t.round ORDER BY t.round DESC LIMIT 2") ){
+	if( $pastResults = selectJoinDB('matches',$data,"t1.userId = '{$_GET["id"]}' AND t.status = '0' GROUP BY t.round ORDER BY t.round DESC") ){
 		$response["user"]["stats"] = $pastResults;
 		if( isset($pastResults[1]["round"]) && !empty($pastResults[1]["round"]) ){
 			$response["user"]["stats"][1]["round"] = $pastResults[1]["round"];
