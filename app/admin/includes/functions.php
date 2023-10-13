@@ -65,8 +65,9 @@ function selectJoinDB($table, $joinData, $where){
 		}
 	}
 	if ( !empty($where) ){
-		$sql .= " WHERE " . $where;
+		echo $sql .= " WHERE " . $where;
 	}
+	die();
 	if($result = $dbconnect->query($sql)){
 		while($row = $result->fetch_assoc() ){
 			$array[] = $row;
