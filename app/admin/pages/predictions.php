@@ -48,6 +48,9 @@ if( isset($_POST["submit"]) ){
 						updatePredictionDB("predictions",array("counted"=>1,"points"=>$points,"status"=>1),"`id` = '{$prediction[$y]["id"]}'");
 						
 						//update user points
+						updatePredictionDB("user",array("pPoints"=>"`points`"),"`id` = '{$prediction[$y]["userId"]}'");
+
+						//update user points
 						updatePredictionDB("user",array("points"=>"`points` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
 					}
 					updatePredictionDB("matches",array("status"=>0),"`id` = '{$matches[$i]["id"]}'");
