@@ -111,11 +111,11 @@ if ( isset($_GET["type"]) ){
 		}else{
 			if( isset($_GET["lastGw"]) && !empty($_GET["lastGw"]) ){
 				$data = array(
-					"select"=>["t.name","t.username","t.pPoints as points","t1.rank","t1.pRank"],
+					"select"=>["t.name","t.username","t.points","t.pPoints","t1.rank","t1.pRank"],
 					"join"=>["joinedLeagues"],
 					"on"=>["t.id = t1.userId"]
 				);
-				if( $joinedUsers = selectJoinDB("user",$data,"t1.leagueId = '{$_GET["leagueId"]}' ORDER BY (t1.pRank = 0), t.pPoints DESC") ){
+				if( $joinedUsers = selectJoinDB("user",$data,"t1.leagueId = '{$_GET["leagueId"]}' ORDER BY (t1.pRank = 0), t1.pRank ASC") ){
 					$response["users"] = $joinedUsers;
 					echo outputData($response);
 				}else{
