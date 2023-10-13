@@ -28,21 +28,19 @@ if ( isset($_GET["id"]) && !empty($_GET["id"]) ){
 				"on" => [" t.id = t1.matchId"]
 			);
 	if( $pastResults = selectJoinDB('matches',$data,"t1.userId = '{$_GET["id"]}' AND t.status = '0' GROUP BY t.round ORDER BY t.round DESC LIMIT 2") ){
-		print_r($pastResults);
 		$response["user"]["stats"] = $pastResults;
 		if( isset($pastResults[1]["round"]) && !empty($pastResults[1]["round"]) ){
 			$response["user"]["stats"][1]["round"] = $pastResults[1]["round"];
-			$response["user"]["stats"][1]["totalPoints"] = "0";
+			$response["user"]["stats"][1]["totalPoints"] = $pastResults[1]["totalPoints"];
 		}else{
 			$response["user"]["stats"][1]["round"] = "0";
 			$response["user"]["stats"][1]["totalPoints"] = "0";
 		}
 	}elseif($pastResults = selectJoinDB('matches',$data,"t.status = '0' GROUP BY t.round ORDER BY t.round DESC LIMIT 2")){
-		$response["user"]["stats"][0]["round"] = $pastResults[0]["round"];
-		//$response["user"]["stats"][0]["totalPoints"] = "0";
+		$response["user"]["stats"][0]["round"] = $pastResults;
 		if( isset($pastResults[1]["round"]) && !empty($pastResults[1]["round"]) ){
 			$response["user"]["stats"][1]["round"] = $pastResults[1]["round"];
-			$response["user"]["stats"][1]["totalPoints"] = "0";
+			$response["user"]["stats"][1]["totalPoints"] = $pastResults[1]["totalPoints"];
 		}else{
 			$response["user"]["stats"][1]["round"] = "0";
 			$response["user"]["stats"][1]["totalPoints"] = "0";
