@@ -38,7 +38,7 @@ if ( isset($_GET["id"]) && !empty($_GET["id"]) ){
 		}
 	}elseif($pastResults = selectJoinDB('matches',$data,"t.status = '0' GROUP BY t.round ORDER BY t.round DESC LIMIT 2")){
 		$response["user"]["stats"][0]["round"] = $pastResults[0]["round"];
-		$response["user"]["stats"][0]["totalPoints"] = "0";
+		//$response["user"]["stats"][0]["totalPoints"] = "0";
 		if( isset($pastResults[1]["round"]) && !empty($pastResults[1]["round"]) ){
 			$response["user"]["stats"][1]["round"] = $pastResults[1]["round"];
 			$response["user"]["stats"][1]["totalPoints"] = "0";
