@@ -66,7 +66,7 @@ if ( isset($_POST["title"]) ){
 			"image" => "{$image}"
 		)
 	);
-		$data = json_encode($json_data);
+		echo $data = json_encode($json_data);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, true);
