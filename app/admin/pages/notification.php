@@ -25,7 +25,7 @@ if ( isset($_POST["title"]) ){
 	$response = curl_exec($curl);
 	curl_close($curl);
 	$response = json_decode($response,true);
-	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase` LIMIT 1000";
+	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase`";
 	$result = $dbconnect->query($sql);
 	if( isset($response["data"]["link"]) ){
 		$image = $response["data"]["link"];
