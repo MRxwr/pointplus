@@ -86,7 +86,7 @@ if ( isset($_POST["title"]) ){
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		var_dump($response = curl_exec($ch));
+		$response = curl_exec($ch);
 		curl_close($ch);
 	}
 }
