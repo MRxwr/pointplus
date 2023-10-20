@@ -44,7 +44,7 @@ if ( isset($_POST["title"]) ){
 		insertDB("notification",$data);
 	}
 	$json_data = array(
-		"registration_ids" => implode(',', $to),
+		"registration_ids" => $to,
 		"notification" => array(
 			"body" => "{$body}",
 			"text" => "{$body}",
