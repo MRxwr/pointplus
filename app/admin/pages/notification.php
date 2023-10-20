@@ -32,6 +32,8 @@ if ( isset($_POST["title"]) ){
 	}else{
 		$image = "";
 	}
+	$title = $_POST["title"];
+	$body = $_POST["msg"];
 	while( $row = $result->fetch_assoc() ){
 		$to[] = $row["firebase"];
 		$data = array(
@@ -41,8 +43,6 @@ if ( isset($_POST["title"]) ){
 		);
 		insertDB("notification",$data);
 	}
-	$title = $_POST["title"];
-	$body = $_POST["msg"];
 	$json_data = array(
 		"registration_ids" => "{$to}",
 		"notification" => array(
