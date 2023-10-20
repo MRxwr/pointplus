@@ -7,8 +7,6 @@ if ( isset($_POST["title"]) ){
 		'Content-Type:application/json',
 		'Authorization:key='.$server_key
 	);
-	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase`";
-	$result = $dbconnect->query($sql);
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
 	  CURLOPT_URL => 'https://api.imgur.com/3/upload',
@@ -27,45 +25,47 @@ if ( isset($_POST["title"]) ){
 	$response = curl_exec($curl);
 	curl_close($curl);
 	$response = json_decode($response,true);
+	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase`";
+	$result = $dbconnect->query($sql);
+	if( isset($response["data"]["link"]) ){
+		$image = $response["data"]["link"];
+	}else{
+		$image = "";
+	}
 	while( $row = $result->fetch_assoc() ){
-		$to = $row["firebase"];
-		$title = $_POST["title"];
-		$body = $_POST["msg"];
-		if( isset($response["data"]["link"]) 
-			){
-			$image = $response["data"]["link"];
-		}else{
-			$image = "";
-		}
+		$to[] = $row["firebase"];
 		$data = array(
 			"userId" => $row["id"],
 			"notification" => $title . " - " . $body,
 			"image" => $image
 		);
 		insertDB("notification",$data);
-		$json_data = array(
-			"to" => "{$to}",
-			"notification" => array(
-				"body" => "{$body}",
-				"text" => "{$body}",
-				"title" => "{$title}",
-				"sound" => "default",
-				"content_available" => "true",
-				"priority" => "high",
-				"badge" => "1",
-				"image" => "{$image}"
-			),
-			"data" => array(
-				"body" => "{$body}",
-				"title" => "{$title}",
-				"text" => "{$body}",
-				"sound" => "default",
-				"content_available" => "true",
-				"priority" => "high",
-				"badge" => "1",
-				"image" => "{$image}"
-			)
-		);
+	}
+	$title = $_POST["title"];
+	$body = $_POST["msg"];
+	$json_data = array(
+		"registration_ids" => "{$to}",
+		"notification" => array(
+			"body" => "{$body}",
+			"text" => "{$body}",
+			"title" => "{$title}",
+			"sound" => "default",
+			"content_available" => "true",
+			"priority" => "high",
+			"badge" => "1",
+			"image" => "{$image}"
+		),
+		"data" => array(
+			"body" => "{$body}",
+			"title" => "{$title}",
+			"text" => "{$body}",
+			"sound" => "default",
+			"content_available" => "true",
+			"priority" => "high",
+			"badge" => "1",
+			"image" => "{$image}"
+		)
+	);
 		$data = json_encode($json_data);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -77,7 +77,6 @@ if ( isset($_POST["title"]) ){
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		$response = curl_exec($ch);
 		curl_close($ch);
-	}
 }
 ?>
 
