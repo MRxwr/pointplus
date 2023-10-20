@@ -25,7 +25,7 @@ if ( isset($_POST["title"]) ){
 	$response = curl_exec($curl);
 	curl_close($curl);
 	$response = json_decode($response,true);
-	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase`";
+	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase` LIMIT 1000";
 	$result = $dbconnect->query($sql);
 	if( isset($response["data"]["link"]) ){
 		$image = $response["data"]["link"];
@@ -44,7 +44,6 @@ if ( isset($_POST["title"]) ){
 		insertDB("notification",$data);
 	}
 	$json_data = array(
-		"registration_ids" => $to,
 		"notification" => array(
 			"body" => "{$body}",
 			"text" => "{$body}",
@@ -66,7 +65,19 @@ if ( isset($_POST["title"]) ){
 			"image" => "{$image}"
 		)
 	);
-		echo $data = json_encode($json_data);
+
+	$maxBatchSize = 1000;
+	$messageData = $json_data;
+	// Split the registration IDs into batches of 1000 or fewer
+	$batches = array_chunk($to, $maxBatchSize);
+	foreach ($batches as $batch) {
+		// Create a new $json_data for each batch
+		$json_data = array(
+			"registration_ids" => $batch,
+			"notification" => $messageData["notification"],
+			"data" => $messageData["data"]
+		);
+		$data = json_encode($json_data);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, true);
@@ -77,6 +88,7 @@ if ( isset($_POST["title"]) ){
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		var_dump($response = curl_exec($ch));
 		curl_close($ch);
+	}
 }
 ?>
 
