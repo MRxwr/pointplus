@@ -111,7 +111,7 @@ if ( isset($_GET["type"]) ){
 		}else{
 			if( isset($_GET["lastGw"]) && !empty($_GET["lastGw"]) ){
 				$data = array(
-					"select"=>["t.name","t.username","SUM(t.points - t.pPoints) as points","t1.rank","t1.pRank"],
+					"select"=>["t.name","t.username","t.pPoints as points","t1.rank","t1.pRank"],
 					"join"=>["joinedLeagues"],
 					"on"=>["t.id = t1.userId"]
 				);
