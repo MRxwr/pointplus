@@ -117,7 +117,7 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 				//check for x3
 				if( $matches[$i]["type"] == 1 ){
 					if( $prediction[0]["x3"] == 1 ){
-						$points = $points * 3;
+						$points = $points * 2 * 3;
 					}else{
 						$points = $points * 2;
 					}

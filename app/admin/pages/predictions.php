@@ -31,7 +31,7 @@ if( isset($_POST["submit"]) ){
 						//for super match multiply * 2 if no x3 availble and multiply by * 3 if x3 is set 
 						if( $matches[$i]["type"] == 1 ){
 							if( $prediction[$y]["x3"] == 1 ){
-								$points = $points * 3;
+								$points = $points * 2 * 3;
 								updatePredictionDB("user",array("x3"=>1),"`id` = '{$prediction[$y]["userId"]}'");
 							}else{
 								$points = $points * 2;
