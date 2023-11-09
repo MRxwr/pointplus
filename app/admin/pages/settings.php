@@ -45,6 +45,20 @@ if ( isset($_GET["edit"]) ){
 }else{
 	die();
 }
+
+if( $getRoundMatches = selectDB("matches","`status` = '0' ORDER BY `round` DESC") ){
+	if( $getMatchesId = selectDB("matches","`round` = '{$getRoundMatches[0]["round"]}'") ){
+		for( $i = 0 ; $i < sizeof($getMatchesId); $i++ ){
+			if( $users = selectDB("user","`id` != '0'")){
+				for( $y = 0; $y < sizeof($users); $y++ ){
+					if( $predictions = selectDB("","`userId` = '{$users[$y]["id"]}' AND `matchId` = {$getMatchesId[$i]["id"]}") ){
+						updatePredictionDB("user",array("pPoints" => `pPoints` + $predictions[0]["points"]),"`id` = '{$users[$y]["id"]}'");
+					}
+				}
+			}
+		}
+	}
+}
 ?>
 
 <div class="right-sidebar-backdrop"></div>

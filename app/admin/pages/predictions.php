@@ -5,8 +5,9 @@ if( isset($_POST["submit"]) ){
 		"pRank" => "`rank`"
 	);
 	if( updatePredictionDB("user",$updateData,"`id` > '0' ") && updatePredictionDB("joinedLeagues",$updateData,"`id` > '0' ") ){
-		
 		if( $matches = selectDB("matches","`status` = '1'") ){
+			//update user points
+			updatePredictionDB("user",array("pPoints"=>"0"),"`id` != '0'");
 			for ( $i =0; $i < sizeof($matches); $i++ ){
 				$realResult = [$matches[$i]["goals1"],$matches[$i]["goals2"]];
 				if( $prediction = selectDB("predictions","`matchId` = '{$matches[$i]["id"]}' AND `status` = '0'") ){
@@ -48,7 +49,7 @@ if( isset($_POST["submit"]) ){
 						updatePredictionDB("predictions",array("counted"=>1,"points"=>$points,"status"=>1),"`id` = '{$prediction[$y]["id"]}'");
 						
 						//update user points
-						updatePredictionDB("user",array("pPoints"=>"{$points}"),"`id` = '{$prediction[$y]["userId"]}'");
+						updatePredictionDB("user",array("pPoints"=>"`pPoints` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
 
 						//update user points
 						updatePredictionDB("user",array("points"=>"`points` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
