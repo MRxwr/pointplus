@@ -125,7 +125,7 @@ $textColor 		= array('txt-dark','txt-light');
 $icon 			= array('fa fa-trash-o','fa fa-refresh');
 $action			= array('delete=','return=');
 
-for($i = 0; $i < 2 ; $i++ ){
+for($i = 0; $i < 1 ; $i++ ){
 ?>
 
 <div class="row">
@@ -150,6 +150,8 @@ for($i = 0; $i < 2 ; $i++ ){
 <th>Team 1</th>
 <th>Team 2</th>
 <th>Result</th>
+<th>X2</th>
+<th>X3</th>
 <th>Prediction</th>
 <th>User</th>
 </tr>
@@ -157,9 +159,18 @@ for($i = 0; $i < 2 ; $i++ ){
 <tbody>
 <?php
 $sql = "SELECT 
-		t1.enTitle as t1enTitle, t1.arTitle as t1arTitle,
-		t2.enTitle as t2enTitle, t2.arTitle as t2arTitle,
-		l.enTitle as lenTitle, l.arTitle as larTitle, m.*, p.goals1 as pGoals1, p.goals2 as pGoals2, u.username
+		t1.enTitle as t1enTitle,
+		t1.arTitle as t1arTitle,
+		t2.enTitle as t2enTitle,
+		t2.arTitle as t2arTitle,
+		l.enTitle as lenTitle,
+		l.arTitle as larTitle,
+		m.*,
+		p.goals1 as pGoals1,
+		p.goals2 as pGoals2,
+		p.x2 as predX2,
+		p.x3 as predX3,
+		u.username
 		FROM `predictions` as p
 		JOIN `matches` as m
 		ON m.id = p.matchId
@@ -180,6 +191,8 @@ while ( $row = $result->fetch_assoc() ){
 	$leagueTitle  = direction($row["lenTitle"],$row["larTitle"]);
 	$team1Name  = direction($row["t1enTitle"],$row["t1arTitle"]);
 	$team2Name  = direction($row["t2enTitle"],$row["t2arTitle"]);
+	$x2 = ( $row["predX2"] == 1 ) ? direction("USED","مستخدم") : "-" ;
+	$x3 = ( $row["predX3"] == 1 ) ? direction("USED","مستخدم") : "-" ;
 ?>
 <tr>
 <td><?php echo "Round" . $row["round"] ?></td>
@@ -187,6 +200,8 @@ while ( $row = $result->fetch_assoc() ){
 <td><?php echo $team1Name ?></td>
 <td><?php echo $team2Name ?></td>
 <td><?php echo $row["goals1"] . " - " . $row["goals2"]?></td>
+<td><?php echo $x2 ?></td>
+<td><?php echo $x3 ?></td>
 <td><?php echo $row["pGoals1"] . " - " . $row["pGoals2"]?></td>
 <td><?php echo $row["username"] ?></td>
 </tr>
