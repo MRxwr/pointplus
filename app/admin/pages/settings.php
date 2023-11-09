@@ -51,8 +51,8 @@ if( $getRoundMatches = selectDB("matches","`status` = '0' ORDER BY `round` DESC"
 		for( $i = 0 ; $i < sizeof($getMatchesId); $i++ ){
 			if( $users = selectDB("user","`id` != '0'")){
 				for( $y = 0; $y < sizeof($users); $y++ ){
-					if( $predictions = selectDB("","`userId` = '{$users[$y]["id"]}' AND `matchId` = {$getMatchesId[$i]["id"]}") ){
-						updatePredictionDB("user",array("pPoints" => `pPoints` + $predictions[0]["points"]),"`id` = '{$users[$y]["id"]}'");
+					if( $predictions = selectDB("predictions","`userId` = '{$users[$y]["id"]}' AND `matchId` = {$getMatchesId[$i]["id"]}") ){
+						updatePredictionDB("user",array("pPoints" => "`pPoints` + {$predictions[0]["points"]}"),"`id` = '{$users[$y]["id"]}'");
 					}
 				}
 			}
