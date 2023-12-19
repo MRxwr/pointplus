@@ -357,7 +357,7 @@ while ( $row = $result->fetch_assoc() ){
 		<?php
 			$status 		= array('0','1');
 			$arrayOfTitles 	= array('Pending Predictions','Counted Predictions');
-			$myTable 		= array('myTable1','myTable2');
+			$myTable 		= array('myTable2','myTable1');
 			$panel 			= array('panel-default','panel-primary');
 			$textColor 		= array('txt-dark','txt-light');
 			$icon 			= array('fa fa-trash-o','fa fa-refresh');
