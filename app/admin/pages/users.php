@@ -413,7 +413,7 @@ while ( $row = $result->fetch_assoc() ){
 					JOIN `matches` as m
 					ON m.id = p.matchId
 					JOIN `user` as u
-					ON u.id = {$_GET['userId']}
+					ON u.id = p.userId
 					JOIN `teams` as t1
 					ON t1.id = m.team1
 					JOIN `teams` as t2
@@ -421,10 +421,22 @@ while ( $row = $result->fetch_assoc() ){
 					JOIN `leagues` as l
 					ON l.id = m.league
 					WHERE
-					p.status = '".$status[$i]."'
+					p.status = '{$status[$i]}'
+					AND 
+					u.id = '{$_GET['userId']}'
 					ORDER BY m.id ASC
 					";
 			$result = $dbconnect->query($sql);
+			/*
+			if( $userPredictions = selectDB("predictions", "`userId` = '{$_GET['userId']}'") ){
+				for( $i = 0; $i < sizeof($userPredictions); $i++ ){
+					$matches = selectDB("matches","`id` = '{$userPredictions[$i]['matchId']}'");
+					$team1 = selectDB("teams","`id` = '{$matches[0]['team1']}'");
+					$team2 = selectDB("teams","`id` = '{$matches[0]['team2']}'");
+					$league = selectDB("leagues","`id` = '{$matches[0]['league']}'");
+				}
+			}
+			*/
 			while ( $row = $result->fetch_assoc() ){
 				$leagueTitle  = direction($row["lenTitle"],$row["larTitle"]);
 				$team1Name  = direction($row["t1enTitle"],$row["t1arTitle"]);
