@@ -1,6 +1,6 @@
 <?php
 //get banners
-if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` LIKE '0'") ){
+if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` = '0' AND `type` = '1'") ){
 	$response["banners"] = $banners;
 }else{
 	$response["banners"] = array();
