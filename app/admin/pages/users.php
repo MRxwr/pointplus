@@ -423,7 +423,7 @@ while ( $row = $result->fetch_assoc() ){
 					WHERE
 					p.status = '{$status[$i]}'
 					AND 
-					p.id = '{$_GET['userId']}'
+					p.userId = '{$_GET['userId']}'
 					ORDER BY m.id ASC
 					";
 			$result = $dbconnect->query($sql);
