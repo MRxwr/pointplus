@@ -355,8 +355,8 @@ while ( $row = $result->fetch_assoc() ){
 		</div>
 
 		<?php
-			$status 		= array('0','1');
-			$arrayOfTitles 	= array('Pending Predictions','Counted Predictions');
+			$status 		= array('1','0');
+			$arrayOfTitles 	= array('Predictions','Predictions');
 			$myTable 		= array('myTable2','myTable1');
 			$panel 			= array('panel-default','panel-primary');
 			$textColor 		= array('txt-dark','txt-light');
@@ -421,16 +421,14 @@ while ( $row = $result->fetch_assoc() ){
 					JOIN `leagues` as l
 					ON l.id = m.league
 					WHERE
-					p.status = '{$status[$i]}'
-					AND 
 					p.userId = '{$_GET['userId']}'
 					ORDER BY m.id ASC
 					";
 			$result = $dbconnect->query($sql);
 			/*
 			if( $userPredictions = selectDB("predictions", "`userId` = '{$_GET['userId']}'") ){
-				for( $i = 0; $i < sizeof($userPredictions); $i++ ){
-					$matches = selectDB("matches","`id` = '{$userPredictions[$i]['matchId']}'");
+				for( $y = 0; $y < sizeof($userPredictions); $y++ ){
+					$matches = selectDB("matches","`id` = '{$userPredictions[$y]['matchId']}'");
 					$team1 = selectDB("teams","`id` = '{$matches[0]['team1']}'");
 					$team2 = selectDB("teams","`id` = '{$matches[0]['team2']}'");
 					$league = selectDB("leagues","`id` = '{$matches[0]['league']}'");
