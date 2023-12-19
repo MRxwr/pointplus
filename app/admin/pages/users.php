@@ -425,16 +425,6 @@ while ( $row = $result->fetch_assoc() ){
 					ORDER BY m.id ASC
 					";
 			$result = $dbconnect->query($sql);
-			/*
-			if( $userPredictions = selectDB("predictions", "`userId` = '{$_GET['userId']}'") ){
-				for( $y = 0; $y < sizeof($userPredictions); $y++ ){
-					$matches = selectDB("matches","`id` = '{$userPredictions[$y]['matchId']}'");
-					$team1 = selectDB("teams","`id` = '{$matches[0]['team1']}'");
-					$team2 = selectDB("teams","`id` = '{$matches[0]['team2']}'");
-					$league = selectDB("leagues","`id` = '{$matches[0]['league']}'");
-				}
-			}
-			*/
 			while ( $row = $result->fetch_assoc() ){
 				$leagueTitle  = direction($row["lenTitle"],$row["larTitle"]);
 				$team1Name  = direction($row["t1enTitle"],$row["t1arTitle"]);
