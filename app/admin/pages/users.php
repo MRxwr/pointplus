@@ -355,7 +355,6 @@ while ( $row = $result->fetch_assoc() ){
 		</div>
 
 		<?php
-		if ( !isset($_GET["edit"]) ){
 			$status 		= array('0','1');
 			$arrayOfTitles 	= array('Pending Predictions','Counted Predictions');
 			$myTable 		= array('myTable1','myTable2');
@@ -459,7 +458,6 @@ while ( $row = $result->fetch_assoc() ){
 			</div>
 			<?php
 			}
-		}
 		?>		
 		<?php
 	}
