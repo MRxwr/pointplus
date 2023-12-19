@@ -106,7 +106,7 @@ for($i = 0; $i < 1 ; $i++ ){
 </thead>
 <tbody>
 <?php
-if( $topUsers = selectDataDB("userId, SUM(points) AS total_points","predictions","`date` >= '{$_POST["sDate"]}' AND `date` <= '{$_POST["eDate"]}' GROUP BY `userId` order by total_points DESC") ){
+if( isset($_POST["sDate"]) && isset($_POST["eDate"]) && !empty($_POST["sDate"]) && !empty($_POST["eDate"]) && $topUsers = selectDataDB("userId, SUM(points) AS total_points","predictions","`date` >= '{$_POST["sDate"]}' AND `date` <= '{$_POST["eDate"]}' GROUP BY `userId` order by total_points DESC") ){
 	for( $y = 0; $y < sizeof($topUsers); $y++ ){
 		$userDetails = selectDB("user","`id` = {$topUsers[$y]["userId"]}")
 		?>
