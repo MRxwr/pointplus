@@ -7,3 +7,9 @@ $(document).ready(function() {
 		responsive: true
 	} );
 } );
+
+$(document).ready(function() {
+	$('#myTable2').DataTable( {
+		responsive: true
+	} );
+} );
