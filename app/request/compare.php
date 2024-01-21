@@ -92,6 +92,13 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 	$response["compare"]["pRank"] = "0";
 }
 
+// getting all game week rounds
+if ( $rounds = selectDataDB("`round`","matches","`status` != '2' GROUP BY `round` ORDER BY `round` DESC") ){
+	$response["rounds"] = $rounds;
+}else{
+	$response["rounds"] = array();
+}
+
 //get requested round
 if( isset($_GET["round"]) && !empty($_GET["round"]) ){
 	$rounds[0]["round"] = $_GET["round"];
