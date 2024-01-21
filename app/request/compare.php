@@ -18,15 +18,15 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 		$response["user"]["rank"] = "0";
 		$response["user"]["pRank"] = "0";
 	}
-    // get accessed user details
+    // get comapre user details
     if( $user = selectDB('user', "`id` = '{$_GET["compareId"]}'") ){
-		$response["user"]["points"] = $user[0]["points"];
-		$response["user"]["rank"] = $user[0]["rank"];
-		$response["user"]["pRank"] = $user[0]["pRank"];
+		$response["compare"]["points"] = $user[0]["points"];
+		$response["compare"]["rank"] = $user[0]["rank"];
+		$response["compare"]["pRank"] = $user[0]["pRank"];
 	}else{
-		$response["user"]["points"] = "0";
-		$response["user"]["rank"] = "0";
-		$response["user"]["pRank"] = "0";
+		$response["compare"]["points"] = "0";
+		$response["compare"]["rank"] = "0";
+		$response["compare"]["pRank"] = "0";
 	}
 	$data= array(
 				"select"=>["t.round","SUM(t1.points) AS totalPoints"],
@@ -61,35 +61,35 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 	}
     // comapre user predictions and results
     if( $pastResults = selectJoinDB('matches',$data,"t1.userId = '{$_GET["userId"]}' AND t.status = '0' GROUP BY t.round ORDER BY t.round DESC") ){
-		$response["user"]["stats"] = $pastResults;
+		$response["compare"]["stats"] = $pastResults;
 		if( isset($pastResults[1]["round"]) && !empty($pastResults[1]["round"]) ){
-			$response["user"]["stats"][1]["round"] = $pastResults[1]["round"];
-			$response["user"]["stats"][1]["totalPoints"] = $pastResults[1]["totalPoints"];
+			$response["compare"]["stats"][1]["round"] = $pastResults[1]["round"];
+			$response["compare"]["stats"][1]["totalPoints"] = $pastResults[1]["totalPoints"];
 		}else{
-			$response["user"]["stats"][1]["round"] = "0";
-			$response["user"]["stats"][1]["totalPoints"] = "0";
+			$response["compare"]["stats"][1]["round"] = "0";
+			$response["compare"]["stats"][1]["totalPoints"] = "0";
 		}
 	}elseif($pastResults = selectJoinDB('matches',$data,"t.status = '0' GROUP BY t.round ORDER BY t.round DESC LIMIT 2")){
-		$response["user"]["stats"] = $pastResults;
-		$response["user"]["stats"][0]["totalPoints"] = "0";
+		$response["compare"]["stats"] = $pastResults;
+		$response["compare"]["stats"][0]["totalPoints"] = "0";
 		if( isset($pastResults[1]["round"]) && !empty($pastResults[1]["round"]) ){
-			$response["user"]["stats"][1]["round"] = $pastResults[1]["round"];
-			$response["user"]["stats"][1]["totalPoints"] = "0";
+			$response["compare"]["stats"][1]["round"] = $pastResults[1]["round"];
+			$response["compare"]["stats"][1]["totalPoints"] = "0";
 		}else{
-			$response["user"]["stats"][1]["round"] = "0";
-			$response["user"]["stats"][1]["totalPoints"] = "0";
+			$response["compare"]["stats"][1]["round"] = "0";
+			$response["compare"]["stats"][1]["totalPoints"] = "0";
 		}
 	}else{
-		$response["user"]["stats"][0]["round"] = "0";
-		$response["user"]["stats"][0]["totalPoints"] = "0";
-		$response["user"]["stats"][1]["round"] = "0";
-		$response["user"]["stats"][1]["totalPoints"] = "0";
+		$response["compare"]["stats"][0]["round"] = "0";
+		$response["compare"]["stats"][0]["totalPoints"] = "0";
+		$response["compare"]["stats"][1]["round"] = "0";
+		$response["compare"]["stats"][1]["totalPoints"] = "0";
 	}
 }else{
-	$response["user"]["notifications"] = "0";
-	$response["user"]["points"] = "0";
-	$response["user"]["rank"] = "0";
-	$response["user"]["pRank"] = "0";
+	$response["compare"]["notifications"] = "0";
+	$response["compare"]["points"] = "0";
+	$response["compare"]["rank"] = "0";
+	$response["compare"]["pRank"] = "0";
 }
 
 //get requested round
