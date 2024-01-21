@@ -49,6 +49,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("notifications.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "coins" ){
 	require("coins.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "compare" ){
+	require("compare.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();
