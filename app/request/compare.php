@@ -13,20 +13,32 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 		$response["user"]["points"] = $user[0]["points"];
 		$response["user"]["rank"] = $user[0]["rank"];
 		$response["user"]["pRank"] = $user[0]["pRank"];
+        $response["user"]["username"] = $user[0]["username"];
+        $response["user"]["team"] = $user[0]["team"];
+        $response["user"]["country"] = $user[0]["country"];
 	}else{
 		$response["user"]["points"] = "0";
 		$response["user"]["rank"] = "0";
 		$response["user"]["pRank"] = "0";
+        $response["user"]["username"] = "";
+        $response["user"]["team"] = "";
+        $response["user"]["country"] = "";
 	}
     // get comapre user details
     if( $user = selectDB('user', "`id` = '{$_GET["compareId"]}'") ){
 		$response["compare"]["points"] = $user[0]["points"];
 		$response["compare"]["rank"] = $user[0]["rank"];
 		$response["compare"]["pRank"] = $user[0]["pRank"];
+        $response["compare"]["username"] = $user[0]["username"];
+        $response["compare"]["team"] = $user[0]["team"];
+        $response["compare"]["country"] = $user[0]["country"];
 	}else{
 		$response["compare"]["points"] = "0";
 		$response["compare"]["rank"] = "0";
 		$response["compare"]["pRank"] = "0";
+        $response["compare"]["username"] = "";
+        $response["compare"]["team"] = "";
+        $response["compare"]["country"] = "";
 	}
 	$data= array(
 				"select"=>["t.round","SUM(t1.points) AS totalPoints"],
