@@ -100,7 +100,7 @@ if ( isset($_GET["type"]) ){
 		}
 		
 		if( !isset($_GET["leagueId"]) || empty($_GET["leagueId"]) ){
-			if( $users = selectDataDB("`name`,`username`,`points`,`rank`, `pRank`","user","`status` = '0' AND `type` = '2' ORDER BY (rank = 0 ), `rank` ASC LIMIT 30") ){
+			if( $users = selectDataDB("`id`,`name`,`username`,`points`,`rank`, `pRank`","user","`status` = '0' AND `type` = '2' ORDER BY (rank = 0 ), `rank` ASC LIMIT 30") ){
 				$response["users"] = $users;
 				echo outputData($response);
 			}else{
@@ -111,7 +111,7 @@ if ( isset($_GET["type"]) ){
 		}else{
 			if( isset($_GET["lastGw"]) && !empty($_GET["lastGw"]) ){
 				$data = array(
-					"select"=>["t.name","t.username","t.pPoints as points","t1.rank","t1.pRank"],
+					"select"=>["t.id","t.name","t.username","t.pPoints as points","t1.rank","t1.pRank"],
 					"join"=>["joinedLeagues"],
 					"on"=>["t.id = t1.userId"]
 				);
@@ -125,7 +125,7 @@ if ( isset($_GET["type"]) ){
 				}
 			}else{
 				$data = array(
-					"select"=>["t.name","t.username","t.points","t1.rank","t1.pRank"],
+					"select"=>["t.id","t.name","t.username","t.points","t1.rank","t1.pRank"],
 					"join"=>["joinedLeagues"],
 					"on"=>["t.id = t1.userId"]
 				);
