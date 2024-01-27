@@ -67,7 +67,7 @@ if ( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`st
 }
 
 // getting winners
-if ( $winners = selectDataDB("`username`, `name`, `team`, `winner`","user","`status` = '0' AND `type` = '2' AND `winner` != '0'") ){
+if ( $winners = selectDataDB("`id`,`username`, `name`, `team`, `winner`","user","`status` = '0' AND `type` = '2' AND `winner` != '0'") ){
 	$response["winners"] = $winners;
 }else{
 	$response["winners"] = array();
