@@ -24,6 +24,9 @@ if ( isset($_POST["edit"]) ){
 	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]));
 	$data = $_POST;
 	updateDB($table,$data,$where);
+}
+
+if( isset($_GET["edit"]) && !empty($_GET["edit"]) ){
 	$where = "`id` LIKE '".$_GET["id"]."'";
 	$data = selectDB($table,$where);
 }
@@ -84,7 +87,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1"><?php echo direction("English Title","العنوان باللغة الانجليزية") ?></label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="text" class="form-control" id="exampleInputuname_1" placeholder="" name="enTitle" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["endDate"] ?>"<?php }?> required>
+<input type="text" class="form-control" id="exampleInputuname_1" placeholder="" name="enTitle" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enTitle"] ?>"<?php }?> required>
 </div>
 </div>
 </div>
@@ -94,7 +97,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1"><?php echo direction("Arabic Title", "العنوان باللغة العربية") ?></label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="text" class="form-control" id="exampleInputuname_1" placeholder="" name="arTitle" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["endDate"] ?>"<?php }?> required>
+<input type="text" class="form-control" id="exampleInputuname_1" placeholder="" name="arTitle" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arTitle"] ?>"<?php }?> required>
 </div>
 </div>
 </div>
