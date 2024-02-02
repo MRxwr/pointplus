@@ -2,6 +2,7 @@
 if ( isset($_POST["startDate"]) && !isset($_POST["edit"]) ){
 	$table = "tops";
 	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]));
+	die($_POST["topUsers"]);
 	insertDB($table,$_POST);
 }
 if ( isset($_GET["delete"]) ){
