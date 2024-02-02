@@ -56,7 +56,7 @@ if ( isset($_POST["edit"]) ){
 <div class="col-sm-12 col-xs-12">
 <div class="form-wrap">
 
-<form action="?page=leagues" method="post" enctype="multipart/form-data">
+<form action="?page=top" method="post" enctype="multipart/form-data">
 
 <div class="col-md-3">
 <div class="form-group">
