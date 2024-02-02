@@ -491,8 +491,15 @@ function getTop30($startDate, $endDate){
 			total_points DESC
 		LIMIT 50;
 	";
-	if($dbconnect->query($sql)){
-		return 1;
+	if($result = $dbconnect->query($sql)){
+		while($row = $result->fetch_assoc() ){
+			$array[] = $row;
+		}
+		if ( isset($array) AND is_array($array) ){
+			return $array;
+		}else{
+			return 0;
+		}
 	}else{
 		$error = array("msg"=>"could not get the top 50 for this period");
 		return outputError($error);
