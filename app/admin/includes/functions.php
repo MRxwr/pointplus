@@ -447,18 +447,8 @@ function updateOrderStatusNotification($orderId, $status){
 function getTop30($startDate, $endDate){
 	GLOBAL $dbconnect;
 	$sql = "SELECT 
-			u.id, 
+			u.id AS userId, 
 			u.username,
-			SUM(CASE 
-					WHEN p.matchOutcome = 1 THEN 5 
-					ELSE 0 
-				END) AS matchPoints,
-			SUM(CASE 
-					WHEN p.exactMatch = 1 THEN 5 
-					ELSE 0 
-				END) AS correctPredictionPoints,
-			SUM(CASE WHEN p.x2 = 1 THEN 1 ELSE 0 END) AS total_x2,
-			SUM(CASE WHEN p.x3 = 1 THEN 1 ELSE 0 END) AS total_x3,
 			SUM(
 				(
 					CASE 
@@ -499,8 +489,6 @@ function getTop30($startDate, $endDate){
 					matches ON predictions.matchId = matches.id
 				WHERE 
 					predictions.date BETWEEN '{$startDate}' AND '{$endDate}'
-				AND
-					predictions.status = '1'
 			) p
 		JOIN 
 			user u ON p.userId = u.id
