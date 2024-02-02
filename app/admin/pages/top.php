@@ -175,9 +175,9 @@ while ( $row = $result->fetch_assoc() ){
 <td><?php echo $row["enTitle"] ?></td>
 <td><?php echo $row["arTitle"] ?></td>
 <td>
-<a href="?page=leagues&edit=1&id=<?php echo $row["id"] ?>" style="margin:3px"><i class="fa fa-edit"></i></a>
+<a href="?page=top&edit=1&id=<?php echo $row["id"] ?>" style="margin:3px"><i class="fa fa-edit"></i></a>
 
-<a href="?page=leagues&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px"><i class="<?php echo $icon[$i] ?>"></i></a>
+<a href="?page=top&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px"><i class="<?php echo $icon[$i] ?>"></i></a>
 </td>
 </tr>
 <?php
