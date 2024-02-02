@@ -27,6 +27,7 @@ if ( isset($_POST["edit"]) ){
 }
 
 if( isset($_GET["edit"]) && !empty($_GET["edit"]) ){
+	$table = "tops";
 	$where = "`id` LIKE '".$_GET["id"]."'";
 	$data = selectDB($table,$where);
 }
