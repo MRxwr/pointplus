@@ -68,7 +68,7 @@ if( isset($_GET["edit"]) && !empty($_GET["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1"><?php echo direction("Start Date","تاريخ البدء") ?></label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="date" class="form-control" id="exampleInputuname_1" placeholder="" name="startDate" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["startDate"] ?>"<?php }?> required>
+<input type="date" class="form-control" id="exampleInputuname_1" placeholder="" name="startDate" <?php if(isset($_GET["edit"])){?>value="<?php echo substr($data[0]["startDate"],0,10) ?>"<?php }?> required>
 </div>
 </div>
 </div>
@@ -78,7 +78,7 @@ if( isset($_GET["edit"]) && !empty($_GET["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1"><?php echo direction("End Date","تاريخ الانتهاء") ?></label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="date" class="form-control" id="exampleInputuname_1" placeholder="" name="endDate" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["endDate"] ?>"<?php }?> required>
+<input type="date" class="form-control" id="exampleInputuname_1" placeholder="" name="endDate" <?php if(isset($_GET["edit"])){?>value="<?php echo substr($data[0]["endDate"],0,10) ?>"<?php }?> required>
 </div>
 </div>
 </div>
