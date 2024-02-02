@@ -3,7 +3,10 @@ if ( isset($_POST["startDate"]) && !isset($_POST["edit"]) ){
 	$table = "tops";
 	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]));
 	insertDB($table,$_POST);
-	header("LOCATION: ?page=top");die();
+	?>
+	<script> window.location.href = '?page=top'; </script>
+	<?php
+	die();
 }
 if ( isset($_GET["delete"]) ){
 	$table = "tops";
