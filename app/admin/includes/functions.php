@@ -448,43 +448,62 @@ function getTop30($startDate, $endDate){
 	GLOBAL $dbconnect;
 	$sql = "SELECT 
 			u.id, 
-			u.username, 
+			u.username,
+			SUM(CASE 
+					WHEN p.matchOutcome = 1 THEN 5 
+					ELSE 0 
+				END) AS matchPoints,
+			SUM(CASE 
+					WHEN p.exactMatch = 1 THEN 5 
+					ELSE 0 
+				END) AS correctPredictionPoints,
+			SUM(CASE WHEN p.x2 = 1 THEN 1 ELSE 0 END) AS total_x2,
+			SUM(CASE WHEN p.x3 = 1 THEN 1 ELSE 0 END) AS total_x3,
 			SUM(
-				CASE
-					WHEN (p.goals1 = p.goals2 AND m.goals1 = m.goals2) OR
-						(p.goals1 > p.goals2 AND m.goals1 > m.goals2) OR
-						(p.goals1 < p.goals2 AND m.goals1 < m.goals2) THEN 5
-					ELSE 0
-				END
-			) AS match_winner_prediction_points,
-			SUM(
-				CASE
-					WHEN p.goals1 = m.goals1 AND p.goals2 = m.goals2 THEN 5
-					ELSE 0
-				END
-			) AS exact_goals_points,
-			SUM(
-				CASE
-					WHEN (p.goals1 = p.goals2 AND m.goals1 = m.goals2) OR
-						(p.goals1 > p.goals2 AND m.goals1 > m.goals2) OR
-						(p.goals1 < p.goals2 AND m.goals1 < m.goals2) THEN 5
-					ELSE 0
-				END
-			) +
-			SUM(
-				CASE
-					WHEN p.goals1 = m.goals1 AND p.goals2 = m.goals2 THEN 5
-					ELSE 0
-				END
+				(
+					CASE 
+						WHEN p.matchOutcome = 1 THEN 5 
+						ELSE 0 
+					END 
+					+ 
+					CASE 
+						WHEN p.exactMatch = 1 THEN 5 
+						ELSE 0 
+					END
+				) * 
+				(CASE
+					WHEN p.x2 = 1 THEN 2
+					WHEN p.x3 = 1 THEN 6
+					ELSE 1
+				END)
 			) AS total_points
 		FROM 
-			predictions p
-		JOIN 
-			matches m ON p.matchId = m.id
+			(
+				SELECT 
+					predictions.userId,
+					predictions.x2,
+					predictions.x3,
+					CASE
+						WHEN (predictions.goals1 = predictions.goals2 AND matches.goals1 = matches.goals2) OR
+							(predictions.goals1 > predictions.goals2 AND matches.goals1 > matches.goals2) OR
+							(predictions.goals1 < predictions.goals2 AND matches.goals1 < matches.goals2) 
+						THEN 1 ELSE 0 
+					END AS matchOutcome,
+					CASE
+						WHEN predictions.goals1 = matches.goals1 AND predictions.goals2 = matches.goals2 
+						THEN 1 ELSE 0 
+					END AS exactMatch
+				FROM 
+					predictions 
+				JOIN 
+					matches ON predictions.matchId = matches.id
+				WHERE 
+					predictions.date BETWEEN '{$startDate}' AND '{$endDate}'
+				AND
+					predictions.status = '1'
+			) p
 		JOIN 
 			user u ON p.userId = u.id
-		WHERE 
-			p.date BETWEEN '{$startDate}' AND '{$endDate}'
 		GROUP BY 
 			u.id
 		ORDER BY 
