@@ -443,4 +443,59 @@ function updateOrderStatusNotification($orderId, $status){
 		$response = curl_exec($ch);
 		curl_close($ch);
 }
+
+function getTop30($startDate, $endDate){
+	GLOBAL $dbconnect;
+	$sql = "SELECT 
+			u.id, 
+			u.username, 
+			SUM(
+				CASE
+					WHEN (p.goals1 = p.goals2 AND m.goals1 = m.goals2) OR
+						(p.goals1 > p.goals2 AND m.goals1 > m.goals2) OR
+						(p.goals1 < p.goals2 AND m.goals1 < m.goals2) THEN 5
+					ELSE 0
+				END
+			) AS match_winner_prediction_points,
+			SUM(
+				CASE
+					WHEN p.goals1 = m.goals1 AND p.goals2 = m.goals2 THEN 5
+					ELSE 0
+				END
+			) AS exact_goals_points,
+			SUM(
+				CASE
+					WHEN (p.goals1 = p.goals2 AND m.goals1 = m.goals2) OR
+						(p.goals1 > p.goals2 AND m.goals1 > m.goals2) OR
+						(p.goals1 < p.goals2 AND m.goals1 < m.goals2) THEN 5
+					ELSE 0
+				END
+			) +
+			SUM(
+				CASE
+					WHEN p.goals1 = m.goals1 AND p.goals2 = m.goals2 THEN 5
+					ELSE 0
+				END
+			) AS total_points
+		FROM 
+			predictions p
+		JOIN 
+			matches m ON p.matchId = m.id
+		JOIN 
+			user u ON p.userId = u.id
+		WHERE 
+			p.date BETWEEN '{$startDate}' AND '{$endDate}'
+		GROUP BY 
+			u.id
+		ORDER BY 
+			total_points DESC
+		LIMIT 50;
+	";
+	if($dbconnect->query($sql)){
+		return 1;
+	}else{
+		$error = array("msg"=>"could not get the top 50 for this period");
+		return outputError($error);
+	}
+}
 ?>
