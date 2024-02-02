@@ -41,8 +41,8 @@ if ( !isset($_GET["page"]) ){
 	require_once('pages/adminReports.php');
 }elseif( $_GET["page"] == "winners" ){
 	require_once('pages/winners.php');
-}elseif( $_GET["page"] == "tops" ){
-	require_once('pages/tops.php');
+}elseif( $_GET["page"] == "top" ){
+	require_once('pages/top.php');
 }else{
 	require_once('pages/home.php');
 }
