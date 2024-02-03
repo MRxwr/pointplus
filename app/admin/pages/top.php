@@ -1,7 +1,7 @@
 <?php
 if ( isset($_POST["startDate"]) && !isset($_POST["edit"]) ){
 	$table = "tops";
-	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]));
+	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 	insertDB($table,$_POST);
 	?>
 	<script> window.location.href = '?page=top'; </script>
@@ -25,7 +25,7 @@ if ( isset($_POST["edit"]) ){
 	$table = "tops";
 	$where = "`id` LIKE '".$_POST["edit"]."'";
 	unset($_POST["edit"]);
-	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]));
+	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 	$data = $_POST;
 	updateDB($table,$data,$where);
 }
