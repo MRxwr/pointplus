@@ -45,7 +45,7 @@
 				<div class="clearfix"></div>
 			</a>	
 
-			<a class="" href="?page=tops" >
+			<a class="" href="?page=top" >
 				<div class="pull-left">
 					<i class="fa fa-trophy mr-20"></i>
 					<span class="right-nav-text">Top 50</span>
