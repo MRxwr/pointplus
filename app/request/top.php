@@ -5,7 +5,6 @@ if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`
 }else{
     $response["banners"] = array();
 }
-echo "mememe";die();
 
 if ( $list = selectDataDB("`id`,`enTitle`,`arTitle`",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC") ){
     $response["list"] = $list;
@@ -37,4 +36,6 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
         $response["top"] = array();
     }
 }
+
+echo outputData($response);
 ?>
