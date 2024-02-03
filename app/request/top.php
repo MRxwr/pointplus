@@ -25,7 +25,7 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
         $response["top"] = array();
     }
 }else{
-	if ( $top = selectDataDB("*",'tops',"`id` != '0' ORDER BY `id` DESC LIMIT 1") ){
+	if ( $top = selectDataDB("*",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC LIMIT 1") ){
         $response["top"] = array(
             "id" => $top[0]["id"],
             "enTitle" => $top[0]["enTitle"],
