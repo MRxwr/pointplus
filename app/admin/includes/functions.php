@@ -125,9 +125,6 @@ function deleteDB($table, $where){
 
 function insertDB($table, $data){
 	GLOBAL $dbconnect;
-	GLOBAL $date;
-	$check = [';','"'];
-	$data = str_replace($check,"",$data);
 	$keys = array_keys($data);
 	$sql = "INSERT INTO `".$table."`(";
 	for($i = 0 ; $i < sizeof($keys) ; $i++ ){
@@ -154,10 +151,6 @@ function insertDB($table, $data){
 
 function updateDB($table ,$data, $where){
 	GLOBAL $dbconnect;
-	GLOBAL $date;
-	$check = [';','"'];
-	$data = str_replace($check,"",$data);
-	$where = str_replace($check,"",$where);
 	$keys = array_keys($data);
 	$sql = "UPDATE `".$table."` SET ";
 	for($i = 0 ; $i < sizeof($data) ; $i++ ){
