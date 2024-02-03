@@ -5,13 +5,13 @@ if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`
 }else{
     $response["banners"] = array();
 }
-
+die();
 if ( $list = selectDataDB("`id`,`enTitle`,`arTitle`",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC") ){
     $response["list"] = $list;
 }else{
     $response["list"] = array();
 }
-die();
+
 if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
     $topId = $_GET["topId"];
     if ( $top = selectDataDB("*",'tops',"`id` LIKE '$topId'") ){
