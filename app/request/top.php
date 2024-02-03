@@ -8,9 +8,9 @@ if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`
 
 if ( $list = selectDataDB("*",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC") ){
     $response["list"] = array(
-        "id" => $top[0]["id"],
-        "enTitle" => $top[0]["enTitle"],
-        "arTitle" => $top[0]["arTitle"],
+        "id" => $list[0]["id"],
+        "enTitle" => $list[0]["enTitle"],
+        "arTitle" => $list[0]["arTitle"],
     );
 }else{
     $response["list"] = array();
