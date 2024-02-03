@@ -165,6 +165,10 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			$error = array("msg"=>"A user with this username is already registred.");
 			echo outputError($error);die();
 		}
+		if( selectDB('user',"`mobile` LIKE '".$_POST["mobile"]."'") ){
+			$error = array("msg"=>"A user with this mobile is already registred.");
+			echo outputError($error);die();
+		}
 		if( selectDB('user',"`team` LIKE '".$_POST["team"]."'") ){
 			$error = array("msg"=>"A user with this team name is already registred.");
 			echo outputError($error);die();
