@@ -21,7 +21,6 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
             "arTitle" => $top[0]["arTitle"],
             "list" => json_decode($top[0]["topUsers"],true)
         );
-        var_dump(json_decode($top[0]["topUsers"]));
     }else{
         $response["top"] = array();
     }
