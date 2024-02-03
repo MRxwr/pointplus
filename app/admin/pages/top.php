@@ -25,6 +25,7 @@ if ( isset($_POST["edit"]) ){
 	$table = "tops";
 	$where = "`id` LIKE '".$_POST["edit"]."'";
 	unset($_POST["edit"]);
+	var_dump(getTop30($_POST["startDate"],$_POST["endDate"]));
 	$_POST["topUsers"] = json_encode(getTop30($_POST["startDate"],$_POST["endDate"]));
 	$data = $_POST;
 	updateDB($table,$data,$where);
