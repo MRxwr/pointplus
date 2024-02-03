@@ -1,11 +1,11 @@
 <?php
-echo "mememe";die();
 //get address
 if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` LIKE '1'") ){
     $response["banners"] = $banners;
 }else{
     $response["banners"] = array();
 }
+echo "mememe";die();
 
 if ( $list = selectDataDB("`id`,`enTitle`,`arTitle`",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC") ){
     $response["list"] = $list;
