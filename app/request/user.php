@@ -133,12 +133,10 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			$error = array("msg"=>"Please fill birthday");
 			echo outputError($error);die();
 		}
-		/*
 		if ( !isset($_POST["firebase"]) || empty($_POST["firebase"]) ){
 			$error = array("msg"=>"Please fill firebase");
 			echo outputError($error);die();
 		}
-		*/
 		if ( !isset($_POST["password"]) || empty($_POST["password"]) ){
 			$error = array("msg"=>"Please fill password");
 			echo outputError($error);die();
