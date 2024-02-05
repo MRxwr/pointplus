@@ -105,32 +105,34 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			echo outputError($error);die();
 		}
 	}elseif( $_GET["type"] == "register" ){
+		/*
 		if ( !isset($_POST["name"]) || empty($_POST["name"]) ){
 			$error = array("msg"=>"Please enter name");
-			echo outputError($error);die();
-		}
-		if ( !isset($_POST["username"]) || empty($_POST["username"]) ){
-			$error = array("msg"=>"Please enter username");
 			echo outputError($error);die();
 		}
 		if ( !isset($_POST["team"]) || empty($_POST["team"]) ){
 			$error = array("msg"=>"Please enter team name");
 			echo outputError($error);die();
 		}
-		if ( !isset($_POST["country"]) || empty($_POST["country"]) ){
-			$error = array("msg"=>"Please enter country");
-			echo outputError($error);die();
-		}
 		if ( !isset($_POST["mobile"]) || empty($_POST["mobile"]) ){
 			$error = array("msg"=>"Please enter mobile");
 			echo outputError($error);die();
 		}
-		if ( !isset($_POST["email"]) || empty($_POST["email"]) ){
-			$error = array("msg"=>"Please fill email");
-			echo outputError($error);die();
-		}
 		if ( !isset($_POST["birthday"]) || empty($_POST["birthday"]) ){
 			$error = array("msg"=>"Please fill birthday");
+			echo outputError($error);die();
+		}
+		*/
+		if ( !isset($_POST["username"]) || empty($_POST["username"]) ){
+			$error = array("msg"=>"Please enter username");
+			echo outputError($error);die();
+		}
+		if ( !isset($_POST["country"]) || empty($_POST["country"]) ){
+			$error = array("msg"=>"Please enter country");
+			echo outputError($error);die();
+		}
+		if ( !isset($_POST["email"]) || empty($_POST["email"]) ){
+			$error = array("msg"=>"Please fill email");
 			echo outputError($error);die();
 		}
 		if ( !isset($_POST["firebase"]) || empty($_POST["firebase"]) ){
@@ -163,6 +165,7 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			$error = array("msg"=>"A user with this username is already registred.");
 			echo outputError($error);die();
 		}
+		/*
 		if( selectDB('user',"`mobile` LIKE '".$_POST["mobile"]."'") ){
 			$error = array("msg"=>"A user with this mobile is already registred.");
 			echo outputError($error);die();
@@ -171,6 +174,7 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			$error = array("msg"=>"A user with this team name is already registred.");
 			echo outputError($error);die();
 		}
+		*/
 		if( insertDB('user',$data) ){
 			if ( $user = selectDB('user',"`email` LIKE '".$_POST["email"]."' AND `password` LIKE '".$_POST["password"]."'") ){
 				if( $user[0]["status"] == 1 ){
@@ -185,16 +189,18 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 		}
 	}elseif( $_GET["type"] == "profile" ){
 		if ( isset($_GET["update"]) && !empty($_GET["update"]) ){
+			/*
 			if ( !isset($_POST["name"]) || empty($_POST["name"]) ){
 				$error = array("msg"=>"Please enter name.");
 				echo outputError($error);die();
 			}
-			if ( !isset($_POST["country"]) || empty($_POST["country"]) ){
-				$error = array("msg"=>"Please enter country.");
-				echo outputError($error);die();
-			}
 			if ( !isset($_POST["birthday"]) || empty($_POST["birthday"]) ){
 				$error = array("msg"=>"Please enter birthday.");
+				echo outputError($error);die();
+			}
+			*/
+			if ( !isset($_POST["country"]) || empty($_POST["country"]) ){
+				$error = array("msg"=>"Please enter country.");
 				echo outputError($error);die();
 			}
 			if ( !isset($_POST["id"]) || empty($_POST["id"]) ){
@@ -203,10 +209,10 @@ if ( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			}
 			$data = array(
 				"username"=>$_POST["username"],
-				"team"=>$_POST["team"],
+				//"team"=>$_POST["team"],
 				"country"=>$_POST["country"],
-				"birthday"=>$_POST["birthday"],
-				"name" => $_POST["name"]
+				//"birthday"=>$_POST["birthday"],
+				//"name" => $_POST["name"]
 			);
 			if( $user = selectDB("user","`id` = '{$_POST["id"]}' " ) ){
 				if ( updateUserDB("user",$data,"`id` = '{$_POST["id"]}'" ) ){

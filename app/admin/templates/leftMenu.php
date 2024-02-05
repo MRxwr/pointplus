@@ -54,6 +54,15 @@
 				<div class="clearfix"></div>
 			</a>
 
+			<a class="" href="?page=quiz" >
+				<div class="pull-left">
+					<i class="fa fa-question mr-20"></i>
+					<span class="right-nav-text">Quiz</span>
+				</div>
+				<div class="pull-right"></div>
+				<div class="clearfix"></div>
+			</a>
+
 			<a class="" href="?page=predictions" >
 				<div class="pull-left">
 					<i class="fa fa-question-circle mr-20"></i>
