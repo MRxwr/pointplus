@@ -22,8 +22,47 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
             echo outputError($response);die();
         }
     }else{
+        if( isset($_POST["roomId"]) && !empty($_POST["roomId"]) ){
+            if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$_POST["roomId"]}'") ){
+                $response["room"] = array(
+                    "id" => $room[0]["id"],
+                    "code" => $room[0]["code"],
+                    "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
+                    "listOfCategories" => json_decode($room[0]["listOfCategories"],true),
+                    "listOfQuestions" => json_decode($room[0]["listOfQuestions"],true),
+                    "type" => $room[0]["type"],
+                    "winner" => $room[0]["winner"],
+                    "total" => $room[0]["total"],
+                    "status" => $room[0]["status"],
+                    "hidden" => $room[0]["hidden"],
+                );
+                echo outputData($response);die();
+            }
+        }else{
+            $response["room"] = array();
+            $response["msg"] = "Room not found";
+            echo outputError($response);die();
+        }
+
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0'") ){
-            $response["room"] = $room;
+            $listOfUsers = json_decode($room[0]["listOfUsers"],true);
+            array_push($listOfUsers,array(
+                "id" => $_POST["userId"],
+            ));
+            updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
+            $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$room[0]["id"]}'");
+            $response["room"] = array(
+                    "id" => $room[0]["id"],
+                    "code" => $room[0]["code"],
+                    "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
+                    "listOfCategories" => json_decode($room[0]["listOfCategories"],true),
+                    "listOfQuestions" => json_decode($room[0]["listOfQuestions"],true),
+                    "type" => $room[0]["type"],
+                    "winner" => $room[0]["winner"],
+                    "total" => $room[0]["total"],
+                    "status" => $room[0]["status"],
+                    "hidden" => $room[0]["hidden"],
+                );
             echo outputData($response);die();
         }else{
             $listOfUsers = array(
@@ -42,7 +81,18 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
             );
             insertDB("quiz_room",$dataInsert);
             $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(listOfUsers, '$.id') = '{$_POST["userId"]}'");
-            $response["room"] = $room;
+            $response["room"] = array(
+                "id" => $room[0]["id"],
+                "code" => $room[0]["code"],
+                "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
+                "listOfCategories" => json_decode($room[0]["listOfCategories"],true),
+                "listOfQuestions" => json_decode($room[0]["listOfQuestions"],true),
+                "type" => $room[0]["type"],
+                "winner" => $room[0]["winner"],
+                "total" => $room[0]["total"],
+                "status" => $room[0]["status"],
+                "hidden" => $room[0]["hidden"],
+            );
             echo outputData($response);die();
         }
     }
