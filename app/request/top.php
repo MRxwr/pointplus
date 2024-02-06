@@ -1,6 +1,6 @@
 <?php
 //get address
-if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` = '1' AND `type` = '4'") ){
+if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` = '0' AND `type` = '4'") ){
     $response["banners"] = $banners;
 }else{
     $response["banners"] = array();
