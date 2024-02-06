@@ -54,10 +54,10 @@
 				<div class="clearfix"></div>
 			</a>
 
-			<a class="" href="?page=quiz" >
+			<a class="" href="?page=quizCategory" >
 				<div class="pull-left">
 					<i class="fa fa-question mr-20"></i>
-					<span class="right-nav-text">Quiz</span>
+					<span class="right-nav-text">Quiz Category</span>
 				</div>
 				<div class="pull-right"></div>
 				<div class="clearfix"></div>
