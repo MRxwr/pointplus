@@ -46,7 +46,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
 
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0'") ){
             $listOfUsers = json_decode($room[0]["listOfUsers"],true);
-            array_push($listOfUsers,$_POST["userId"]);
+            array_push($listOfUsers["id"],$_POST["userId"]);
             updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
             $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$room[0]["id"]}'");
             $response["room"] = array(
