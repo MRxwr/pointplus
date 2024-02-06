@@ -8,8 +8,15 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
 }else{
     updateDB("users",array("firebase"=>$_POST["firebase"]),"`id` = '{$_POST["userId"]}'");
     if( $rooms = selectDB("rooms","`status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(id, '$.id') = '{$_POST["userId"]}'") ){
-        $response["rooms"] = json_decode($rooms,true);
-        echo outputData($response);
+        $room = json_decode($rooms,true);
+        if( isset($room["error"]) && $room["error"] == 1 ){
+            $response["rooms"] = array();
+            echo outputError($response);
+        }else{
+            $response["rooms"] = $room;
+            echo outputData($response);
+        }
+        
     }else{
         $response["rooms"] = array();
         echo outputError($response);

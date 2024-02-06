@@ -1,10 +1,9 @@
 <?php
-if( $categories = selectDataDB("`id`,`arTitle`,`enTitle`","quiz_categories","`status` = '0' AND `hidden` = '0'") ){
-	$response["categories"] = $categories;
-	echo outputData($response);
+if( isset($_POST["roomCode"]) && !empty($_POST["roomCode"]) && $room = selectDB("rooms","`code` = '{$_POST["roomCode"]}'") ){
+    $response["room"] = json_decode($room,true);
+    echo outputData($response);die();
 }else{
-    $response["categories"] = array();
-	$response["msg"] = "No categories found";
-	echo outputError($response);die();
+    $response["room"] = array();
+    echo outputError($response);
 }
 ?>
