@@ -45,6 +45,8 @@ if ( !isset($_GET["page"]) ){
 	require_once('pages/top.php');
 }elseif( $_GET["page"] == "quizCategory" ){
 	require_once('pages/quizCategory.php');
+}elseif( $_GET["page"] == "quizQuestion" ){
+	require_once('pages/quizQuestion.php');
 }else{
 	require_once('pages/home.php');
 }
