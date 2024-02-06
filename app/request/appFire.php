@@ -7,6 +7,13 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
     echo outputError($response);die();
 }else{
     updateDB("users",array("firebase"=>$_POST["firebase"]),"`id` = '{$_POST["userId"]}'");
+    if( $rooms = selectDB("rooms","`status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(id, '$.id') = '{$_POST["userId"]}'") ){
+        $response["rooms"] = $rooms;
+        echo outputData($response);
+    }else{
+        $response["rooms"] = array();
+        echo outputError($response);
+    }
 }
 
 ?>
