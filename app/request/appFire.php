@@ -8,4 +8,5 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
 }else{
     updateDB("users",array("friebase"=>$_POST["friebase"]),"`id` = '{$_POST["userId"]}'");
 }
+
 ?>
