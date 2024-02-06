@@ -11,6 +11,7 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
         $room = json_decode($rooms,true);
         if( isset($room["error"]) && $room["error"] == 1 ){
             $response["room"] = array();
+            $response["msg"] = "Room not found";
             echo outputError($response);
         }else{
             $response["room"] = $room;
