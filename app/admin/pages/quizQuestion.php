@@ -301,7 +301,6 @@ while ( $row = $result->fetch_assoc() ){
     }else{
         $isCorrectAnswer = 3;
     }
-    }
 ?>
 <tr>
 <td><?php echo substr($row["date"],0,11) ?></td>
