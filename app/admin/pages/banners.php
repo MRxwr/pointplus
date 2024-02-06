@@ -116,8 +116,8 @@ if ( isset($_POST["edit"]) ){
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
 <select class="form-control" name="type" required>
 	<?php
-	$pages = ["Home","Stats","Predict","Settings"];
-	$values = [0,1,2,3];
+	$pages = ["Home","Stats","Predict","Settings","Tops"];
+	$values = [0,1,2,3,4];
 	if ( isset($_GET["edit"]) ){
 		for ( $i = 0; $i < sizeof($pages); $i++){
 			if( $data[0]["type"] == $values[$i] ){
