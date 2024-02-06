@@ -37,11 +37,11 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                     "hidden" => $room[0]["hidden"],
                 );
                 echo outputData($response);die();
+            }else{
+                $response["room"] = array();
+                $response["msg"] = "Room not found";
+                echo outputError($response);die();
             }
-        }else{
-            $response["room"] = array();
-            $response["msg"] = "Room not found";
-            echo outputError($response);die();
         }
 
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0'") ){
