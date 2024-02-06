@@ -20,6 +20,17 @@ function randomCode(){
 	}
 }
 
+function randomCodeQuiz(){
+	jump:
+	$permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+	$code = substr(str_shuffle($permitted_chars), 0, 8);
+	if ( selectDB("quiz_room","`code` LIKE '{$code}'") ){
+		goto jump;
+	}else{
+		return $code;
+	}
+}
+
 function selectDB($table, $where){
 	GLOBAL $dbconnect;
 	GLOBAL $date;

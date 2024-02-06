@@ -33,7 +33,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                 "listOfUsers" => json_encode($listOfUsers),
                 "listOfCategories" => json_encode(array()),
                 "listOfQuestions" => json_encode(array()),
-                "code" => randomCode(),
+                "code" => randomCodeQuiz(),
                 "type" => "1",
                 "winner" => "0",
                 "total" => "0",
