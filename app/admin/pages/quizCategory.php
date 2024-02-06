@@ -105,7 +105,7 @@ if ( isset($_POST["edit"]) ){
 <?php
 if ( !isset($_GET["edit"]) ){
 $status 		= array('0','1');
-$arrayOfTitles 	= array('Active products','Inactive products');
+$arrayOfTitles 	= array('Active Quiz Categories','Inactive Quiz Categories');
 $myTable 		= array('myTable1','myTable2');
 $panel 			= array('panel-default','panel-danger');
 $textColor 		= array('txt-dark','txt-light');
