@@ -8,7 +8,7 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
 }else{
     updateDB("users",array("firebase"=>$_POST["firebase"]),"`id` = '{$_POST["userId"]}'");
     if( $rooms = selectDB("rooms","`status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(id, '$.id') = '{$_POST["userId"]}'") ){
-        $response["rooms"] = $rooms;
+        $response["rooms"] = json_decode($rooms,true);
         echo outputData($response);
     }else{
         $response["rooms"] = array();
