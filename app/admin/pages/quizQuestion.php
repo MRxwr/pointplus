@@ -105,7 +105,7 @@ if ( isset($_POST["edit"]) ){
 </div>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-4">
 <div class="form-group">
 <label class="control-label mb-10" for="exampleInputuname_1">Question</label>
 <div class="input-group">
@@ -114,6 +114,26 @@ if ( isset($_POST["edit"]) ){
 </div>
 </div>
 </div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">Points</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+<input type="number" class="form-control" placeholder="points" name="points" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["points"] ?>"<?php }?> required>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputEmail_1">Upload Image</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-upload"></i></div>
+<input type="file" class="form-control" name="image">
+</div>
+</div>
+</div>	
 
 <div class="col-md-6">
 <div class="form-group">
@@ -200,28 +220,7 @@ if ( isset($_POST["edit"]) ){
 </select>
 </div>
 </div>
-</div>
-
-<div class="col-md-4">
-<div class="form-group">
-<label class="control-label mb-10" for="exampleInputuname_1">Points</label>
-<div class="input-group">
-<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="number" class="form-control" placeholder="points" name="points" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["points"] ?>"<?php }?> required>
-</div>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="form-group">
-<label class="control-label mb-10" for="exampleInputEmail_1">Upload Image</label>
-<div class="input-group">
-<div class="input-group-addon"><i class="fa fa-upload"></i></div>
-<input type="file" class="form-control" name="image">
-</div>
-</div>
-</div>		
-
+</div>	
 
 <div class="col-md-12">
 <button type="submit" class="btn btn-success mr-10">Submit</button>
