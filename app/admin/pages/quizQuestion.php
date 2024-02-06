@@ -1,5 +1,5 @@
 <?php
-if ( isset($_POST["enTitle"]) && !isset($_POST["edit"]) ){
+if ( isset($_POST["question"]) && !isset($_POST["edit"]) ){
 	
 	if( is_uploaded_file($_FILES['image']['tmp_name']) ){
 		@$ext = end((explode(".", $_FILES['image']['name'])));
