@@ -43,6 +43,8 @@ if ( !isset($_GET["page"]) ){
 	require_once('pages/winners.php');
 }elseif( $_GET["page"] == "top" ){
 	require_once('pages/top.php');
+}elseif( $_GET["page"] == "quizCategory" ){
+	require_once('pages/quizCategory.php');
 }else{
 	require_once('pages/home.php');
 }
