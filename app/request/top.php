@@ -23,9 +23,9 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
         );
     }else{
         $response["top"] = array(
-            "id" => $top[0]["id"],
-            "enTitle" => $top[0]["enTitle"],
-            "arTitle" => $top[0]["arTitle"],
+            "id" => "",
+            "enTitle" => "",
+            "arTitle" => "",
             "list" => json_decode("",true)
         );
     }
