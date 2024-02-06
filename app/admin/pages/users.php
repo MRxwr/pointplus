@@ -269,8 +269,8 @@ while ( $row = $result->fetch_assoc() ){
 <td><?php echo substr($row["date"],0,11) ?></td>
 <td><?php echo $row["username"] ?></td>
 <td><?php echo $row["name"] ?></td>
-<td><a href="mailto:<?php echo $row["email"] ?>">Email</a></td>
-<td><a href="tel:<?php echo $row["mobile"] ?>">call</a></td>
+<td><?php echo $row["email"] ?></a></td>
+<td><?php echo $row["mobile"] ?></td>
 <td><?php echo $row["country"] ?></td>
 <td><?php echo $row["team"] ?></td>
 <td><?php echo $favoTeam ?></td>
