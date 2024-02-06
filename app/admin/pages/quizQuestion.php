@@ -293,14 +293,24 @@ $sql = "SELECT t.*
 		";
 $result = $dbconnect->query($sql);
 while ( $row = $result->fetch_assoc() ){
+    $category = selectDB("quiz_categories","`id` = '{$row["quizCategory"]}'");
+    if( $row["isCorrect1"] == 1 ){
+        $isCorrectAnswer = 1;
+    }elseif( $row["isCorrect2"] == 1 ){
+        $isCorrectAnswer = 2;
+    }else{
+        $isCorrectAnswer = 3;
+    }
+    }
 ?>
 <tr>
 <td><?php echo substr($row["date"],0,11) ?></td>
-<td><?php echo $row["quizCategory"] ?></td>
+<td><?php echo $category[0]["enTitle"] ?></td>
 <td><?php echo $row["question"] ?></td>
 <td><?php echo $row["answer1"] ?></td>
 <td><?php echo $row["answer2"] ?></td>
 <td><?php echo $row["answer3"] ?></td>
+<td><?php echo $isCorrectAnswer ?></td>
 <td><?php echo $row["points"] ?></td>
 <td>
 <?php
