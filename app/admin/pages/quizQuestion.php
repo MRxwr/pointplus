@@ -279,7 +279,7 @@ for($i = 0; $i < 2 ; $i++ ){
 <th>Answer 1</th>
 <th>Answer 2</th>
 <th>Answer 3</th>
-<th>Correct Answer</th>
+<th>Correct</th>
 <th>Points</th>
 <th>Image</th>
 <th>Actions</th>
