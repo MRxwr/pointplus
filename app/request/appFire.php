@@ -7,18 +7,12 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
     echo outputError($response);die();
 }else{
     updateDB("users",array("firebase"=>$_POST["firebase"]),"`id` = '{$_POST["userId"]}'");
-    if( $rooms = selectDB("quiz_room","`status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(listOfUsers, '$.id') = '{$_POST["userId"]}'") ){
-        $room = json_decode($rooms,true);
-        if( isset($room["error"]) && $room["error"] == 1 ){
-            $response["room"] = array();
-            $response["msg"] = "Room not found";
-            echo outputError($response);
-        }else{
-            $response["room"] = $room;
-            echo outputData($response);
-        }
+    if( $room = selectDB("quiz_room","`status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(listOfUsers, '$.id') = '{$_POST["userId"]}'") ){
+        $response["room"] = $room;
+        echo outputData($response);
     }else{
         $response["room"] = array();
+        $response["msg"] = "Room not found";
         echo outputError($response);
     }
 }
