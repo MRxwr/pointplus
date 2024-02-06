@@ -3,10 +3,11 @@ if( isset($_POST["roomCode"]) && !empty($_POST["roomCode"]) && $room = selectDB(
     $room = json_decode($room,true);
     if( isset($room["error"]) && $room["error"] == 1 ){
         $response["room"] = array();
-        echo outputError($response);
+        $response["msg"] = "Room not found";
+        echo outputError($response);die();
     }else{
         $response["room"] = $room;
-        echo outputData($response);
+        echo outputData($response);die();
     }
 }else{
     $response["room"] = array();
