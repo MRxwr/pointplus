@@ -14,7 +14,7 @@ if ( $list = selectDataDB("`id`,`enTitle`,`arTitle`",'tops',"`status` = '0' AND 
 
 if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
     $topId = $_GET["topId"];
-    if ( $top = selectDataDB("*",'tops',"`status` = '0' AND `hidden` = '0' AND `id` = '$topId'") ){
+    if ( $top = selectDataDB("*",'tops',"`id` LIKE '$topId'") ){
         $response["top"] = array(
             "id" => $top[0]["id"],
             "enTitle" => $top[0]["enTitle"],
