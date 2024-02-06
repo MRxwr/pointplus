@@ -22,12 +22,7 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
             "list" => json_decode($top[0]["topUsers"],true)
         );
     }else{
-        $response["top"] = array(
-            "id" => "",
-            "enTitle" => "",
-            "arTitle" => "",
-            "list" => json_decode("",true)
-        );
+        $response["top"] = array();
     }
 }else{
 	if ( $top = selectDataDB("*",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC LIMIT 1") ){
