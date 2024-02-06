@@ -53,6 +53,14 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("compare.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "top" ){
 	require("top.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "quizCategories" ){
+	require("quizCategories.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "quizQestions" ){
+	require("quizQestions.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "rooms" ){
+	require("rooms.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "appFire" ){
+	require("appFire.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();
