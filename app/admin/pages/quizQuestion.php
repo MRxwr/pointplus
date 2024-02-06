@@ -198,7 +198,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">Answer 3</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="text" class="form-control" name="answer3" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["answer3"] ?>"<?php }?> required>
+<input type="text" class="form-control" name="answer3" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["answer3"] ?>"<?php }?>>
 </div>
 </div>
 </div>
