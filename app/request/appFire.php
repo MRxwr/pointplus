@@ -10,14 +10,14 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
     if( $rooms = selectDB("rooms","`status` = '0' AND `hidden` = '0' AND JSON_EXTRACT(id, '$.id') = '{$_POST["userId"]}'") ){
         $room = json_decode($rooms,true);
         if( isset($room["error"]) && $room["error"] == 1 ){
-            $response["rooms"] = array();
+            $response["room"] = array();
             echo outputError($response);
         }else{
-            $response["rooms"] = $room;
+            $response["room"] = $room;
             echo outputData($response);
         }
     }else{
-        $response["rooms"] = array();
+        $response["room"] = array();
         echo outputError($response);
     }
 }
