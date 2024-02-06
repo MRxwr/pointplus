@@ -87,8 +87,8 @@ if ( isset($_POST["edit"]) ){
 <select class="form-control" name="quizCategory" required>
 	<?php
     $orderBy = direction("enTitle","arTitle");
-	if ( $quizCategories = selectDB("quiz_category","`status` = '0' AND `hidden` = '0' ORDER BY `{$orderBy}` ASC") ){
-		if ( isset($_GET["edit"]) && $quizCategory = selectDB("quiz_category","`id` = '{$data[0]["quizCategory"]}'") ){
+	if ( $quizCategories = selectDB("quiz_categories","`status` = '0' AND `hidden` = '0' ORDER BY `{$orderBy}` ASC") ){
+		if ( isset($_GET["edit"]) && $quizCategory = selectDB("quiz_categories","`id` = '{$data[0]["quizCategory"]}'") ){
 			$categoryTitle = direction($quizCategory[0]["enTitle"],$quizCategory[0]["arTitle"]);
 			echo "<option value='{$quizCategory[0]["id"]}'>{$categoryTitle}</option>";
 		}
