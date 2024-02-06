@@ -16,7 +16,6 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
             $response["rooms"] = $room;
             echo outputData($response);
         }
-        
     }else{
         $response["rooms"] = array();
         echo outputError($response);
