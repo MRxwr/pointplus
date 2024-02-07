@@ -65,9 +65,9 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
         }else{
             $listOfUsers[] = $_POST["userId"];
             $dataInsert = array(
-                "listOfUsers" => $listOfUsers,
-                "listOfCategories" => array(),
-                "listOfQuestions" => array(),
+                "listOfUsers" => json_encode($listOfUsers),
+                "listOfCategories" => json_encode(array()),
+                "listOfQuestions" => json_encode(array()),
                 "code" => randomCodeQuiz(),
                 "type" => "1",
                 "winner" => "0",
