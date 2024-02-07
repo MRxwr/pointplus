@@ -6,16 +6,24 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
 
 if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
     if( $_POST["join"] == 2 ){
-        if( isset($_POST["roomCode"]) && !empty($_POST["roomCode"]) && $room = selectDB("quiz_room","`code` = '{$_POST["roomCode"]}'") ){
-            $room = json_decode($room,true);
-            if( isset($room["error"]) && $room["error"] == 1 ){
-                $response["room"] = array();
-                $response["msg"] = "Room not found";
-                echo outputError($response);die();
-            }else{
-                $response["room"] = $room;
-                echo outputData($response);die();
-            }
+        if( isset($_POST["roomCode"]) && !empty($_POST["roomCode"]) && $room = selectDB("quiz_room","`code` LIKE '{$_POST["roomCode"]}' AND `type` = '2' AND `status` = '0' AND `hidden` = '0'") ){
+            $listOfUsers = json_decode($room[0]["listOfUsers"],true);
+            array_push($listOfUsers,array("id"=>$_POST["userId"]));
+            updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
+            $room = selectDB("quiz_room","`code` = '{$_POST["roomCode"]}' AND `type` = '2' AND `status` = '0' AND `hidden` = '0'");
+            $response["room"] = array(
+                "id" => $room[0]["id"],
+                "code" => $room[0]["code"],
+                "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
+                "listOfCategories" => json_decode($room[0]["listOfCategories"],true),
+                "listOfQuestions" => json_decode($room[0]["listOfQuestions"],true),
+                "type" => $room[0]["type"],
+                "winner" => $room[0]["winner"],
+                "total" => $room[0]["total"],
+                "status" => $room[0]["status"],
+                "hidden" => $room[0]["hidden"],
+            );
+            echo outputData($response);die();
         }else{
             $response["room"] = array();
             $response["msg"] = "Room not found";
@@ -43,7 +51,6 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                 echo outputError($response);die();
             }
         }
-
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' ") ){
             if( $rooms = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) LIKE '%{$_POST["userId"]}%'") ){
                 $response["room"] = array(
