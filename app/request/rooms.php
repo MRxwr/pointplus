@@ -7,9 +7,11 @@ if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
 if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
     if( $_POST["join"] == 2 ){
         if( isset($_POST["roomCode"]) && !empty($_POST["roomCode"]) && $room = selectDB("quiz_room","`code` LIKE '{$_POST["roomCode"]}' AND `type` = '2' AND `status` = '0' AND `hidden` = '0'") ){
-            $listOfUsers = json_decode($room[0]["listOfUsers"],true);
-            array_push($listOfUsers,array("id"=>$_POST["userId"]));
-            updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
+            if( $rooms = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) NOT LIKE '%{$_POST["userId"]}%'") ){
+                $listOfUsers = json_decode($room[0]["listOfUsers"],true);
+                array_push($listOfUsers,array("id"=>$_POST["userId"]));
+                updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
+            }
             $room = selectDB("quiz_room","`code` = '{$_POST["roomCode"]}' AND `type` = '2' AND `status` = '0' AND `hidden` = '0'");
             $response["room"] = array(
                 "id" => $room[0]["id"],
@@ -52,39 +54,25 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
             }
         }
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' ") ){
-            if( $rooms = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) LIKE '%{$_POST["userId"]}%'") ){
-                $response["room"] = array(
-                        "id" => $rooms[0]["id"],
-                        "code" => $rooms[0]["code"],
-                        "listOfUsers" => json_decode($rooms[0]["listOfUsers"],true),
-                        "listOfCategories" => json_decode($rooms[0]["listOfCategories"],true),
-                        "listOfQuestions" => json_decode($rooms[0]["listOfQuestions"],true),
-                        "type" => $rooms[0]["type"],
-                        "winner" => $rooms[0]["winner"],
-                        "total" => $rooms[0]["total"],
-                        "status" => $rooms[0]["status"],
-                        "hidden" => $rooms[0]["hidden"],
-                    );
-                echo outputData($response);die();
-            }else{
+            if( $rooms = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) NOT LIKE '%{$_POST["userId"]}%'") ){
                 $listOfUsers = json_decode($room[0]["listOfUsers"],true);
                 array_push($listOfUsers,array("id"=>$_POST["userId"]));
                 updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
-                $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$room[0]["id"]}'");
-                $response["room"] = array(
-                        "id" => $room[0]["id"],
-                        "code" => $room[0]["code"],
-                        "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
-                        "listOfCategories" => json_decode($room[0]["listOfCategories"],true),
-                        "listOfQuestions" => json_decode($room[0]["listOfQuestions"],true),
-                        "type" => $room[0]["type"],
-                        "winner" => $room[0]["winner"],
-                        "total" => $room[0]["total"],
-                        "status" => $room[0]["status"],
-                        "hidden" => $room[0]["hidden"],
-                    );
-                echo outputData($response);die();
             }
+            $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$room[0]["id"]}'");
+            $response["room"] = array(
+                    "id" => $room[0]["id"],
+                    "code" => $room[0]["code"],
+                    "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
+                    "listOfCategories" => json_decode($room[0]["listOfCategories"],true),
+                    "listOfQuestions" => json_decode($room[0]["listOfQuestions"],true),
+                    "type" => $room[0]["type"],
+                    "winner" => $room[0]["winner"],
+                    "total" => $room[0]["total"],
+                    "status" => $room[0]["status"],
+                    "hidden" => $room[0]["hidden"],
+                );
+            echo outputData($response);die();
         }else{
             $listOfUsers[] = array("id" => $_POST["userId"]);;
             $dataInsert = array(
