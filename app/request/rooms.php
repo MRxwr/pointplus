@@ -33,7 +33,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
         }
     }else{
         if( isset($_POST["roomId"]) && !empty($_POST["roomId"]) ){
-            if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$_POST["roomId"]}'") ){
+            if( $room = selectDB("quiz_room","`status` = '0' AND `hidden` = '0' AND `id` = '{$_POST["roomId"]}'") ){
                 $response["room"] = array(
                     "id" => $room[0]["id"],
                     "code" => $room[0]["code"],
@@ -103,7 +103,6 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
             echo outputData($response);die();
         }
     }
-    
 }
 
 if( isset($_POST["exit"]) && !empty($_POST["exit"]) ){
