@@ -19,7 +19,7 @@ if( $room = selectDB("quiz_room","`id` = '{$_POST["roomId"]}'") ){
         "status" => "1",
         "hidden" => "1",
     );
-    if ( updateDB("quiz_room",$dataUpdate,"`id` = '{$room[0]["id"]}'") ){
+    if ( updateUserDB("quiz_room",$dataUpdate,"`id` = '{$room[0]["id"]}'") ){
         $room = selectDB("quiz_room","`id` = '{$_POST["roomId"]}'");
         $response["room"] = $room;
         $response["msg"] = "Room Submitted";
