@@ -108,7 +108,13 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
 if( isset($_POST["exit"]) && !empty($_POST["exit"]) ){
     if( $room = selectDB("quiz_room","`id` = '{$_POST["roomId"]}'") ){
         $listOfUsers = json_decode($room[0]["listOfUsers"],true);
-        unset($listOfUsers[array_search($_POST["userId"],$listOfUsers)]);
+        for( $i = 0; $i < count($listOfUsers); $i++ ){
+            if( $listOfUsers[$i]["id"] == $_POST["userId"] ){
+                unset($listOfUsers[$i]);
+                break;
+            }
+        }
+        $listOfUsers = array_values($listOfUsers);
         updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
         $response["room"] = array();
         $response["msg"] = "User Left Room";
