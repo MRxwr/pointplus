@@ -78,7 +78,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                 "hidden" => "0",
             );
             insertDB("quiz_room",$dataInsert);
-            $room = selectDB("quiz_room",'`type` = "1" AND `status` = "0" AND `hidden` = "0" AND JSON_CONTAINS(listOfUsers, "{"id": "'.$_POST["userId"].'""}")');
+            $room = selectDB("quiz_room",'`type` = "1" AND `status` = "0" AND `hidden` = "0" AND JSON_CONTAINS(listOfUsers, "{"id": "'.$_POST["userId"].'"}")');
             $response["room"] = array(
                 "id" => $room[0]["id"],
                 "code" => $room[0]["code"],
