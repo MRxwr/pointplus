@@ -46,7 +46,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
 
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0'") ){
             $listOfUsers = json_decode($room[0]["listOfUsers"],true);
-            array_push($listOfUsers,array("id"=>$_POST["userId"]));
+            array_push($listOfUsers,$_POST["userId"]);
             updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
             $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `id` = '{$room[0]["id"]}'");
             $response["room"] = array(
@@ -63,13 +63,11 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                 );
             echo outputData($response);die();
         }else{
-            $listOfUsers[] = array(
-                "id" => $_POST["userId"],
-            );
+            $listOfUsers[] = $_POST["userId"];
             $dataInsert = array(
-                "listOfUsers" => json_encode($listOfUsers),
-                "listOfCategories" => json_encode(array()),
-                "listOfQuestions" => json_encode(array()),
+                "listOfUsers" => $listOfUsers,
+                "listOfCategories" => array(),
+                "listOfQuestions" => array(),
                 "code" => randomCodeQuiz(),
                 "type" => "1",
                 "winner" => "0",
@@ -78,8 +76,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                 "hidden" => "0",
             );
             insertDB("quiz_room",$dataInsert);
-            $jsonContains = '{"id": "'.$_POST["userId"].'"}';
-            $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_CONTAINS(listOfUsers, '{$jsonContains}')");
+            $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_CONTAINS(listOfUsers, '{$_POST["userId"]}', '$')");
             $response["room"] = array(
                 "id" => $room[0]["id"],
                 "code" => $room[0]["code"],
