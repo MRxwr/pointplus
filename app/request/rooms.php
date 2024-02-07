@@ -80,6 +80,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
             insertDB("quiz_room",$dataInsert);
             $room = selectDB("quiz_room",'`type` = "1" AND `status` = "0" AND `hidden` = "0" AND JSON_CONTAINS(listOfUsers, "{"id": "'.$_POST["userId"].'"}")');
             $response["room"] = array(
+                "text" => '`type` = "1" AND `status` = "0" AND `hidden` = "0" AND JSON_CONTAINS(listOfUsers, "{"id": "'.$_POST["userId"].'"}")',
                 "id" => $room[0]["id"],
                 "code" => $room[0]["code"],
                 "listOfUsers" => json_decode($room[0]["listOfUsers"],true),
