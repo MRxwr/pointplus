@@ -112,6 +112,7 @@ if( isset($_POST["exit"]) && !empty($_POST["exit"]) ){
         unset($listOfUsers[array_search($_POST["userId"],$listOfUsers)]);
         updateDB("quiz_room",array("listOfUsers"=>json_encode($listOfUsers)),"`id` = '{$room[0]["id"]}'");
         $response["room"] = array();
+        $response["msg"] = "User Left Room";
         echo outputData($response);die();
     }else{
         $response["room"] = array();
