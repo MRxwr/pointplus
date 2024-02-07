@@ -61,6 +61,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("rooms.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "appFire" ){
 	require("appFire.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "submitRoom" ){
+	require("submitRoom.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();
