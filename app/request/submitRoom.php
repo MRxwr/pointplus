@@ -15,7 +15,7 @@ if( !isset($_POST["points"]) ){
 if( $room = selectDB("quiz_room","`id` = '{$_POST["roomId"]}'") ){
     $dataUpdate = array(
         "winner" => $_POST["winner"],
-        "points" => $_POST["points"],
+        "total" => $_POST["points"],
         "status" => "1",
         "hidden" => "1",
     );
