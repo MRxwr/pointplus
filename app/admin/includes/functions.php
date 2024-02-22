@@ -450,6 +450,7 @@ function updateOrderStatusNotification($orderId, $status){
 
 function getTop30($startDate, $endDate){
 	GLOBAL $dbconnect;
+	/*
 	$sql = "SELECT 
 			u.id AS userId, 
 			u.username,
@@ -501,6 +502,9 @@ function getTop30($startDate, $endDate){
 		ORDER BY 
 			total_points DESC
 		LIMIT 50;
+	";
+	*/
+	$sql = "SELECT p.userId, u.username, SUM(p.points) as total FROM `predictions` as p JOIN `user` as u ON p.userId = u.id WHERE p.date BETWEEN '{$startDate}' AND '{$endDate}' GROUP BY p.userId ORDER BY `total` DESC;
 	";
 	if($result = $dbconnect->query($sql)){
 		while($row = $result->fetch_assoc() ){
