@@ -504,7 +504,7 @@ function getTop30($startDate, $endDate){
 		LIMIT 50;
 	";
 	*/
-	$sql = "SELECT p.userId, u.username, SUM(p.points) as total FROM `predictions` as p JOIN `user` as u ON p.userId = u.id WHERE p.date BETWEEN '{$startDate}' AND '{$endDate}' GROUP BY p.userId ORDER BY `total` DESC;
+	$sql = "SELECT p.userId, u.username, SUM(p.points) as total FROM `predictions` as p JOIN `user` as u ON p.userId = u.id WHERE p.date BETWEEN '{$startDate}' AND '{$endDate}' GROUP BY p.userId ORDER BY `total` DESC LIMIT 50;
 	";
 	if($result = $dbconnect->query($sql)){
 		while($row = $result->fetch_assoc() ){
