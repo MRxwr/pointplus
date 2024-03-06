@@ -509,6 +509,7 @@ function getTop30($startDate, $endDate){
 			JOIN `user` as u 
 			ON p.userId = u.id 
 			WHERE p.date BETWEEN '{$startDate}' AND '{$endDate}' 
+			AND u.status = '0'
 			GROUP BY p.userId 
 			ORDER BY `total_points` DESC 
 			LIMIT 50;
