@@ -22,7 +22,7 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
             "list" => json_decode($top[0]["topUsers"],true)
         );
     }else{
-        $response["top"] = json_decode(array(),true);
+        $response["top"] = null;
     }
 }else{
 	if ( $top = selectDataDB("*",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC LIMIT 1") ){
@@ -33,7 +33,7 @@ if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
             "list" => json_decode($top[0]["topUsers"],true)
         );
     }else{
-        $response["top"] = json_decode(array(),true);
+        $response["top"] = null;
     }
 }
 
