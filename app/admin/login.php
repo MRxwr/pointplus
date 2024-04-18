@@ -4,7 +4,7 @@ require_once('includes/functions.php');
 if ( isset($_POST["username"]) && !empty($_POST["username"] )){
 	$check = [';','"',"'"];
 	$_POST = str_replace($check,"",$_POST);
-	if ( selectDB("user"," `status` = '0' AND `username` LIKE '{$_POST['username']}' AND `password` LIKE '".sha1($_POST['password'])."'") ){
+	if ( selectDB("user"," `status` = '0' AND `username` LIKE '{$_POST['username']}' AND `password` LIKE '".sha1($_POST['password'])."' AND `status` LIKE '0'") ){
 		setcookie('createSystem', md5(time().$_POST['username']), time() + (3600*24*30) , '/');
 		$data = array(
 			"cookie" => md5(time().$_POST['username'])
