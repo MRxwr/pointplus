@@ -170,43 +170,41 @@ for($i = 0; $i < 2 ; $i++ ){
 </thead>
 <tbody>
 <?php
-$sql = "SELECT t.*
-		FROM `leagues` as t
-		WHERE
-		t.status = '".$status[$i]."'
-		";
-$result = $dbconnect->query($sql);
-while ( $row = $result->fetch_assoc() ){
-	if ($row["type"] == 0 ){
-		$type = "Top";
+
+if( $leagues = selectDB("leagues","`status` = '{$status[$i]}'") ){
+	for( $j = 0; $j < sizeof($leagues) ; $j++ ){
+		$league = $leagues[$j];
+		if ( $league["type"] == 0 ){
+			$type = "Top";
+		}else{
+			$type = "Fixed";
+		}
+	?>
+	<tr>
+	<td><?php echo substr($league["date"],0,11) ?></td>
+	<td><?php echo $league["enTitle"] ?></td>
+	<td><?php echo $league["arTitle"] ?></td>
+	<td>
+	<?php
+	if ( !empty($league["logo"]) ){
+	?>
+	<a href="logos/<?php echo $league["logo"] ?>" target="_blank">View</a>
+	<?php
 	}else{
-		$type = "Fixed";
+		echo "None";
 	}
-?>
-<tr>
-<td><?php echo substr($row["date"],0,11) ?></td>
-<td><?php echo $row["enTitle"] ?></td>
-<td><?php echo $row["arTitle"] ?></td>
-<td>
-<?php
-if ( !empty($row["logo"]) ){
-?>
-<a href="logos/<?php echo $row["logo"] ?>" target="_blank">View</a>
-<?php
-}else{
-	echo "None";
-}
-?>
-</td>
-<td>
+	?>
+	</td>
+	<td>
 
-<a href="?page=leagues&edit=1&id=<?php echo $row["id"] ?>" style="margin:3px"><i class="fa fa-edit"></i></a>
+	<a href="?page=leagues&edit=1&id=<?php echo $league["id"] ?>" style="margin:3px"><i class="fa fa-edit"></i></a>
 
-<a href="?page=leagues&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px"><i class="<?php echo $icon[$i] ?>"></i></a>
+	<a href="?page=leagues&<?php echo $action[$i] . $league["id"] ?>" style="margin:3px"><i class="<?php echo $icon[$i] ?>"></i></a>
 
-</td>
-</tr>
-<?php
+	</td>
+	</tr>
+	<?php
+	}
 }
 ?>
 </tbody>
