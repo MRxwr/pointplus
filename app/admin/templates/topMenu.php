@@ -3,7 +3,7 @@
 	<div class="mobile-only-brand pull-left">
 		<div class="nav-header pull-left">
 			<div class="logo-wrap">
-				<a href="<?php echo $url ?>">
+				<a href="?page=home">
 					<img class="brand-img" src="../img/logo.png" alt="brand"/>
 					<span class="brand-text">Points CP</span>
 				</a>
