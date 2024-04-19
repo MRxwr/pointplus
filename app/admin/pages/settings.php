@@ -45,7 +45,7 @@ if ( isset($_GET["edit"]) ){
 }else{
 	die();
 }
-
+/*
 if( $getRoundMatches = selectDB("matches","`status` = '0' ORDER BY `round` DESC") ){
 	if( $getMatchesId = selectDB("matches","`round` = '{$getRoundMatches[0]["round"]}'") ){
 		for( $i = 0 ; $i < sizeof($getMatchesId); $i++ ){
@@ -59,6 +59,7 @@ if( $getRoundMatches = selectDB("matches","`status` = '0' ORDER BY `round` DESC"
 		}
 	}
 }
+*/
 ?>
 
 <div class="right-sidebar-backdrop"></div>
