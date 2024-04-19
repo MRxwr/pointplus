@@ -174,11 +174,6 @@ for($i = 0; $i < 2 ; $i++ ){
 if( $leagues = selectDB("leagues","`status` = '{$status[$i]}'") ){
 	for( $j = 0; $j < sizeof($leagues) ; $j++ ){
 		$league = $leagues[$j];
-		if ( $league["type"] == 0 ){
-			$type = "Top";
-		}else{
-			$type = "Fixed";
-		}
 	?>
 	<tr>
 	<td><?php echo substr($league["date"],0,11) ?></td>
