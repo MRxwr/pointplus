@@ -1,7 +1,7 @@
 <?php
 //get address
 if ( isset($_GET["type"]) ){
-	if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` LIKE '1'") ){
+	if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`",'banners',"`status` LIKE '0' AND `type` LIKE '1'") ){
 		$response["banners"] = $banners;
 	}else{
 		$response["banners"] = array();
