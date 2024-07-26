@@ -365,7 +365,7 @@ $arrayOfTitles 	= array('Pending matches','Active matches','Inactive matches');
 $myTable 		= array('myTable3','myTable1','myTable2');
 $panel 			= array('panel-warning','panel-default','panel-danger');
 $textColor 		= array('txt-dark','txt-dark','txt-light');
-$icon 			= array('fa fa-thums-up','fa fa-trash-o','fa fa-refresh');
+$icon 			= array('fa fa-thumbs-up','fa fa-trash-o','fa fa-refresh');
 $action			= array('live=','delete=','return=');
 
 for($i = 0; $i < sizeof($status) ; $i++ ){
