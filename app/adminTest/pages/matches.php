@@ -338,7 +338,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 
 <div class="col-md-12">
 <button type="submit" class="btn btn-success mr-10">Submit</button>
-<input type="hidden" name="status" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["status"]}'";}else{echo "value='1'";} ?>>
+<input type="hidden" name="status" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["status"]}'";}else{echo "value='0'";} ?>>
 <input type="hidden" name="date" value="<?php echo $date ?>">
 <?php if(isset($_GET["edit"])){?>
 <input type="hidden" name="edit" value="<?php echo $_GET["id"] ?>">
@@ -360,15 +360,15 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 <!-- Row -->
 <?php
 if ( !isset($_GET["edit"]) ){
-$status 		= array('1','0');
-$arrayOfTitles 	= array('Active matches','Inactive matches');
-$myTable 		= array('myTable1','myTable2');
-$panel 			= array('panel-default','panel-danger');
-$textColor 		= array('txt-dark','txt-light');
-$icon 			= array('fa fa-trash-o','fa fa-refresh');
-$action			= array('delete=','return=');
+$status 		= array('0','1','2');
+$arrayOfTitles 	= array('Pending matches','Active matches','Inactive matches');
+$myTable 		= array('myTable3','myTable1','myTable2');
+$panel 			= array('panel-warning','panel-default','panel-danger');
+$textColor 		= array('txt-dark','txt-dark','txt-light');
+$icon 			= array('fa fa-thums-up','fa fa-trash-o','fa fa-refresh');
+$action			= array('live=','delete=','return=');
 
-for($i = 0; $i < 2 ; $i++ ){
+for($i = 0; $i < sizeof($status) ; $i++ ){
 ?>
 
 <div class="row">
