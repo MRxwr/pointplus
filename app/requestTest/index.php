@@ -23,6 +23,8 @@ if ( $headerAPI != "pointsCreateKW" ){
 
 $unsetData = ["userId","status","date", "username", "password", "cookie", "name", "email", "forgetPassword"];
 
+$settingsAdmin = selectDB("settings","`id` = '1'");
+
 if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("home.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "user" ){

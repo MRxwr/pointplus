@@ -3,6 +3,7 @@ if ( isset($_POST["team1"]) && !isset($_POST["edit"]) ){
 	$table = "matches";
 	insertDB($table,$_POST);
 }
+/*
 if ( isset($_POST["countdown"]) ){
 	$table = "countdown";
 	$data = array('status'=>'1');
@@ -10,6 +11,7 @@ if ( isset($_POST["countdown"]) ){
 	updateUserDB($table,$data,$where);
 	insertDB($table,$_POST);
 }
+	*/
 if ( isset($_GET["delete"]) ){
 	$table = "matches";
 	$data = array('status'=>'2');
@@ -35,6 +37,7 @@ if ( isset($_POST["edit"]) ){
 	$data = $_POST;
 	updateUserDB($table,$data,$where);
 }
+/*
 if ( $countdown = selectDB("countdown","`status` = '0'") ){
 	$countdownString = $countdown[0]["countdown"];
 	$startTimeString = $countdown[0]["startTime"];
@@ -42,7 +45,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 	$countdownString = "";
 	$startTimeString = "";
 }
-
+*/
 ?>
 
 <div class="right-sidebar-backdrop"></div>
@@ -56,7 +59,8 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 		
 			
 <!-- /Title -->
-
+<?php
+/*
 <div class="row">
 
 <div class="col-md-12">
@@ -110,7 +114,8 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 </div>
 
 </div>
-
+*/
+?>
 
 <div class="row">
 
@@ -183,7 +188,28 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 </select>
 </div>
 </div>
-</div>	
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">FROM [<?php echo $data[0]["startTime"] ?>]</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+<input name="startTime" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["startTime"]}'";}else{echo "value=''";} ?> type="datetime-local">
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">TO [<?php echo $data[0]["countdown"] ?>]</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+<input name="countdown" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["countdown"]}'";}else{echo "value=''";} ?> type="datetime-local">
+
+</div>
+</div>
+</div>
 
 <div class="col-md-3">
 <div class="form-group">

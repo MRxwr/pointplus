@@ -4,6 +4,7 @@ if( isset($_POST["submit"]) ){
 	$updateData = array(
 		"pRank" => "`rank`"
 	);
+	$settings = selectDB("settings","`id` = '1'");
 	if( updatePredictionDB("user",$updateData,"`id` > '0' ") && updatePredictionDB("joinedLeagues",$updateData,"`id` > '0' ") ){
 		if( $matches = selectDB("matches","`status` = '1'") ){
 			//update user points
@@ -32,16 +33,16 @@ if( isset($_POST["submit"]) ){
 						//for super match multiply * 2 if no x3 availble and multiply by * 3 if x3 is set 
 						if( $matches[$i]["type"] == 1 ){
 							if( $prediction[$y]["x3"] == 1 ){
-								$points = $points * 2 * 3;
+								$points = $points * $settings[0]["x3"];
 								updatePredictionDB("user",array("x3"=>1),"`id` = '{$prediction[$y]["userId"]}'");
 							}else{
-								$points = $points * 2;
+								$points = $points * $settings[0]["x2"];
 							}
 						}
 						
 						//x2 
 						if( $prediction[$y]["x2"] == 1 ){
-							$points = $points * 2;
+							$points = $points * $settings[0]["x2"];
 							updatePredictionDB("user",array("x2"=>1),"`id` = '{$prediction[$y]["userId"]}'");
 						}
 						
