@@ -35,7 +35,7 @@ if( isset($_POST["resetData"]) ){
 	
 	$table = "countdown";
 	$where = "0";
-	var_dump(deleteDB($table,$where));
+	deleteDB($table,$where);
 }
 
 if ( isset($_GET["edit"]) ){
