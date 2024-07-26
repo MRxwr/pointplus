@@ -12,24 +12,32 @@ if ( isset($_POST["countdown"]) ){
 	insertDB($table,$_POST);
 }
 	*/
-if ( isset($_GET["delete"]) ){
-	$table = "matches";
-	$data = array('status'=>'2');
-	$where = "`id` LIKE '".$_GET["delete"]."'";
-	updateUserDB($table,$data,$where);
+if( isset($_GET["delete"]) || isset($_GET["return"]) || isset($_GET["live"]) ){
+	if ( isset($_GET["delete"]) ){
+		$table = "matches";
+		$data = array('status'=>'2');
+		$where = "`id` LIKE '".$_GET["delete"]."'";
+		updateUserDB($table,$data,$where);
+	}
+	if ( isset($_GET["return"]) ){
+		$table = "matches";
+		$data = array('status'=>'0');
+		$where = "`id` LIKE '".$_GET["return"]."'";
+		updateUserDB($table,$data,$where);
+	}
+	if ( isset($_GET["live"]) ){
+		$table = "matches";
+		$data = array('status'=>'1');
+		$where = "`id` LIKE '".$_GET["live"]."'";
+		updateUserDB($table,$data,$where);
+	}
+	?>
+	<script>
+		window.location.href = "?page=matches";
+	</script>
+	<?php
 }
-if ( isset($_GET["return"]) ){
-	$table = "matches";
-	$data = array('status'=>'0');
-	$where = "`id` LIKE '".$_GET["return"]."'";
-	updateUserDB($table,$data,$where);
-}
-if ( isset($_GET["live"]) ){
-	$table = "matches";
-	$data = array('status'=>'1');
-	$where = "`id` LIKE '".$_GET["live"]."'";
-	updateUserDB($table,$data,$where);
-}
+
 if ( isset($_GET["edit"]) ){
 	$table = "matches";
 	$where = "`id` LIKE '".$_GET["id"]."'";
