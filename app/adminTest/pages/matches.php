@@ -192,7 +192,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 
 <div class="col-md-6">
 <div class="form-group">
-<label class="control-label mb-10" for="exampleInputuname_1">FROM [<?php echo $data[0]["startTime"] ?>]</label>
+<label class="control-label mb-10" for="exampleInputuname_1">FROM</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
 <input name="startTime" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["startTime"]}'";}else{echo "value=''";} ?> type="datetime-local">
@@ -202,7 +202,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 
 <div class="col-md-6">
 <div class="form-group">
-<label class="control-label mb-10" for="exampleInputuname_1">TO [<?php echo $data[0]["countdown"] ?>]</label>
+<label class="control-label mb-10" for="exampleInputuname_1">TO</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
 <input name="countdown" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["countdown"]}'";}else{echo "value=''";} ?> type="datetime-local">
