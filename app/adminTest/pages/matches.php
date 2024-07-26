@@ -24,6 +24,12 @@ if ( isset($_GET["return"]) ){
 	$where = "`id` LIKE '".$_GET["return"]."'";
 	updateUserDB($table,$data,$where);
 }
+if ( isset($_GET["live"]) ){
+	$table = "matches";
+	$data = array('status'=>'1');
+	$where = "`id` LIKE '".$_GET["live"]."'";
+	updateUserDB($table,$data,$where);
+}
 if ( isset($_GET["edit"]) ){
 	$table = "matches";
 	$where = "`id` LIKE '".$_GET["id"]."'";
