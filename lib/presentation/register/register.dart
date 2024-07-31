@@ -56,6 +56,7 @@ class _RegisterViewState extends State<RegisterView> {
     if (country != null) {
       setState(() {
         _selectedCountry = country;
+        _phoneController.text = country.name;
 
       });
     }
@@ -64,6 +65,7 @@ class _RegisterViewState extends State<RegisterView> {
     final country = await getCountryByCountryCode(context,'KW');
     setState(() {
       _selectedCountry = country;
+      _phoneController.text = country!.name;
     });
   }
   @override
@@ -117,39 +119,39 @@ class _RegisterViewState extends State<RegisterView> {
 
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
-                  TextField(
-                      keyboardType: TextInputType.text ,
-                      controller: _nameController,
-                      style: TextStyle(
-                          color: ColorManager.white,
-                          fontWeight: FontWeight.normal,
-                          fontSize: FontSize.s12
-                      ),
-                      decoration:  InputDecoration(
-                        prefix:
-                        Image.asset(ImageAssets.nameImage,width: AppSize.s15,height: AppSize.s17,
-                          fit: BoxFit.fill,),
-
-
-
-
-
-                        labelText: "name".tr(),
-
-                        labelStyle:  TextStyle(
-                            color: ColorManager.white,
-                            fontSize: FontSize.s16,
-                            fontWeight: FontWeight.normal
-
-                        ),enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: ColorManager.white),
-                      ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: ColorManager.white),
-                        ),
-                      )
-                  ),
-                  SizedBox(height: AppSize.s20,),
+                  // TextField(
+                  //     keyboardType: TextInputType.text ,
+                  //     controller: _nameController,
+                  //     style: TextStyle(
+                  //         color: ColorManager.white,
+                  //         fontWeight: FontWeight.normal,
+                  //         fontSize: FontSize.s12
+                  //     ),
+                  //     decoration:  InputDecoration(
+                  //       prefix:
+                  //       Image.asset(ImageAssets.nameImage,width: AppSize.s15,height: AppSize.s17,
+                  //         fit: BoxFit.fill,),
+                  //
+                  //
+                  //
+                  //
+                  //
+                  //       labelText: "name".tr(),
+                  //
+                  //       labelStyle:  TextStyle(
+                  //           color: ColorManager.white,
+                  //           fontSize: FontSize.s16,
+                  //           fontWeight: FontWeight.normal
+                  //
+                  //       ),enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(color: ColorManager.white),
+                  //     ),
+                  //       focusedBorder: UnderlineInputBorder(
+                  //         borderSide: BorderSide(color: ColorManager.white),
+                  //       ),
+                  //     )
+                  // ),
+                  // SizedBox(height: AppSize.s20,),
                   TextField(
                       keyboardType: TextInputType.text ,
                       controller: _userNameController,
@@ -182,39 +184,39 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                       )
                   ),
-                  SizedBox(height: AppSize.s20,),
-                  TextField(
-                      keyboardType: TextInputType.text ,
-                      controller: _teamNameController,
-                      style: TextStyle(
-                          color: ColorManager.white,
-                          fontWeight: FontWeight.normal,
-                          fontSize: FontSize.s12
-                      ),
-                      decoration:  InputDecoration(
-                        prefix:
-                        Image.asset(ImageAssets.teamNameIcon,width: AppSize.s15,height: AppSize.s17,
-                          fit: BoxFit.fill,),
-
-
-
-
-
-                        labelText: "teamName".tr(),
-
-                        labelStyle:  TextStyle(
-                            color: ColorManager.white,
-                            fontSize: FontSize.s16,
-                            fontWeight: FontWeight.normal
-
-                        ),enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: ColorManager.white),
-                      ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: ColorManager.white),
-                        ),
-                      )
-                  ),
+                  // SizedBox(height: AppSize.s20,),
+                  // TextField(
+                  //     keyboardType: TextInputType.text ,
+                  //     controller: _teamNameController,
+                  //     style: TextStyle(
+                  //         color: ColorManager.white,
+                  //         fontWeight: FontWeight.normal,
+                  //         fontSize: FontSize.s12
+                  //     ),
+                  //     decoration:  InputDecoration(
+                  //       prefix:
+                  //       Image.asset(ImageAssets.teamNameIcon,width: AppSize.s15,height: AppSize.s17,
+                  //         fit: BoxFit.fill,),
+                  //
+                  //
+                  //
+                  //
+                  //
+                  //       labelText: "teamName".tr(),
+                  //
+                  //       labelStyle:  TextStyle(
+                  //           color: ColorManager.white,
+                  //           fontSize: FontSize.s16,
+                  //           fontWeight: FontWeight.normal
+                  //
+                  //       ),enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(color: ColorManager.white),
+                  //     ),
+                  //       focusedBorder: UnderlineInputBorder(
+                  //         borderSide: BorderSide(color: ColorManager.white),
+                  //       ),
+                  //     )
+                  // ),
                   SizedBox(height: AppSize.s20,),
                   TextField(
                       keyboardType: TextInputType.emailAddress ,
@@ -248,44 +250,44 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                       )
                   ),
-                  SizedBox(height: AppSize.s20,),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: AppSize.s10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        GestureDetector(
-                          onTap: (){
-                            showDateDialog();
-                          },
-                          child: Container(
-                            height: AppSize.s50,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(width:AppSize.s1, color: ColorManager.white),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-
-                                Padding(
-                                  padding: EdgeInsets.all(AppSize.s5),
-                                    child: Image.asset(ImageAssets.birthDayIcon,height: AppSize.s15,width: AppSize.s15,)),
-                                Text(birthDay ==""?"birthDay".tr():birthDay,
-                                style: TextStyle(
-                                  color: ColorManager.white,
-                                  fontSize: FontSize.s12,
-                                  fontWeight: FontWeight.normal
-                                ),)
-                              ],
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
+                  // SizedBox(height: AppSize.s20,),
+                  // Container(
+                  //   margin: EdgeInsets.symmetric(vertical: AppSize.s10),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //
+                  //       GestureDetector(
+                  //         onTap: (){
+                  //           showDateDialog();
+                  //         },
+                  //         child: Container(
+                  //           height: AppSize.s50,
+                  //           decoration: BoxDecoration(
+                  //             border: Border(
+                  //               bottom: BorderSide(width:AppSize.s1, color: ColorManager.white),
+                  //             ),
+                  //           ),
+                  //           child: Row(
+                  //             children: [
+                  //
+                  //               Padding(
+                  //                 padding: EdgeInsets.all(AppSize.s5),
+                  //                   child: Image.asset(ImageAssets.birthDayIcon,height: AppSize.s15,width: AppSize.s15,)),
+                  //               Text(birthDay ==""?"birthDay".tr():birthDay,
+                  //               style: TextStyle(
+                  //                 color: ColorManager.white,
+                  //                 fontSize: FontSize.s12,
+                  //                 fontWeight: FontWeight.normal
+                  //               ),)
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: AppSize.s20,),
                   Container(
                     height: AppSize.s50,
@@ -300,48 +302,53 @@ class _RegisterViewState extends State<RegisterView> {
                             children: [
                               Image.asset( _selectedCountry!.flag,
                                 package: countryCodePackageName,
-                                width: AppSize.s20,
-                              height: AppSize.s10,),
-                              SizedBox(width: AppSize.s4,),
-                              Text(_selectedCountry!.callingCode.toString(),style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: FontSize.s12,
-                                fontWeight: FontWeight.normal
-                              ),),
-                              SizedBox(width: AppSize.s4,),
+                                width: AppSize.s30,
+                              height: AppSize.s30,),
+
+
                             ],
                           ),
                         ),
-                        Expanded(flex:1,child:  TextField(
-                            keyboardType: TextInputType.phone ,
-                            controller: _phoneController,
-                            style: TextStyle(
-                                color: ColorManager.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: FontSize.s12
-                            ),
-                            decoration:  InputDecoration(
+                        Expanded(flex:1,child:  GestureDetector(
+                          onTap: (){
+                            _showCountryPicker();
+                          },
+                          child: TextField(
 
-
-
-
-
-
-
-                              labelText: "phone".tr(),
-
-                              labelStyle:  TextStyle(
+                              keyboardType: TextInputType.text ,
+                              controller: _phoneController,
+                              style: TextStyle(
                                   color: ColorManager.white,
-                                  fontSize: FontSize.s16,
-                                  fontWeight: FontWeight.normal
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: FontSize.s12
+                              ),
+                              decoration:  InputDecoration(
 
-                              ),enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: ColorManager.white),
-                            ),
-                              focusedBorder: UnderlineInputBorder(
+
+
+
+
+
+
+                                labelText: "country_name".tr(),
+                                enabled: false,
+
+                                labelStyle:  TextStyle(
+                                    color: ColorManager.white,
+                                    fontSize: FontSize.s16,
+                                    fontWeight: FontWeight.normal
+
+                                ),enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: ColorManager.white),
                               ),
-                            )
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: ColorManager.white),
+                                ),
+                                disabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.white),
+                          ),
+                              )
+                          ),
                         ),)
 
 
@@ -493,7 +500,7 @@ class _RegisterViewState extends State<RegisterView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
       minimumSize: Size(width, AppSize.s55 ),
 
       shape:  RoundedRectangleBorder(
@@ -537,35 +544,13 @@ class _RegisterViewState extends State<RegisterView> {
     if(mToken ==  ""){
       mToken = (await   FirebaseMessaging.instance.getToken())??"";
     }
-    if(!validateName(name)){
-      ArtSweetAlert.show(
-          context: context,
-          artDialogArgs: ArtDialogArgs(
-              type: ArtSweetAlertType.danger,
-              title: "error".tr(),
-              text:"nameHint".tr(),
-              confirmButtonColor: ColorManager.primary,
-              confirmButtonText: "ok".tr()
-          )
-      );
-    }else if(!validateName(userName)){
+     if(!validateName(userName)){
       ArtSweetAlert.show(
           context: context,
           artDialogArgs: ArtDialogArgs(
               type: ArtSweetAlertType.danger,
               title: "error".tr(),
               text:"userNameError".tr(),
-              confirmButtonColor: ColorManager.primary,
-              confirmButtonText: "ok".tr()
-          )
-      );
-    }else if(!validateName(teamName)){
-      ArtSweetAlert.show(
-          context: context,
-          artDialogArgs: ArtDialogArgs(
-              type: ArtSweetAlertType.danger,
-              title: "error".tr(),
-              text:"teamNameError".tr(),
               confirmButtonColor: ColorManager.primary,
               confirmButtonText: "ok".tr()
           )
@@ -587,7 +572,7 @@ class _RegisterViewState extends State<RegisterView> {
           artDialogArgs: ArtDialogArgs(
               type: ArtSweetAlertType.danger,
               title: "error".tr(),
-              text:"phoneError".tr(),
+              text:"country_name_error".tr(),
               confirmButtonColor: ColorManager.primary,
               confirmButtonText: "ok".tr()
           )

@@ -21,6 +21,7 @@ import '../resources/font_manager.dart';
 import '../resources/strings_manager.dart';
 import '../resources/values_manager.dart';
 import '../web/webview_screen.dart';
+import 'compare_screen.dart';
 class LeaguesDetailsScreen extends StatefulWidget {
   GlobalKey<NavigatorState> page;
 
@@ -43,10 +44,11 @@ class _LeaguesDetailsScreen extends State<LeaguesDetailsScreen> {
   int _current =0;
   String mLanguage = "";
   ProfileModel? profileModel;
+  String? id;
   bool isEmpty=false;
   Future<LeaguesDetailsModel?> leagues() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String id = sharedPreferences.getString("id")??"";
+     id = sharedPreferences.getString("id")??"";
 
     mLanguage = sharedPreferences.getString(LANG_CODE)??"";
     PointServices pointServices = PointServices();
@@ -108,7 +110,7 @@ class _LeaguesDetailsScreen extends State<LeaguesDetailsScreen> {
                 child: leaguesDetailsModel!.data!.banners!.isEmpty?
                 Container():Column(
                   children: [
-                    Container(height: AppSize.s80,
+                    Container(height: 250.h,
                       margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                       child: CarouselSlider(
 
@@ -481,135 +483,170 @@ class _LeaguesDetailsScreen extends State<LeaguesDetailsScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return profileModel!.data!.user![0].username == usersList[index].username?Container(
-                        height: AppSize.s40,
-                        margin: EdgeInsets.all(AppSize.s4),
-                        decoration: BoxDecoration(
-                            color: ColorManager.rectangle,
+                      return id == usersList[index].id?
+                      GestureDetector(
+                        onTap: (){
+                          String currentUserId =id!;
+                          String selecetedUserId= usersList[index].id!;
+                          print('currentUserId ---> ${currentUserId}');
+                          print('selecetedUserId ---> ${selecetedUserId}');
+                          if(currentUserId!= selecetedUserId) {
+                            Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(builder: (BuildContext context) {
+                                  return CompareScreen(
+                                    userId: id!,
+                                    comparedUserId: usersList[index].id.toString(),
+                                  );
+                                }));
+                          }
+                        },
+                        child: Container(
+                          height: AppSize.s40,
+                          margin: EdgeInsets.all(AppSize.s4),
+                          decoration: BoxDecoration(
+                              color: ColorManager.rectangle,
 
-                            borderRadius: BorderRadius.all(Radius.circular(AppSize.s25))
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: AppSize.s40,
-                                  width: AppSize.s40,
-                                  alignment: AlignmentDirectional.center,
-                                  margin: EdgeInsets.all(AppSize.s4),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: ColorManager.white
+                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s25))
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: AppSize.s40,
+                                    width: AppSize.s40,
+                                    alignment: AlignmentDirectional.center,
+                                    margin: EdgeInsets.all(AppSize.s4),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ColorManager.white
+                                    ),
+                                    child: Text('${index+1}',
+                                      style: TextStyle(
+                                          color: ColorManager.black,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: FontSize.s14
+                                      ),
+
+
+                                    ),
                                   ),
-                                  child: Text('${index+1}',
+                                  Container(width: AppSize.s14,),
+                                  Text(usersList[index].username.toString(),
                                     style: TextStyle(
                                         color: ColorManager.black,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: FontSize.s14
-                                    ),
+                                        fontSize: FontSize.s12,
+                                        fontWeight: FontWeight.normal
+                                    ),),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(usersList[index].points.toString(),
+                                    style: TextStyle(
+                                        color: ColorManager.black,
+                                        fontSize: FontSize.s12,
+                                        fontWeight: FontWeight.normal
+                                    ),),
+                                  Container(width: AppSize.s8,),
+                                  Text("pts".tr(),
+                                    style: TextStyle(
+                                        color: ColorManager.white,
+                                        fontSize: FontSize.s12,
+                                        fontWeight: FontWeight.normal
+                                    ),),
+                                  Container(width: AppSize.s16,),
+                                ],
+                              )
+                            ],
+                          ),
 
 
-                                  ),
-                                ),
-                                Container(width: AppSize.s14,),
-                                Text(usersList[index].username.toString(),
-                                  style: TextStyle(
-                                      color: ColorManager.black,
-                                      fontSize: FontSize.s12,
-                                      fontWeight: FontWeight.normal
-                                  ),),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(usersList[index].points.toString(),
-                                  style: TextStyle(
-                                      color: ColorManager.black,
-                                      fontSize: FontSize.s12,
-                                      fontWeight: FontWeight.normal
-                                  ),),
-                                Container(width: AppSize.s8,),
-                                Text("pts".tr(),
-                                  style: TextStyle(
-                                      color: ColorManager.white,
-                                      fontSize: FontSize.s12,
-                                      fontWeight: FontWeight.normal
-                                  ),),
-                                Container(width: AppSize.s16,),
-                              ],
-                            )
-                          ],
+
                         ),
-
-
-
                       ):
-                      Container(
-                        height: AppSize.s40,
-                        margin: EdgeInsets.all(AppSize.s4),
-                        decoration: BoxDecoration(
-                            color: ColorManager.selectedRectangle,
+                      GestureDetector(
+                        onTap: (){
+                          String currentUserId = id!;
+                          String selecetedUserId= usersList[index]!.id!.toString();
+                          print('currentUserId ---> ${currentUserId}');
+                          print('selecetedUserId ---> ${selecetedUserId}');
+                          if(currentUserId!= selecetedUserId) {
+                            Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(builder: (BuildContext context) {
+                                  return CompareScreen(
+                                    userId: id!,
+                                    comparedUserId: usersList[index].id.toString(),
+                                  );
+                                }));
+                          }
+                        },
+                        child: Container(
+                          height: AppSize.s40,
+                          margin: EdgeInsets.all(AppSize.s4),
+                          decoration: BoxDecoration(
+                              color: ColorManager.selectedRectangle,
 
-                            borderRadius: BorderRadius.all(Radius.circular(AppSize.s25))
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: AppSize.s40,
-                                  width: AppSize.s40,
-                                  alignment: AlignmentDirectional.center,
-                                  margin: EdgeInsets.all(AppSize.s4),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: ColorManager.selectedCircle
+                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s25))
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: AppSize.s40,
+                                    width: AppSize.s40,
+                                    alignment: AlignmentDirectional.center,
+                                    margin: EdgeInsets.all(AppSize.s4),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ColorManager.selectedCircle
+                                    ),
+                                    child: Text('${index+1}',
+                                      style: TextStyle(
+                                          color: ColorManager.rectangle,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: FontSize.s14
+                                      ),
+
+
+                                    ),
                                   ),
-                                  child: Text('${index+1}',
+                                  Container(width: AppSize.s14,),
+                                  Text(usersList[index].username.toString(),
+                                    style: TextStyle(
+                                        color: ColorManager.white,
+                                        fontSize: FontSize.s12,
+                                        fontWeight: FontWeight.normal
+                                    ),),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(usersList[index].points.toString(),
                                     style: TextStyle(
                                         color: ColorManager.rectangle,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: FontSize.s14
-                                    ),
+                                        fontSize: FontSize.s12,
+                                        fontWeight: FontWeight.normal
+                                    ),),
+                                  Container(width: AppSize.s8,),
+                                  Text("pts".tr(),
+                                    style: TextStyle(
+                                        color: ColorManager.white,
+                                        fontSize: FontSize.s12,
+                                        fontWeight: FontWeight.normal
+                                    ),),
+                                  Container(width: AppSize.s16,),
+                                ],
+                              )
+                            ],
+                          ),
 
 
-                                  ),
-                                ),
-                                Container(width: AppSize.s14,),
-                                Text(usersList[index].username.toString(),
-                                  style: TextStyle(
-                                      color: ColorManager.white,
-                                      fontSize: FontSize.s12,
-                                      fontWeight: FontWeight.normal
-                                  ),),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(usersList[index].points.toString(),
-                                  style: TextStyle(
-                                      color: ColorManager.rectangle,
-                                      fontSize: FontSize.s12,
-                                      fontWeight: FontWeight.normal
-                                  ),),
-                                Container(width: AppSize.s8,),
-                                Text("pts".tr(),
-                                  style: TextStyle(
-                                      color: ColorManager.white,
-                                      fontSize: FontSize.s12,
-                                      fontWeight: FontWeight.normal
-                                  ),),
-                                Container(width: AppSize.s16,),
-                              ],
-                            )
-                          ],
+
                         ),
-
-
-
                       );
                     }, separatorBuilder: (context,index){
                   return Container(height: AppSize.s10,);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:point/presentation/resources/values_manager.dart';
 
 
+import '../../app/constant.dart';
 import 'color_manager.dart';
 
 import 'font_manager.dart';
@@ -26,8 +27,9 @@ ThemeData getApplicationTheme() {
       appBarTheme: AppBarTheme(
       centerTitle: true,
       color: ColorManager.primary,
-      elevation: AppSize.s4,
-      shadowColor: ColorManager.primaryOpacity70,
+      elevation: AppSize.s0,
+
+      shadowColor: Colors.transparent,
       titleTextStyle: getRegularStyle(
           color: ColorManager.white, fontSize: FontSize.s16)),
 
@@ -44,18 +46,14 @@ ThemeData getApplicationTheme() {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         textStyle: getRegularStyle(color: ColorManager.white,fontSize: FontSize.s12),
-        primary: ColorManager.primary,
+        backgroundColor: ColorManager.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSize.s12))
       )
   ),
 
     // Text theme
       textTheme: TextTheme(
-  headline1: getSemiBoldStyle(color: ColorManager.darkGrey,fontSize: FontSize.s16),
-  subtitle1: getMediumStyle(color: ColorManager.lightGrey,fontSize: FontSize.s14),
-          subtitle2: getMediumStyle(color: ColorManager.primary,fontSize: FontSize.s14),
-  caption: getRegularStyle(color: ColorManager.grey1,fontSize: FontSize.s12),
-  bodyText1: getRegularStyle(color: ColorManager.grey,fontSize: FontSize.s12)
+
   ),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.all(AppPadding.p8),
@@ -89,7 +87,11 @@ ThemeData getApplicationTheme() {
             borderSide:
             BorderSide(color: ColorManager.primary, width: AppSize.s1_5),
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s8))),
-      )
+      ),
+    colorScheme: ThemeData().colorScheme.copyWith(
+      background: klBackgroundColor,
+      onTertiary: klPrimaryTextColor,
+    ),
     // input decoration theme (text form field)
 
   );

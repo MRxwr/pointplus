@@ -14,15 +14,15 @@ class FABBottomAppBar extends StatefulWidget {
   FABBottomAppBar({
     required this.items,
     required this.centerItemText,
-    this.height: 70,
-    this.iconSize: 24.0,
+    this.height = 70,
+    this.iconSize = 24.0,
     required this.backgroundColor,
     required  this.color,
     required   this.selectedColor,
 
     required  this.onTabSelected,
   }) {
-    assert(this.items.length == 2 || this.items.length == 4);
+    assert(this.items.length == 2 || this.items.length == 5);
   }
   final List<FABBottomAppBarItem> items;
   final String centerItemText;

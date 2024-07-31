@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:point/domain/notification_model.dart';
 import 'package:point/presentation/main/notification_details_screen.dart';
 import 'package:point/presentation/resources/font_manager.dart';
@@ -131,49 +133,119 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       }));
                     },
                     child: Container(
-                      height: AppSize.s50,
+                      height: 80.h,
                       decoration: BoxDecoration(
                         color: const Color(0xFFDFEBEE),
                         borderRadius: BorderRadius.all(Radius.circular(AppSize.s10))
                       ),
                       child: Row(
                         children: [
-                          Expanded(
-                            flex:4,
-                            child: Container(
-                              margin: EdgeInsetsDirectional.only(start: AppSize.s5),
-                              alignment: AlignmentDirectional.centerStart,
-                              child: Text(
+                          Expanded(flex: 1,
+                              child:     Container(
+                                margin: EdgeInsets.all(10.w),
+                                child: ClipRRect(
 
-
-
-                         notificationModel!.data!.notification![index].notification.toString(),
-
-                                style: TextStyle(
-                                  color: Color(0xFF0E3151),
-                                  fontSize: FontSize.s11,
-                                  fontWeight: FontWeight.normal,
-                                  overflow: TextOverflow.ellipsis,)
-
-                                ,),
-                              ),
-                            ),
-
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              margin: EdgeInsetsDirectional.only(end: AppSize.s5),
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: Text(
-                                  formatDuration(getRemainingTime(notificationModel!.data!.notification![index].date.toString())),
-
-                                style: TextStyle(
-                                  color: ColorManager.secondary,
-                                  fontSize: FontSize.s8
+                                
+                                
+                                  child:
+                                  CachedNetworkImage(
+                                    width: AppSize.width,
+                                
+                                    fit: BoxFit.fill,
+                                    imageUrl:'${notificationModel!.data!.notification![index].image}',
+                                    imageBuilder: (context, imageProvider) => Container(
+                                        width: AppSize.width,
+                                
+                                
+                                        decoration: BoxDecoration(
+                                
+                                
+                                
+                                          image: DecorationImage(
+                                
+                                
+                                              fit: BoxFit.fill,
+                                              image: imageProvider),
+                                        )
+                                    ),
+                                    placeholder: (context, url) =>
+                                        Column(
+                                          children: [
+                                            Expanded(
+                                              flex: 9,
+                                              child: Container(
+                                                height: AppSize.height,
+                                                width:  AppSize.width,
+                                
+                                
+                                                alignment: FractionalOffset.center,
+                                                child: SizedBox(
+                                                    height: AppSize.s50,
+                                                    width: AppSize.s50,
+                                                    child:  const CircularProgressIndicator()),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                
+                                
+                                    errorWidget: (context, url, error) => Container(
+                                        height: 80.h,
+                                        width:  80.w,
+                                
+                                
+                                        child: Image.asset("assets/images/app_icon.png",fit: BoxFit.fill,),
+                                
+                                  ),
+                                  // Image.network(
+                                  //
+                                  //
+                                  // '${kBaseUrl}${mAdsPhoto}${item.photo}'  , fit: BoxFit.fitWidth,
+                                  //   height: 600.h,),
                                 ),
-                              ),
+                              )),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              children: [
+
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    margin: EdgeInsetsDirectional.only(start: AppSize.s5),
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: Text(
+
+
+
+                                      notificationModel!.data!.notification![index].notification.toString(),
+
+                                      style: TextStyle(
+                                        color: Color(0xFF0E3151),
+                                        fontSize: FontSize.s11,
+                                        fontWeight: FontWeight.normal,
+                                        overflow: TextOverflow.ellipsis,)
+
+                                      ,),
+                                  ),
+                                ),
+                                Expanded(flex:1,child: Container(
+                                  margin: EdgeInsetsDirectional.only(start: AppSize.s5),
+                                  alignment: AlignmentDirectional.centerStart,
+                                  child: Text(
+                                    formatDuration(getRemainingTime(notificationModel!.data!.notification![index].date.toString())),
+
+                                    style: TextStyle(
+                                        color: ColorManager.secondary,
+                                        fontSize: FontSize.s12
+                                    ),
+                                  ),
+                                ))
+                              ],
                             ),
-                          )
+                          ),
+
                         ],
                       ),
 

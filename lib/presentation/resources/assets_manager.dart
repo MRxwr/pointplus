@@ -1,4 +1,6 @@
 const String IMAGE_PATH="assets/images";
+const String imagePath = "assets/images";
+const String jsonPath = "assets/json";
 class ImageAssets{
   static const String fav ="${IMAGE_PATH}/star.png";
   static const String twitter ="${IMAGE_PATH}/twitter.png";
@@ -28,7 +30,9 @@ class ImageAssets{
   static const String home = "$IMAGE_PATH/home_icon.png";
   static const String states = "$IMAGE_PATH/stats.png";
   static const String predict = "$IMAGE_PATH/predict.png";
+  static const String badge = "$IMAGE_PATH/badge.png";
   static const String settings = "$IMAGE_PATH/settings.png";
+  static const String games = "$IMAGE_PATH/console.png";
   static const String notification = "$IMAGE_PATH/notification_image.png";
   static const String notificationSilent = "$IMAGE_PATH/notification_silent.png";
   static const String userImage = "$IMAGE_PATH/user_image.png";
@@ -57,4 +61,13 @@ class ImageAssets{
   static const String passwordIcon = "$IMAGE_PATH/password_name.png";
   static const String notificationIcon = "$IMAGE_PATH/notification_img.png";
 
+}
+class JsonAssets {
+  static const String loading = "$jsonPath/loading.json";
+  static const String error = "$jsonPath/error.json";
+  static const String empty = "$jsonPath/empty.json";
+  static const String success = "$jsonPath/success.json";
+  static const String logout = "$jsonPath/logout.json";
+  static const String delete = "$jsonPath/delete.json";
+  static const String cancel = "$jsonPath/cancel.json";
 }

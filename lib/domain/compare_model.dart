@@ -1,0 +1,356 @@
+class CompareModel {
+  bool? ok;
+  String? error;
+  String? status;
+  Data? data;
+
+  CompareModel({this.ok, this.error, this.status, this.data});
+
+  CompareModel.fromJson(Map<String, dynamic> json) {
+    ok = json['ok'];
+    error = json['error'];
+    status = json['status'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ok'] = this.ok;
+    data['error'] = this.error;
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class Data {
+  List<Banners>? banners;
+  User? user;
+  User? compare;
+  List<Rounds>? rounds;
+  List<Matches>? matches;
+
+  Data({this.banners, this.user, this.compare, this.rounds, this.matches});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['banners'] != null) {
+      banners = <Banners>[];
+      json['banners'].forEach((v) {
+        banners!.add(new Banners.fromJson(v));
+      });
+    }
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    compare =
+    json['compare'] != null ? new User.fromJson(json['compare']) : null;
+    if (json['rounds'] != null) {
+      rounds = <Rounds>[];
+      json['rounds'].forEach((v) {
+        rounds!.add(new Rounds.fromJson(v));
+      });
+    }
+    if (json['matches'] != null) {
+      matches = <Matches>[];
+      json['matches'].forEach((v) {
+        matches!.add(new Matches.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.banners != null) {
+      data['banners'] = this.banners!.map((v) => v.toJson()).toList();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.compare != null) {
+      data['compare'] = this.compare!.toJson();
+    }
+    if (this.rounds != null) {
+      data['rounds'] = this.rounds!.map((v) => v.toJson()).toList();
+    }
+    if (this.matches != null) {
+      data['matches'] = this.matches!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Banners {
+  String? id;
+  String? enTitle;
+  String? arTitle;
+  String? image;
+  String? url;
+  String? type;
+
+  Banners(
+      {this.id, this.enTitle, this.arTitle, this.image, this.url, this.type});
+
+  Banners.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    enTitle = json['enTitle'];
+    arTitle = json['arTitle'];
+    image = json['image'];
+    url = json['url'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['enTitle'] = this.enTitle;
+    data['arTitle'] = this.arTitle;
+    data['image'] = this.image;
+    data['url'] = this.url;
+    data['type'] = this.type;
+    return data;
+  }
+}
+
+class User {
+  String? points;
+  String? rank;
+  String? pRank;
+  String? username;
+  String? team;
+  String? country;
+  List<Stats>? stats;
+
+  User(
+      {this.points,
+        this.rank,
+        this.pRank,
+        this.username,
+        this.team,
+        this.country,
+        this.stats});
+
+  User.fromJson(Map<String, dynamic> json) {
+    points = json['points'];
+    rank = json['rank'];
+    pRank = json['pRank'];
+    username = json['username'];
+    team = json['team'];
+    country = json['country'];
+    if (json['stats'] != null) {
+      stats = <Stats>[];
+      json['stats'].forEach((v) {
+        stats!.add(new Stats.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['points'] = this.points;
+    data['rank'] = this.rank;
+    data['pRank'] = this.pRank;
+    data['username'] = this.username;
+    data['team'] = this.team;
+    data['country'] = this.country;
+    if (this.stats != null) {
+      data['stats'] = this.stats!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Stats {
+  String? round;
+  String? totalPoints;
+
+  Stats({this.round, this.totalPoints});
+
+  Stats.fromJson(Map<String, dynamic> json) {
+    round = json['round'];
+    totalPoints = json['totalPoints'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['round'] = this.round;
+    data['totalPoints'] = this.totalPoints;
+    return data;
+  }
+}
+
+class Rounds {
+  String? round;
+
+  Rounds({this.round});
+
+  Rounds.fromJson(Map<String, dynamic> json) {
+    round = json['round'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['round'] = this.round;
+    return data;
+  }
+}
+
+class Matches {
+  String? id;
+  String? status;
+  String? staduim;
+  String? matchDate;
+  String? matchTime;
+  String? isActive;
+  List<Team>? team1;
+  List<Team>? team2;
+  Result? result;
+  Predictions? predictions;
+
+  Matches(
+      {this.id,
+        this.status,
+        this.staduim,
+        this.matchDate,
+        this.matchTime,
+        this.isActive,
+        this.team1,
+        this.team2,
+        this.result,
+        this.predictions});
+
+  Matches.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['status'];
+    staduim = json['staduim'];
+    matchDate = json['matchDate'];
+    matchTime = json['matchTime'];
+    isActive = json['isActive'];
+    if (json['team1'] != null) {
+      team1 = <Team>[];
+      json['team1'].forEach((v) {
+        team1!.add(new Team.fromJson(v));
+      });
+    }
+    if (json['team2'] != null) {
+      team2 = <Team>[];
+      json['team2'].forEach((v) {
+        team2!.add(new Team.fromJson(v));
+      });
+    }
+    result =
+    json['result'] != null ? new Result.fromJson(json['result']) : null;
+    predictions = json['predictions'] != null
+        ? new Predictions.fromJson(json['predictions'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['status'] = this.status;
+    data['staduim'] = this.staduim;
+    data['matchDate'] = this.matchDate;
+    data['matchTime'] = this.matchTime;
+    data['isActive'] = this.isActive;
+    if (this.team1 != null) {
+      data['team1'] = this.team1!.map((v) => v.toJson()).toList();
+    }
+    if (this.team2 != null) {
+      data['team2'] = this.team2!.map((v) => v.toJson()).toList();
+    }
+    if (this.result != null) {
+      data['result'] = this.result!.toJson();
+    }
+    if (this.predictions != null) {
+      data['predictions'] = this.predictions!.toJson();
+    }
+    return data;
+  }
+}
+
+class Team {
+  String? arTitle;
+  String? enTitle;
+  String? logo;
+
+  Team({this.arTitle, this.enTitle, this.logo});
+
+  Team.fromJson(Map<String, dynamic> json) {
+    arTitle = json['arTitle'];
+    enTitle = json['enTitle'];
+    logo = json['logo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['arTitle'] = this.arTitle;
+    data['enTitle'] = this.enTitle;
+    data['logo'] = this.logo;
+    return data;
+  }
+}
+
+class Result {
+  String? goals1;
+  String? goals2;
+
+  Result({this.goals1, this.goals2});
+
+  Result.fromJson(Map<String, dynamic> json) {
+    goals1 = json['goals1'];
+    goals2 = json['goals2'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['goals1'] = this.goals1;
+    data['goals2'] = this.goals2;
+    return data;
+  }
+}
+
+class Predictions {
+  UserPerdiction? user;
+  UserPerdiction? comapre;
+
+  Predictions({this.user, this.comapre});
+
+  Predictions.fromJson(Map<String, dynamic> json) {
+    user = json['user'] != null ? new UserPerdiction.fromJson(json['user']) : null;
+    comapre =
+    json['comapre'] != null ? new UserPerdiction.fromJson(json['comapre']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.comapre != null) {
+      data['comapre'] = this.comapre!.toJson();
+    }
+    return data;
+  }
+}
+
+class UserPerdiction {
+  String? goals1;
+  String? goals2;
+  String? points;
+
+  UserPerdiction({this.goals1, this.goals2, this.points});
+
+  UserPerdiction.fromJson(Map<String, dynamic> json) {
+    goals1 = json['goals1'];
+    goals2 = json['goals2'];
+    points = json['points'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['goals1'] = this.goals1;
+    data['goals2'] = this.goals2;
+    data['points'] = this.points;
+    return data;
+  }
+}

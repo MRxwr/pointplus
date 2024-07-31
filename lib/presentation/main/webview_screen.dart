@@ -4,6 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:point/presentation/resources/color_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../providers/model_hud.dart';
 import '../resources/assets_manager.dart';
@@ -23,6 +24,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
   bool isLoading=true;
   final _key = UniqueKey();
   late InAppWebViewController webView;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final modelHud = Provider.of<ModelHud>(context,listen: false);
@@ -69,7 +80,17 @@ class _WebViewScreenState extends State<WebViewScreen> {
               InAppWebView(
 
                 initialUrlRequest:
-                URLRequest(url: Uri.parse(widget.url)),
+                URLRequest(url: WebUri(widget.url)),
+                shouldOverrideUrlLoading: (controller, navigationAction) async {
+                  final uri = navigationAction.request.url!;
+                  print("uri = " + uri.toString());
+                  if (uri.toString().startsWith('instagram')) {
+                    print("instaLink --->$uri ");
+
+                    return NavigationActionPolicy.CANCEL;
+                  }
+                  return NavigationActionPolicy.ALLOW;
+                },
 
 
                 initialOptions: InAppWebViewGroupOptions(
@@ -90,7 +111,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 },
                 onLoadStop: (InAppWebViewController controller, Uri? url) async {
                   modelHud.changeIsLoading(false);
-                  print(url);
+
 
                 },
               ),

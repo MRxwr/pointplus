@@ -5,11 +5,13 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:point/domain/league_details_model.dart';
 import 'package:point/presentation/main/league_details_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/point_services.dart';
 import '../../app/constant.dart';
@@ -85,7 +87,7 @@ class _CreateInvitationLeagueScreenState extends State<CreateInvitationLeagueScr
                       Container():
                   Column(
                     children: [
-                      Container(height: AppSize.s80,
+                      Container(height: 250.h,
                         margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                         child: CarouselSlider(
 
@@ -120,10 +122,15 @@ class _CreateInvitationLeagueScreenState extends State<CreateInvitationLeagueScr
                                     onTap: (){
                                       String? url = item.url;
                                       if(Uri.parse(url!).isAbsolute){
-                                        Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
-                                          return  WebViewScreen(url:url,
-                                            title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
-                                        }));
+                                        if(url.contains("instagram")) {
+                                          launchUrl(Uri.parse(url),
+                                            mode: LaunchMode.externalApplication,);
+                                        }else {
+                                          Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                                            return  WebViewScreen(url:url,
+                                              title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
+                                          }));
+                                        }
                                       }else{
                                         Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
                                           return  PhotoScreen(imageProvider: NetworkImage(

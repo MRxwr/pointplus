@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:point/domain/home_model.dart';
+import 'package:point/presentation/main/game/game_screen.dart';
 import 'package:point/presentation/main/notification_screen.dart';
 import 'package:point/presentation/main/predict_screen.dart';
 import 'package:point/presentation/main/profile_screen.dart';
 import 'package:point/presentation/main/settings_screen.dart';
 import 'package:point/presentation/main/stats_screen.dart';
+import 'package:point/presentation/main/top_screen.dart';
 import 'package:point/presentation/resources/assets_manager.dart';
 import 'package:point/presentation/resources/color_manager.dart';
 import 'package:point/presentation/resources/strings_manager.dart';
@@ -37,6 +39,7 @@ class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin
   final _page2 = GlobalKey<NavigatorState>();
   final _page3 = GlobalKey<NavigatorState>();
   final _page4 = GlobalKey<NavigatorState>();
+  final _page5 = GlobalKey<NavigatorState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -100,9 +103,12 @@ bool back(){
       },
       child: Scaffold(
         appBar: AppBar(
+
+          bottomOpacity: 0.0,
           elevation: AppSize.s0,
 backgroundColor: ColorManager.backGroundColor,
-          leading: GestureDetector(
+          leading:
+          GestureDetector(
             onTap: (){
               Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
                 return  const ProfileScreen();
@@ -162,7 +168,19 @@ backgroundColor: ColorManager.backGroundColor,
                       );
                     }
 
-                  })
+                  }),
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
+                    return  const SettingsScreen();
+                  }));
+                },
+                child: Padding(
+                  padding:  EdgeInsets.all(AppSize.s8),
+                  child: Image.asset(ImageAssets.settings,height: AppSize.s30, width: AppSize.s30,fit: BoxFit.fill,),
+                ),
+              ),
+
 
             ],
           title: Center(
@@ -194,8 +212,11 @@ backgroundColor: ColorManager.backGroundColor,
             FABBottomAppBarItem(iconPath:  ImageAssets.home, text: "home".tr()),
             FABBottomAppBarItem(iconPath: ImageAssets.states, text: "states".tr()),
             FABBottomAppBarItem(iconPath:  ImageAssets.predict, text: "predict".tr()),
+
             FABBottomAppBarItem(iconPath:
-            ImageAssets.settings, text:"settings".tr()),
+            ImageAssets.badge, text:"top".tr()),
+            FABBottomAppBarItem(iconPath:
+            ImageAssets.games, text:"game".tr()),
           ],
         ),
 
@@ -226,12 +247,20 @@ backgroundColor: ColorManager.backGroundColor,
             ),
           ),
           Navigator(
+            key: _page5,
+            onGenerateRoute: (route) => MaterialPageRoute(
+              settings: route,
+              builder: (context) =>  TopScreen(page: _page5),
+            ),
+          ),
+          Navigator(
             key: _page4,
             onGenerateRoute: (route) => MaterialPageRoute(
               settings: route,
-              builder: (context) => const SettingsScreen(),
+              builder: (context) =>  GameScreen(page: _page4),
             ),
           ),
+
         ],
       ),
 
@@ -267,8 +296,14 @@ backgroundColor: ColorManager.backGroundColor,
 
           });
           break;
-        case 3:
+        case 4:
           _page4.currentState?.popUntil((route) => route.isFirst);
+          setState(() {
+
+          });
+          break;
+        case 3:
+          _page5.currentState?.popUntil((route) => route.isFirst);
           setState(() {
 
           });
@@ -278,34 +313,47 @@ backgroundColor: ColorManager.backGroundColor,
       }
     } else {
       _currentIndex = val;
-      if(_currentIndex ==3){
+      if(_currentIndex ==4){
+
         _page4.currentState?.pushReplacement( MaterialPageRoute(builder: (BuildContext context){
-          return  const SettingsScreen();
+          return   GameScreen(page: _page4,);
         }));
         setState(() {
 
         });
 
+
+      }else if(_currentIndex == 3){
+        _page5.currentState?.pushReplacement( MaterialPageRoute(builder: (BuildContext context){
+          return   TopScreen(page: _page5,);
+        }));
+        setState(() {
+
+        });
 
       }else if(_currentIndex == 2){
         _page3.currentState?.pushReplacement( MaterialPageRoute(builder: (BuildContext context){
-          return  const PredictScreen();
+          return   PredictScreen();
         }));
         setState(() {
 
         });
+
+
       }else if(_currentIndex == 1){
+
         _page2.currentState?.pushReplacement( MaterialPageRoute(builder: (BuildContext context){
           return   StatsScreen(page: _page2,);
         }));
+
         setState(() {
 
         });
-
       }else if(_currentIndex == 0){
         _page1.currentState?.pushReplacement( MaterialPageRoute(builder: (BuildContext context){
           return   HomeScreen(page: _page1,);
         }));
+
         setState(() {
 
         });

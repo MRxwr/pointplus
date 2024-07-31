@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+
 import 'package:point/presentation/resources/color_manager.dart';
 import 'package:point/presentation/resources/font_manager.dart';
 import 'package:point/presentation/resources/strings_manager.dart';

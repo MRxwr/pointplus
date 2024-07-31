@@ -18,6 +18,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/point_services.dart';
+import '../../app/app_prefrences.dart';
+import '../../app/di.dart';
 import '../../domain/ErrorModel.dart';
 import '../../providers/model_hud.dart';
 import '../main/main.dart';
@@ -306,7 +308,7 @@ class _LoginViewState extends State<LoginView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
       minimumSize: Size(width, AppSize.s55 ),
 
       shape:  RoundedRectangleBorder(
@@ -398,6 +400,7 @@ class _LoginViewState extends State<LoginView> {
       modelHud.changeIsLoading(false);
       bool  isOk  = response['ok'];
       if(isOk){
+        final AppPreferences _appPreferences = instance<AppPreferences>();
         LoginModel loginModel = LoginModel.fromJson(response);
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         String? id = loginModel?.data!.id;
@@ -408,6 +411,7 @@ class _LoginViewState extends State<LoginView> {
         sharedPreferences.setString('password', _passwordController.text);
         sharedPreferences.setBool('isUser', true);
         sharedPreferences.setBool('biometric', true);
+        _appPreferences.setUserId(int.parse(id));
 
         // HomeModel? homeModel = await pointServices.home(id);
 

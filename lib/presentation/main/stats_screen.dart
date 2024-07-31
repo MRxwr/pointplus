@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:point/domain/error_status_model.dart';
 import 'package:point/domain/leagues_model.dart';
 import 'package:point/presentation/main/create_invitation_league_screen.dart';
@@ -12,6 +13,7 @@ import 'package:point/presentation/main/my_league_details_screen.dart';
 import 'package:point/presentation/resources/font_manager.dart';
 import 'package:point/presentation/resources/strings_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/point_services.dart';
 import '../../app/constant.dart';
@@ -124,7 +126,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       child: leaguesModel!.data!.banners!.isEmpty?
                       Container():Column(
                         children: [
-                          Container(height: AppSize.s80,
+                          Container(height: 250.h,
                           margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                           child:
                           CarouselSlider(
@@ -160,10 +162,15 @@ class _StatsScreenState extends State<StatsScreen> {
                                       onTap: (){
                                         String? url = item.url;
                                         if(Uri.parse(url!).isAbsolute){
-                                          Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
-                                            return  WebViewScreen(url:url,
-                                              title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
-                                          }));
+                                          if(url.contains("instagram")) {
+                                            launchUrl(Uri.parse(url),
+                                              mode: LaunchMode.externalApplication,);
+                                          }else {
+                                            Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                                              return  WebViewScreen(url:url,
+                                                title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
+                                            }));
+                                          }
                                         }else{
                                           Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
                                             return  PhotoScreen(imageProvider: NetworkImage(

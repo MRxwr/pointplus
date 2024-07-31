@@ -392,7 +392,7 @@ shape: RoundedRectangleBorder(
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
 
 
       shape:  RoundedRectangleBorder(
@@ -425,7 +425,7 @@ shape: RoundedRectangleBorder(
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
 
 
       shape:  RoundedRectangleBorder(

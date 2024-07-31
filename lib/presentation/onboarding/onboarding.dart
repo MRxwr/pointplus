@@ -227,7 +227,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: const Color(0xFF000000),
+
       minimumSize: Size(width, 30.h),
       padding: EdgeInsets.symmetric(horizontal: 16.0.w),
       shape:  RoundedRectangleBorder(

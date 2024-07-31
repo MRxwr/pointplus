@@ -2,18 +2,22 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:point/app/constant.dart';
+import 'package:point/domain/SumbitRoomModel.dart';
 import 'package:point/domain/add_address_model.dart';
 import 'package:point/domain/add_order_model.dart';
 import 'package:point/domain/change_password_model.dart';
 import 'package:point/domain/coin_model.dart';
+import 'package:point/domain/compare_model.dart';
 import 'package:point/domain/edit_profile_model.dart';
 import 'package:point/domain/home_model.dart';
+import 'package:point/domain/join_game_model.dart';
 import 'package:point/domain/league_details_model.dart';
 import 'package:point/domain/leagues_model.dart';
 import 'package:point/domain/notification_model.dart';
 import 'package:point/domain/profile_model.dart';
 import 'package:point/domain/settings_model.dart';
 import 'package:point/domain/shop_model.dart';
+import 'package:point/domain/top_model.dart';
 import 'package:point/domain/update_team_model.dart';
 import 'package:point/domain/view_league_model.dart';
 import 'package:point/domain/view_my_league_model.dart';
@@ -24,7 +28,7 @@ import '../domain/leagues_details_model.dart';
 import '../domain/prediction_model.dart';
 
 class PointServices{
- static String TAG_BASE_URL= "https://createkwservers.com/points/request/";
+ static String TAG_BASE_URL= "https://pointplus.app/app/request/";
 
   Future<dynamic> login(String email,String password) async{
     var resp ;
@@ -174,10 +178,11 @@ class PointServices{
 
 
     var response = await dio.get(TAG_BASE_URL + "?action=notifications&userId=${userId}");
-
+    print("notifications ---> ${response.data}");
     if (response.statusCode == 200) {
       resp =
           response.data;
+      print("notifications ---> $resp");
 
 
 
@@ -228,6 +233,7 @@ class PointServices{
 
 
     var response = await dio.get(TAG_BASE_URL + "?action=league&type=view&leagueId=0");
+    print(TAG_BASE_URL + "?action=league&type=view&leagueId=0");
 
     if (response.statusCode == 200) {
 
@@ -320,6 +326,19 @@ class PointServices{
     return homeModel;
 
   }
+ Future<dynamic> test() async{
+   LeaguesDetailsModel? homeModel ;
+   var dio = Dio();
+
+
+   var response = await dio.get("http://192.168.1.20:5005/kiqp/Arbitrator/1");
+
+   print(response.toString());
+
+
+   return response;
+
+ }
   Future<LeaguesDetailsModel?> leaguesDetailsModel(String? userId) async{
     LeaguesDetailsModel? homeModel ;
     var dio = Dio();
@@ -360,8 +379,8 @@ class PointServices{
    print('mToken --> ${mToken}');
 
 
-   var response = await dio.get(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}&lastGm=1");
-   print(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}");
+   var response = await dio.get(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}&lastGw=1");
+   print(TAG_BASE_URL + "?action=league&type=view&leagueId=${userId}&lastGw=1");
    print(response);
 
    if (response.statusCode == 200) {
@@ -811,7 +830,72 @@ print('edit profile ---> ${response.data}');
     return resp;
 
   }
+ Future<SumbitRoomModel?> sumbitRoom(Map<String,dynamic> map) async{
+   SumbitRoomModel? sumbitRoomModel;
+   var resp ;
+   var dio = Dio();
+   dio.options.headers['content-Type'] = 'multipart/form-data';
+   dio.options.headers['pointsheader'] = "pointsCreateKW";
+   // dio.options.headers["ezyocreate"] = "CreateEZYo";
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String language = sharedPreferences.getString(LANG_CODE)??"en";
+   String mToken =sharedPreferences.getString("token")??"";
+   print('mToken --> ${mToken}');
 
+   FormData formData = FormData.fromMap(map);
+   String body = json.encode(map);
+   var response = await dio.post("$TAG_BASE_URL?action=submitRoom",data: formData);
+
+   if (response.statusCode == 200) {
+
+
+
+
+     resp =
+         response.data;
+     sumbitRoomModel =
+         SumbitRoomModel.fromJson(Map<String, dynamic>.from(response.data));
+     print(resp);
+   }
+
+   return sumbitRoomModel;
+
+ }
+ Future<JoinGameModel?> joinGame(Map<String,dynamic> map) async{
+   JoinGameModel? joinGameModel;
+   var resp ;
+   var dio = Dio();
+   dio.options.headers['content-Type'] = 'multipart/form-data';
+   dio.options.headers['pointsheader'] = "pointsCreateKW";
+   // dio.options.headers["ezyocreate"] = "CreateEZYo";
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String language = sharedPreferences.getString(LANG_CODE)??"en";
+   String mToken =sharedPreferences.getString("token")??"";
+   print('mToken --> ${mToken}');
+
+   FormData formData = FormData.fromMap(map);
+   String body = json.encode(map);
+   var response = await dio.post(TAG_BASE_URL + "?action=rooms",data: formData);
+
+   if (response.statusCode == 200) {
+     print("response ----> ${response.data}");
+
+
+
+
+     resp =
+         response.data;
+     joinGameModel =
+         JoinGameModel.fromJson(Map<String, dynamic>.from(response.data));
+     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+     sharedPreferences.setString("roomId", joinGameModel!.data!.room!.id!.toString());
+
+     print(resp);
+   }
+
+   return joinGameModel;
+
+ }
 
   Future<DeleteUserModel?> deleteUser(String id)async{
     var dio = Dio();
@@ -850,4 +934,61 @@ print('edit profile ---> ${response.data}');
     return packageModel;
 
   }
+ Future<CompareModel?> compareDetails(String? userId,String? compareUseId,String? round) async{
+   CompareModel? compareModel ;
+   var dio = Dio();
+   dio.options.headers['content-Type'] = 'multipart/form-data';
+   dio.options.headers['pointsheader'] = "pointsCreateKW";
+   // dio.options.headers["ezyocreate"] = "CreateEZYo";
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String language = sharedPreferences.getString(LANG_CODE)??"en";
+   String mToken =sharedPreferences.getString("token")??"";
+   print('mToken --> ${mToken}');
+
+
+   var response = await dio.get(TAG_BASE_URL + "?action=compare&userId=${userId}&compareId=${compareUseId}&round=${round}");
+print(TAG_BASE_URL + "?action=compare&userId=${userId}&compareId=${compareUseId}&round=${round}");
+   print(response);
+
+   if (response.statusCode == 200) {
+
+
+
+
+     compareModel =
+         CompareModel.fromJson(Map<String, dynamic>.from(response.data));
+   }
+
+   return compareModel;
+
+ }
+
+ Future<TopModel?> top(String? topId) async{
+   TopModel? topModel ;
+   var dio = Dio();
+   dio.options.headers['content-Type'] = 'multipart/form-data';
+   dio.options.headers['pointsheader'] = "pointsCreateKW";
+   // dio.options.headers["ezyocreate"] = "CreateEZYo";
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String language = sharedPreferences.getString(LANG_CODE)??"en";
+   String mToken =sharedPreferences.getString("token")??"";
+   print('mToken --> ${mToken}');
+
+
+   var response = await dio.get(TAG_BASE_URL + "?action=top&topId=${topId}");
+   print(TAG_BASE_URL + "?action=top&topId=${topId}");
+   print(response);
+
+   if (response.statusCode == 200) {
+
+
+
+
+     topModel =
+         TopModel.fromJson(Map<String, dynamic>.from(response.data));
+   }
+
+   return topModel;
+
+ }
 }

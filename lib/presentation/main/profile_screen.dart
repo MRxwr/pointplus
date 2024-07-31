@@ -186,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
 
 
       shape:  RoundedRectangleBorder(
@@ -426,7 +426,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ):Container(),
                         ),
                         Container(
-                          height: AppSize.s300,
+                          height: AppSize.s150,
                           margin: EdgeInsets.symmetric(horizontal: AppSize.s20,vertical: AppSize.s10),
                           child: Container(
 
@@ -482,43 +482,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(flex: 2,
-                                          child:Container(
-                                            child: Text(
-                                              "nameString".tr(),
-                                              style: TextStyle(
-                                                color: const Color(0xAA707070),
-                                                fontSize: FontSize.s12,
-                                                fontWeight: FontWeight.w500
-                                              ),
-                                            ),
 
-                                          )),
-                                          Expanded(flex: 3,
-                                              child:Container(
-                                                child: Text(
-                                                  profileModel!.data!.user![0].name.toString(),
-                                                  style: TextStyle(
-                                                      color: ColorManager.black,
-                                                      fontSize: FontSize.s12,
-                                                      fontWeight: FontWeight.w500
-                                                  ),
-                                                ),
-
-                                              ))
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                 Container(
-                                   color: const Color(0x44707070),
-                                   height: AppSize.s1,
-                                 ),
                                   Expanded(
                                     flex: 1,
                                     child: Container(
@@ -556,43 +520,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: const Color(0x44707070),
                                     height: AppSize.s1,
                                   ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(flex: 2,
-                                              child:Container(
-                                                child: Text(
-                                                  "teamName".tr(),
-                                                  style: TextStyle(
-                                                      color: const Color(0xAA707070),
-                                                      fontSize: FontSize.s12,
-                                                      fontWeight: FontWeight.w500
-                                                  ),
-                                                ),
 
-                                              )),
-                                          Expanded(flex: 3,
-                                              child:Container(
-                                                child: Text(
-                                                  profileModel!.data!.user![0].team.toString(),
-                                                  style: TextStyle(
-                                                      color: ColorManager.black,
-                                                      fontSize: FontSize.s12,
-                                                      fontWeight: FontWeight.w500
-                                                  ),
-                                                ),
-
-                                              ))
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    color: const Color(0x44707070),
-                                    height: AppSize.s1,
-                                  ),
                                   Expanded(
                                     flex: 1,
                                     child: Container(
@@ -626,43 +554,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    color: const Color(0x44707070),
-                                    height: AppSize.s1,
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(flex: 2,
-                                              child:Container(
-                                                child: Text(
-                                                  "birthDay".tr(),
-                                                  style: TextStyle(
-                                                      color: const Color(0xAA707070),
-                                                      fontSize: FontSize.s12,
-                                                      fontWeight: FontWeight.w500
-                                                  ),
-                                                ),
 
-                                              )),
-                                          Expanded(flex: 3,
-                                              child:Container(
-                                                child: Text(
-                                                  profileModel!.data!.user![0].birthday.toString().split(" ")[0],
-                                                  style: TextStyle(
-                                                      color: ColorManager.black,
-                                                      fontSize: FontSize.s12,
-                                                      fontWeight: FontWeight.w500
-                                                  ),
-                                                ),
-
-                                              ))
-                                        ],
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
@@ -768,7 +660,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: const Color(0xFF122436),
+
 
 
       shape:  RoundedRectangleBorder(
@@ -809,7 +701,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: const Color(0xFF122436),
 
 
       shape:  RoundedRectangleBorder(
@@ -845,7 +736,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: const Color(0xFF122436),
 
 
       shape:  RoundedRectangleBorder(

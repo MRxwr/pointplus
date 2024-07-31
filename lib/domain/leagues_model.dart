@@ -184,13 +184,15 @@ class User {
   String? id;
   String? rank;
   String? points;
+  String? userId;
 
-  User({this.id, this.rank, this.points});
+  User({this.id, this.rank, this.points,this.userId});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     rank = json['rank'];
     points = json['points'];
+    userId = json['userId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -198,6 +200,7 @@ class User {
     data['id'] = this.id;
     data['rank'] = this.rank;
     data['points'] = this.points;
+    data['userId'] = this.userId;
     return data;
   }
 }

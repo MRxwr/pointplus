@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:point/app/constant.dart';
@@ -75,6 +76,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+
+          backgroundColor: ColorManager.primary,
+          title: Center(
+            child: Center(
+              child: Image.asset(ImageAssets.titleBarImage,height: AppSize.s32, width: AppSize.s110,fit: BoxFit.fill,),
+            ),
+          ),
+          actions: [
+            SizedBox(width: AppSize.s30,)
+          ],
+          leading:
+          GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+
+            },
+            child: Icon(Icons.arrow_back_ios_outlined,color: Colors.white,size: AppSize.s20,),
+          ),
+
+
+        ),
         backgroundColor: ColorManager.primary,
         body: Container(
 
@@ -95,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: settingsModel!.data!.banners!.isEmpty?
                 Container():Column(
                   children: [
-                    Container(height: AppSize.s80,
+                    Container(height: 250.h,
                       margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                       child: CarouselSlider(
 
@@ -130,10 +154,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   onTap: (){
                                     String? url = item.url;
                                     if(Uri.parse(url!).isAbsolute){
-                                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
-                                        return  WebViewScreen(url:url,
-                                          title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
-                                      }));
+                                      if(url.contains("instagram")) {
+                                        launchUrl(Uri.parse(url),
+                                          mode: LaunchMode.externalApplication,);
+                                      }else {
+                                        Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                                          return  WebViewScreen(url:url,
+                                            title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
+                                        }));
+                                      }
+
                                     }else{
                                       Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
                                         return  PhotoScreen(imageProvider: NetworkImage(
@@ -633,8 +663,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     SizedBox(height: AppSize.s50,),
                         ],
                       ),
-                    )
+                    ),
 
+              Container(height: AppSize.s50,),
 
 
 

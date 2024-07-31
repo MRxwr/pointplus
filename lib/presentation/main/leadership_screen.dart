@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:point/domain/view_league_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/point_services.dart';
 import '../resources/assets_manager.dart';
@@ -8,6 +9,7 @@ import '../resources/color_manager.dart';
 import '../resources/font_manager.dart';
 import '../resources/strings_manager.dart';
 import '../resources/values_manager.dart';
+import 'compare_screen.dart';
 class LeaderShipScreen extends StatefulWidget {
   GlobalKey<NavigatorState> page;
    LeaderShipScreen({Key? key, required this.page}) : super(key: key);
@@ -96,8 +98,20 @@ class _LeaderShipScreenState extends State<LeaderShipScreen> {
                         shrinkWrap: true,
                         itemBuilder: (context,index){
                           return GestureDetector(
-                            onTap: (){
+                            onTap: ()async{
+                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
+                              String currentUserId = sharedPreferences.getString("id")??"";
+                              String selecetedUserId= viewleagueModel!.data!.users![index].id.toString();
+                              if(currentUserId!= selecetedUserId) {
+                                Navigator.of(context, rootNavigator: true).push(
+                                    MaterialPageRoute(builder: (BuildContext context) {
+                                      return CompareScreen(
+                                        userId: currentUserId,
+                                        comparedUserId: selecetedUserId,
+                                      );
+                                    }));
+                              }
                             },
                             child: Container(
                               height: AppSize.s33,

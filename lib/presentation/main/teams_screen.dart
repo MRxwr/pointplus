@@ -349,7 +349,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
       minimumSize: Size(width, AppSize.s55 ),
 
       shape:  RoundedRectangleBorder(

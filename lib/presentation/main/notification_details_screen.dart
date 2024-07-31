@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:point/domain/notification_model.dart' as Model;
 
 import '../resources/assets_manager.dart';
@@ -48,22 +50,90 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
               image: AssetImage(ImageAssets.background),
               fit: BoxFit.cover,
             )),
-        child: Container(
-          margin: EdgeInsets.all(AppSize.s20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(bottom: AppSize.s20),
-                child: Text(widget.notification.notification.toString(),
-                  style: TextStyle(
-                      color: ColorManager.white,
-                      fontSize: FontSize.s18,
-                      fontWeight: FontWeight.normal
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(AppSize.s20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: ScreenUtil().screenWidth,
+                  height: 200.h,
+          
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(AppSize.s8),
+          
+          
+                    child:
+                    CachedNetworkImage(
+                      width: AppSize.width,
+          
+                      fit: BoxFit.fill,
+                      imageUrl:'${widget.notification.image}',
+                      imageBuilder: (context, imageProvider) => Container(
+                          width: AppSize.width,
+          
+          
+                          decoration: BoxDecoration(
+          
+          
+          
+                            image: DecorationImage(
+          
+          
+                                fit: BoxFit.fill,
+                                image: imageProvider),
+                          )
+                      ),
+                      placeholder: (context, url) =>
+                          Column(
+                            children: [
+                              Expanded(
+                                flex: 9,
+                                child: Container(
+                                  height: AppSize.height,
+                                  width:  AppSize.width,
+          
+          
+                                  alignment: FractionalOffset.center,
+                                  child: SizedBox(
+                                      height: AppSize.s50,
+                                      width: AppSize.s50,
+                                      child:  const CircularProgressIndicator()),
+                                ),
+                              ),
+                            ],
+                          ),
+          
+          
+                      errorWidget: (context, url, error) => Container(
+                          height: 80.h,
+                          width:  80.w,
+          
+          
+                          child: Image.asset("assets/images/app_icon.png",fit: BoxFit.fill,),),
+          
+                    ),
+                    // Image.network(
+                    //
+                    //
+                    // '${kBaseUrl}${mAdsPhoto}${item.photo}'  , fit: BoxFit.fitWidth,
+                    //   height: 600.h,),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 10.h,),
+                Container(
+                  padding: EdgeInsets.only(bottom: AppSize.s20),
+                  child: Text(widget.notification.notification.toString(),
+                    style: TextStyle(
+                        color: ColorManager.white,
+                        fontSize: FontSize.s18,
+                        fontWeight: FontWeight.normal
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

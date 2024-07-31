@@ -1,12 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:in_app_update/in_app_update.dart';
+import 'package:point/api/point_services.dart';
 import 'package:point/presentation/login/login.dart';
 import 'package:point/presentation/resources/values_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+import '../../app/di.dart';
+import '../../systemConfig/cubits/systemConfigCubit.dart';
 import '../main/main.dart';
 import '../main/teams_screen.dart';
 import '../resources/assets_manager.dart';
@@ -23,13 +28,20 @@ class _SplashViewState extends State<SplashView> {
   Timer? _timer;
 
   _startDelay(){
-  _timer = Timer(Duration(seconds: 3), _goNext);
+  _timer = Timer(Duration(seconds: 3), _checkAppUpdate);
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _startDelay();
+    _fetchSystemConfig();
+
+
+  }
+
+  Future<void> _fetchSystemConfig() async {
+    await context.read<SystemConfigCubit>().getSystemConfig();
+    // await MobileAds.instance.initialize();
   }
   @override
   Widget build(BuildContext context) {
@@ -43,7 +55,15 @@ class _SplashViewState extends State<SplashView> {
       },
       child: Scaffold(
 
-        body:  Container(
+        body:  BlocConsumer<SystemConfigCubit, SystemConfigState>(
+  listener: (context, state) {
+    if(state is SystemConfigFetchSuccess){
+      _startDelay();
+    }
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    return Container(
           decoration: const BoxDecoration(
           image:  DecorationImage(
           image: AssetImage(ImageAssets.background),
@@ -77,23 +97,52 @@ class _SplashViewState extends State<SplashView> {
    ],
 
           ),
-        ),)
+        ),);
+  },
+)
 
       ),
     );
+  }
+  _checkAppUpdate() async{
+    try {
+      AppUpdateInfo? _updateInfo = await InAppUpdate.checkForUpdate();
+      if (_updateInfo.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
+        InAppUpdate.performImmediateUpdate().then((value) {
+          if (value == AppUpdateResult.success) {
+            _goNext();
+          }
+        });
+      }else{
+        _goNext();
+      }
+        }catch(e){
+      _goNext();
+    }
   }
 
    _goNext()async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String id = sharedPreferences.getString("id")??"";
+    bool isLoggedIn = sharedPreferences.getBool("isLoggedIn")??false;
+
+    // initLoginModule();
 
     if(id.trim() == ""){
       Navigator.pushReplacementNamed(context, Routes.onBoardingRoute);
     }else{
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MainView()),
-      );
+      if(!isLoggedIn){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginView()),
+        );
+      }else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MainView()),
+        );
+      }
     }
 
 

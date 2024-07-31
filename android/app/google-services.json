@@ -37,6 +37,13 @@
             {
               "client_id": "25953648734-nju6ii7nugsmhdm7321cgjnu1k8tmfdm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "25953648734-oc62889e4hhb69fr51l6g32schpgf3pf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.createq8.point"
+              }
             }
           ]
         }

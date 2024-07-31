@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:point/domain/prediction_model.dart';
@@ -11,6 +12,7 @@ import 'package:point/presentation/resources/font_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timer_count_down/timer_count_down.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/point_services.dart';
 import '../../app/constant.dart';
@@ -28,7 +30,7 @@ class PredictScreen extends StatefulWidget {
   State<PredictScreen> createState() => _PredictScreenState();
 }
 
-class _PredictScreenState extends State<PredictScreen> {
+class _PredictScreenState extends State<PredictScreen> with WidgetsBindingObserver{
   PredictionModel? predictionModel;
   List<Teams> teams =[];
   String mLanguage ="";
@@ -41,11 +43,54 @@ class _PredictScreenState extends State<PredictScreen> {
 
   final CarouselController _controller = CarouselController();
   int remaningTime = 0;
+  AppLifecycleState? _notification;
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        predictionModel = null;
+        setState(() {
 
+        });
+        predictions().then((value){
+          predictionModel = value;
+          teams = predictionModel!.data!.teams!;
+          x2 = predictionModel!.data!.user!.x2.toString();
+          x3 = predictionModel!.data!.user!.x3.toString();
+          if(predictionModel!.data!.countdown.toString()!= "") {
+            remaningTime = getRemainingTime(
+                predictionModel!.data!.countdown.toString(),
+                predictionModel!.data!.startTime.toString());
+          }
+          setState(() {
+
+          });
+
+        });
+        break;
+      case AppLifecycleState.inactive:
+        print("app in inactive");
+        break;
+      case AppLifecycleState.paused:
+        print("app in paused");
+        break;
+      case AppLifecycleState.detached:
+        print("app in detached");
+        break;
+      case AppLifecycleState.hidden:
+        break;
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
     predictions().then((value){
       predictionModel = value;
       teams = predictionModel!.data!.teams!;
@@ -109,7 +154,7 @@ class _PredictScreenState extends State<PredictScreen> {
                 child: predictionModel!.data!.banners!.isEmpty?
                 Container():Column(
                   children: [
-                    Container(height: AppSize.s80,
+                    Container(height: 250.h,
                       margin: EdgeInsets.symmetric(horizontal: AppSize.s20),
                       child:  CarouselSlider(
 
@@ -144,10 +189,15 @@ class _PredictScreenState extends State<PredictScreen> {
                                   onTap: (){
                                     String? url = item.url;
                                     if(Uri.parse(url!).isAbsolute){
-                                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
-                                        return  WebViewScreen(url:url,
-                                          title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
-                                      }));
+                                      if(url.contains("instagram")) {
+                                        launchUrl(Uri.parse(url),
+                                          mode: LaunchMode.externalApplication,);
+                                      }else {
+                                        Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                                          return  WebViewScreen(url:url,
+                                            title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
+                                        }));
+                                      }
                                     }else{
                                       Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
                                         return  PhotoScreen(imageProvider: NetworkImage(
@@ -718,10 +768,11 @@ class _PredictScreenState extends State<PredictScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context,index){
                   return Container(
-                    height: AppSize.s220,
+                    height: 220.h,
                     decoration: BoxDecoration(
                       color: ColorManager.blueBlack,
                       borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
+
 
                     ),
                     child: Stack(
@@ -736,184 +787,235 @@ class _PredictScreenState extends State<PredictScreen> {
                             margin: EdgeInsets.all(AppSize.s20),
                             child: Column(
                               children: [
-                                Expanded(flex:2,child: Container(
+                                Expanded(flex:2,child: Stack(
+                                  children: [
+                                    Positioned.directional(
+                                      textDirection: Directionality.of(context),
+                                      child: Container(
 
-                                  child: Row(
+                                        child: Row(
 
-                                    children: [
-                                      Expanded(flex:1,child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Expanded(flex:1,child: GestureDetector(
-                                                onTap: (){
-                                                  int goalOne =  int.parse(teams[index].goals1.toString());
-                                                  goalOne++;
-                                                  Teams team = teams[index];
-                                                  team.goals1 = goalOne.toString();
-                                                  teams[index]= team;
-                                                  setState(() {
+                                          children: [
+                                            Expanded(flex:1,child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Expanded(flex:1,child: GestureDetector(
+                                                      onTap: (){
+                                                        int goalOne =  int.parse(teams[index].goals1.toString());
+                                                        goalOne++;
+                                                        Teams team = teams[index];
+                                                        team.goals1 = goalOne.toString();
+                                                        teams[index]= team;
+                                                        setState(() {
 
-                                                  });
-                                                },
-                                                child: Container(
-                                                  child: Container(
-                                                    alignment: AlignmentDirectional.center,
-                                                    margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s50,
-                                                    decoration: BoxDecoration(
-                                                        color: ColorManager.secondary,
-                                                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
-                                                    ),
-                                                    child:
-                                                    Icon(
-                                                      Icons.add,
-                                                      color: ColorManager.white,
-                                                      size: AppSize.s20,
-                                                    ),
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        child: Container(
+                                                          alignment: AlignmentDirectional.center,
+                                                          margin: EdgeInsets.symmetric(vertical: AppSize.s2),
+                                                          width: AppSize.s45,
+                                                          decoration: BoxDecoration(
+                                                              color: ColorManager.secondary,
+                                                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
+                                                          ),
+                                                          child:
+                                                          Icon(
+                                                            Icons.add,
+                                                            color: ColorManager.white,
+                                                            size: AppSize.s15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+
+                                                    Expanded(flex:1,child: GestureDetector(
+                                                      onTap: (){
+                                                        int goalOne =  int.parse(teams[index].goals1.toString());
+                                                        if(goalOne> 0) {
+                                                          goalOne--;
+                                                          Teams team = teams[index];
+                                                          team.goals1 = goalOne.toString();
+                                                          teams[index] = team;
+                                                          setState(() {
+
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        child: Container(
+                                                          alignment: AlignmentDirectional.center,
+                                                          margin: EdgeInsets.symmetric(vertical: AppSize.s2),
+                                                          width: AppSize.s45,
+                                                          decoration: BoxDecoration(
+                                                              color: ColorManager.secondary,
+                                                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.remove,
+                                                            color: ColorManager.white,
+                                                            size: AppSize.s15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                                  ],
+                                                ),
+                                                SizedBox(width: AppSize.s14,),
+                                                Container(
+                                                  height: AppSize.s30,
+                                                  width: AppSize.s30,
+                                                  alignment: AlignmentDirectional.center,
+                                                  decoration: BoxDecoration(
+                                                      color: ColorManager.primary,
+                                                      shape: BoxShape.circle
+                                                  ),
+                                                  child: Text(
+                                                    teams[index].goals1.toString(),style: TextStyle(
+                                                    color: ColorManager.white,
+                                                    fontSize: FontSize.s16
+                                                  ),
                                                   ),
                                                 ),
-                                              )),
-                                              Expanded(flex:1,child: GestureDetector(
-                                                onTap: (){
-                                                  int goalOne =  int.parse(teams[index].goals1.toString());
-                                                  if(goalOne> 0) {
-                                                    goalOne--;
-                                                    Teams team = teams[index];
-                                                    team.goals1 = goalOne.toString();
-                                                    teams[index] = team;
-                                                    setState(() {
 
-                                                    });
-                                                  }
-                                                },
-                                                child: Container(
-                                                  child: Container(
-                                                    alignment: AlignmentDirectional.center,
-                                                    margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s50,
-                                                    decoration: BoxDecoration(
-                                                        color: ColorManager.secondary,
-                                                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.remove,
-                                                      color: ColorManager.white,
-                                                      size: AppSize.s30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ))
-                                            ],
-                                          ),
-                                          SizedBox(width: AppSize.s14,),
-                                          Container(
-                                            height: AppSize.s36,
-                                            width: AppSize.s36,
-                                            alignment: AlignmentDirectional.center,
-                                            decoration: BoxDecoration(
+
+                                              ],
+                                            )),
+                                            Expanded(flex:1,child: Container(
+                                              alignment: AlignmentDirectional.center,
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width,
+
+                                                height:35.h,
+                                                margin: EdgeInsets.symmetric(horizontal: 10.w),
                                                 color: ColorManager.primary,
-                                                shape: BoxShape.circle
-                                            ),
-                                            child: Text(
-                                              teams[index].goals1.toString(),style: TextStyle(
-                                              color: ColorManager.white,
-                                              fontSize: FontSize.s16
-                                            ),
-                                            ),
-                                          ),
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(
+                                                      flex:1,
+
+                                                      child: Center(
+                                                        child: Text(teams![index].matchDate.toString(),
+                                                          style: TextStyle(
+                                                              color:ColorManager.white,
+                                                              fontSize: FontSize.s8,
+                                                              fontWeight: FontWeight.normal
 
 
-                                        ],
-                                      )),
-                                      Expanded(flex:1,child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            height: AppSize.s36,
-                                            width: AppSize.s36,
-                                            alignment: AlignmentDirectional.center,
-                                            decoration: BoxDecoration(
-                                                color: ColorManager.primary,
-                                                shape: BoxShape.circle
-                                            ),
-                                            child: Text(
-                                              teams[index].goals2.toString(),style: TextStyle(
-                                                color: ColorManager.white,
-                                                fontSize: FontSize.s16
-                                            ),
-                                            ),
-                                          ),
-                                          SizedBox(width: AppSize.s14,),
-                                          Column(
-                                            children: [
-                                              Expanded(flex:1,child: GestureDetector(
-                                                onTap: (){
-                                                  int goalOne =  int.parse(teams[index].goals2.toString());
-                                                  goalOne++;
-                                                  Teams team = teams[index];
-                                                  team.goals2 = goalOne.toString();
-                                                  teams[index]= team;
-                                                  setState(() {
-
-                                                  });
-
-                                                },
-                                                child: Container(
-                                                  child: Container(
-                                                    alignment: AlignmentDirectional.center,
-                                                    margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s50,
-                                                    decoration: BoxDecoration(
-                                                        color: ColorManager.secondary,
-                                                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
+                                                          ),),
+                                                      ),
                                                     ),
-                                                    child: Icon(
-                                                      Icons.add,
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Center(
+                                                        child: Text(teams![index].matchTime.toString(),
+                                                          style: TextStyle(
+                                                              color:ColorManager.rectangle,
+                                                              fontSize: FontSize.s8,
+                                                              fontWeight: FontWeight.normal
+
+
+                                                          ),),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                              ),
+                                            )),
+                                            Expanded(flex:1,child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: AppSize.s30,
+                                                  width: AppSize.s30,
+                                                  alignment: AlignmentDirectional.center,
+                                                  decoration: BoxDecoration(
+                                                      color: ColorManager.primary,
+                                                      shape: BoxShape.circle
+                                                  ),
+                                                  child: Text(
+                                                    teams[index].goals2.toString(),style: TextStyle(
                                                       color: ColorManager.white,
-                                                      size: AppSize.s20,
-                                                    ),
+                                                      fontSize: FontSize.s16
+                                                  ),
                                                   ),
                                                 ),
-                                              )),
-                                              Expanded(flex:1,child: GestureDetector(
-                                                onTap: (){
-                                                  int goalOne =  int.parse(teams[index].goals2.toString());
-                                                  if(goalOne> 0) {
-                                                    goalOne--;
-                                                    Teams team = teams[index];
-                                                    team.goals2 = goalOne.toString();
-                                                    teams[index] = team;
-                                                    setState(() {
+                                                SizedBox(width: AppSize.s14,),
+                                                Column(
+                                                  children: [
+                                                    Expanded(flex:1,child: GestureDetector(
+                                                      onTap: (){
+                                                        int goalOne =  int.parse(teams[index].goals2.toString());
+                                                        goalOne++;
+                                                        Teams team = teams[index];
+                                                        team.goals2 = goalOne.toString();
+                                                        teams[index]= team;
+                                                        setState(() {
 
-                                                    });
-                                                  }
-                                                },
-                                                child: Container(
-                                                  child: Container(
-                                                    alignment: AlignmentDirectional.center,
-                                                    margin: EdgeInsets.symmetric(vertical: AppSize.s2),
-                                                    width: AppSize.s50,
-                                                    decoration: BoxDecoration(
-                                                        color: ColorManager.secondary,
-                                                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.remove,
-                                                      color: ColorManager.white,
-                                                      size: AppSize.s30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ))
-                                            ],
-                                          )
+                                                        });
 
-                                        ],
-                                      ))
-                                    ],
-                                  ),
+                                                      },
+                                                      child: Container(
+                                                        child: Container(
+                                                          alignment: AlignmentDirectional.center,
+                                                          margin: EdgeInsets.symmetric(vertical: AppSize.s2),
+                                                          width: AppSize.s45,
+                                                          decoration: BoxDecoration(
+                                                              color: ColorManager.secondary,
+                                                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.add,
+                                                            color: ColorManager.white,
+                                                            size: AppSize.s15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                    Expanded(flex:1,child: GestureDetector(
+                                                      onTap: (){
+                                                        int goalOne =  int.parse(teams[index].goals2.toString());
+                                                        if(goalOne> 0) {
+                                                          goalOne--;
+                                                          Teams team = teams[index];
+                                                          team.goals2 = goalOne.toString();
+                                                          teams[index] = team;
+                                                          setState(() {
+
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        child: Container(
+                                                          alignment: AlignmentDirectional.center,
+                                                          margin: EdgeInsets.symmetric(vertical: AppSize.s2),
+                                                          width: AppSize.s45,
+                                                          decoration: BoxDecoration(
+                                                              color: ColorManager.secondary,
+                                                              borderRadius: BorderRadius.all(Radius.circular(AppSize.s2))
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.remove,
+                                                            color: ColorManager.white,
+                                                            size: AppSize.s15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                                  ],
+                                                )
+
+                                              ],
+                                            ))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
                                 )),
                                 Container(height: AppSize.s10,),
                                 Expanded(flex:4,child: Stack(
@@ -928,152 +1030,185 @@ class _PredictScreenState extends State<PredictScreen> {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
-                                          color: ColorManager.white
+                                          color: ColorManager.white,
+                                            border: teams[index].type == "1"?
+                                            Border.all(color: const Color(0xFFC4BE6B),width: 4.w):null
                                         ),
                                         child: Container(
                                           margin: EdgeInsets.all(AppSize.s20),
-                                          child: Row(
+                                          child: Column(
                                             children: [
-                                              Expanded(flex:1,child: Column(
-                                                children: [
-                                                  Expanded(flex:4,child: Container(
-                                                    child:
-                                                    CachedNetworkImage(
-                                                      height: AppSize.s60,
-                                                      width: AppSize.s60,
-                                                      imageUrl:'$TAG_LOGO_URL${teams[index].logoTeam1.toString()}',
-                                                      imageBuilder: (context, imageProvider) => Stack(
-                                                        children: [
-                                                          ClipRRect(
+                                              Expanded(
+                                                flex:4,
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(flex:1,child: Column(
+                                                      children: [
+                                                        Expanded(flex:4,child: Container(
+                                                          child:
+                                                          CachedNetworkImage(
+                                                            height: AppSize.s60,
+                                                            width: AppSize.s60,
+                                                            imageUrl:'$TAG_LOGO_URL${teams[index].logoTeam1.toString()}',
+                                                            imageBuilder: (context, imageProvider) => Stack(
+                                                              children: [
+                                                                ClipRRect(
 
-                                                            child: Container(
-                                                                height: AppSize.s60,
-                                                                width: AppSize.s60,
+                                                                  child: Container(
+                                                                      height: AppSize.s60,
+                                                                      width: AppSize.s60,
 
 
-                                                                decoration: BoxDecoration(
+                                                                      decoration: BoxDecoration(
 
-                                                                  shape: BoxShape.rectangle,
+                                                                        shape: BoxShape.rectangle,
 
-                                                                  image: DecorationImage(
-                                                                      fit: BoxFit.fill,
-                                                                      image: imageProvider),
-                                                                )
+                                                                        image: DecorationImage(
+                                                                            fit: BoxFit.fill,
+                                                                            image: imageProvider),
+                                                                      )
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            placeholder: (context, url) =>
+                                                                Center(
+                                                                  child: SizedBox(
+                                                                      height: AppSize.s50,
+                                                                      width: AppSize.s50,
+                                                                      child: const CircularProgressIndicator()),
+                                                                ),
+
+
+                                                            errorWidget: (context, url, error) => ClipRRect(
+                                                              child: Icon(Icons.image_not_supported_outlined,color: ColorManager.navColor,
+                                                                size: AppSize.s60,),
+
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
-                                                      placeholder: (context, url) =>
-                                                          Center(
-                                                            child: SizedBox(
-                                                                height: AppSize.s50,
-                                                                width: AppSize.s50,
-                                                                child: const CircularProgressIndicator()),
+
+                                                        )),
+                                                        Expanded(flex:1,child: Container(
+                                                          alignment: AlignmentDirectional.center,
+                                                          child: Text(
+                                                            mLanguage == "en"?
+                                                              teams[index].enTitleTeam1.toString():
+                                                            teams[index].arTitleTeam1.toString(),
+                                                            style: TextStyle(
+                                                              color: ColorManager.black,
+                                                              fontSize: FontSize.s11,
+                                                              fontWeight: FontWeight.w500
+                                                            ),
                                                           ),
 
-
-                                                      errorWidget: (context, url, error) => ClipRRect(
-                                                        child: Icon(Icons.image_not_supported_outlined,color: ColorManager.navColor,
-                                                          size: AppSize.s60,),
-
+                                                        ))
+                                                      ],
+                                                    )),
+                                                    Container(
+                                                      alignment: AlignmentDirectional.topCenter,
+                                                      child: Text(
+                                                        mLanguage == "en"?
+                                                        teams[index].leagueEn.toString():
+                                                        teams[index].leagueAr.toString(),
+                                                        style: TextStyle(
+                                                            color: ColorManager.black,
+                                                            fontSize: FontSize.s11,
+                                                            fontWeight: FontWeight.w500
+                                                        ),
                                                       ),
                                                     ),
+                                                    Expanded(flex:1,child: Column(
+                                                      children: [
+                                                        Expanded(flex:4,child: Container(
+                                                          child:
+                                                          CachedNetworkImage(
+                                                            height: AppSize.s60,
+                                                            width: AppSize.s60,
 
-                                                  )),
-                                                  Expanded(flex:1,child: Container(
-                                                    alignment: AlignmentDirectional.center,
-                                                    child: Text(
-                                                      mLanguage == "en"?
-                                                        teams[index].enTitleTeam1.toString():
-                                                      teams[index].arTitleTeam1.toString(),
-                                                      style: TextStyle(
-                                                        color: ColorManager.black,
-                                                        fontSize: FontSize.s11,
-                                                        fontWeight: FontWeight.w500
-                                                      ),
-                                                    ),
+                                                            imageUrl:'$TAG_LOGO_URL${teams[index].logoTeam2.toString()}',
+                                                            imageBuilder: (context, imageProvider) => Stack(
+                                                              children: [
+                                                                ClipRRect(
 
-                                                  ))
-                                                ],
-                                              )),
-                                              Container(
-                                                alignment: AlignmentDirectional.topCenter,
-                                                child: Text(
-                                                  mLanguage == "en"?
-                                                  teams[index].leagueEn.toString():
-                                                  teams[index].leagueAr.toString(),
-                                                  style: TextStyle(
-                                                      color: ColorManager.black,
-                                                      fontSize: FontSize.s11,
-                                                      fontWeight: FontWeight.w500
-                                                  ),
+                                                                  child: Container(
+                                                                      height: AppSize.s60,
+                                                                      width: AppSize.s60,
+
+
+                                                                      decoration: BoxDecoration(
+
+                                                                        shape: BoxShape.rectangle,
+
+                                                                        image: DecorationImage(
+                                                                            fit: BoxFit.fill,
+                                                                            image: imageProvider),
+                                                                      )
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            placeholder: (context, url) =>
+                                                                Center(
+                                                                  child: SizedBox(
+                                                                      height: AppSize.s50,
+                                                                      width: AppSize.s50,
+                                                                      child: const CircularProgressIndicator()),
+                                                                ),
+
+
+                                                            errorWidget: (context, url, error) => ClipRRect(
+                                                              child: Icon(Icons.image_not_supported_outlined,color: ColorManager.navColor,
+                                                                size: AppSize.s60,),
+
+                                                            ),
+                                                          ),
+
+                                                        )),
+
+                                                        Expanded(flex:1,child: Container(
+                                                          alignment: AlignmentDirectional.center,
+                                                          child: Text(
+                                                            mLanguage == "en"?
+                                                            teams[index].enTitleTeam2.toString():
+                                                            teams[index].arTitleTeam2.toString(),
+                                                            style: TextStyle(
+                                                                color: ColorManager.black,
+                                                                fontSize: FontSize.s11,
+                                                                fontWeight: FontWeight.w500
+                                                            ),
+                                                          ),
+
+                                                        ))
+                                                      ],
+                                                    ))
+
+                                                  ],
                                                 ),
                                               ),
-                                              Expanded(flex:1,child: Column(
-                                                children: [
-                                                  Expanded(flex:4,child: Container(
-                                                    child:
-                                                    CachedNetworkImage(
-                                                      height: AppSize.s60,
-                                                      width: AppSize.s60,
-
-                                                      imageUrl:'$TAG_LOGO_URL${teams[index].logoTeam2.toString()}',
-                                                      imageBuilder: (context, imageProvider) => Stack(
-                                                        children: [
-                                                          ClipRRect(
-
-                                                            child: Container(
-                                                                height: AppSize.s60,
-                                                                width: AppSize.s60,
-
-
-                                                                decoration: BoxDecoration(
-
-                                                                  shape: BoxShape.rectangle,
-
-                                                                  image: DecorationImage(
-                                                                      fit: BoxFit.fill,
-                                                                      image: imageProvider),
-                                                                )
-                                                            ),
-                                                          ),
-                                                        ],
+                                              SizedBox(height: 10.h,),
+                                              Expanded(flex:1,
+                                                  child: Center(
+                                                    child: Container(
+                                                      height: 20.h,
+                                                      width: 100.w,
+                                                      alignment: AlignmentDirectional.center,
+                                                      decoration: BoxDecoration(
+                                                          color: ColorManager.primary,
+                                                          borderRadius: BorderRadius.all(Radius.circular(10.h))
                                                       ),
-                                                      placeholder: (context, url) =>
-                                                          Center(
-                                                            child: SizedBox(
-                                                                height: AppSize.s50,
-                                                                width: AppSize.s50,
-                                                                child: const CircularProgressIndicator()),
-                                                          ),
+                                                      child: Text(
+                                                        teams![index].stadium.toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight.normal,
+                                                          fontSize: FontSize.s8,
 
 
-                                                      errorWidget: (context, url, error) => ClipRRect(
-                                                        child: Icon(Icons.image_not_supported_outlined,color: ColorManager.navColor,
-                                                          size: AppSize.s60,),
 
+                                                        ),
                                                       ),
                                                     ),
-
-                                                  )),
-
-                                                  Expanded(flex:1,child: Container(
-                                                    alignment: AlignmentDirectional.center,
-                                                    child: Text(
-                                                      mLanguage == "en"?
-                                                      teams[index].enTitleTeam2.toString():
-                                                      teams[index].arTitleTeam2.toString(),
-                                                      style: TextStyle(
-                                                          color: ColorManager.black,
-                                                          fontSize: FontSize.s11,
-                                                          fontWeight: FontWeight.w500
-                                                      ),
-                                                    ),
-
                                                   ))
-                                                ],
-                                              ))
-
                                             ],
                                           ),
                                         ),
@@ -1134,7 +1269,7 @@ class _PredictScreenState extends State<PredictScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
       minimumSize: Size(width, AppSize.s55 ),
 
       shape:  RoundedRectangleBorder(
@@ -1299,7 +1434,7 @@ class _PredictScreenState extends State<PredictScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: ColorManager.secondary,
+
 
 
       shape:  RoundedRectangleBorder(

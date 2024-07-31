@@ -102,6 +102,11 @@ class Banners {
 }
 
 class Teams {
+  String? isActive;
+  String? stadium;
+  String? matchDate;
+
+  String? matchTime;
   String? matchId;
   String? type;
   String? enTitleTeam1;
@@ -127,10 +132,16 @@ class Teams {
         this.leagueAr,
         this.leagueEn,
         this.goals1,
-        this.goals2});
+        this.goals2,
+ this.isActive,this.matchDate,this.matchTime,this.stadium});
 
   Teams.fromJson(Map<String, dynamic> json) {
     matchId = json['matchId'];
+    isActive = json['isActive'];
+    matchDate = json['matchDate'];
+    matchTime = json['matchTime'];
+
+    stadium = json['staduim'];
     type = json['type'];
     enTitleTeam1 = json['enTitleTeam1'];
     arTitleTeam1 = json['arTitleTeam1'];
@@ -148,6 +159,10 @@ class Teams {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['matchId'] = this.matchId;
     data['type'] = this.type;
+    data['isActive'] = this.isActive;
+    data['matchDate'] = this.matchDate;
+    data['matchTime'] = this.matchTime;
+    data['stadium'] = this.stadium;
     data['enTitleTeam1'] = this.enTitleTeam1;
     data['arTitleTeam1'] = this.arTitleTeam1;
     data['logoTeam1'] = this.logoTeam1;

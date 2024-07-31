@@ -78,7 +78,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               InAppWebView(
 
                 initialUrlRequest:
-                URLRequest(url: Uri.parse(widget.url)),
+                URLRequest(url: WebUri(widget.url)),
 
 
                 initialOptions: InAppWebViewGroupOptions(

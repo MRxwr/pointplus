@@ -136,54 +136,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         Container(
-                          height: AppSize.s50,
-                          margin: EdgeInsets.symmetric(vertical: AppSize.s10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("name".tr(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: ColorManager.black,
-                                    fontSize: FontSize.s12,
-                                    fontWeight: FontWeight.w500
-                                ),),
-                              SizedBox(height: AppSize.s4,),
-                              Expanded(flex:1,child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: ColorManager.secondary,
-                                        width: AppSize.s1
-                                    ),
-                                    color: ColorManager.white,
-                                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
-                                ),
-                                child: TextField(
-
-                                  style: TextStyle(color:ColorManager.black,fontSize: FontSize.s12),
-                                  textAlign: TextAlign.start,
-                                  textCapitalization: TextCapitalization.words,
-                                  keyboardType: TextInputType.name ,
-
-                                  textInputAction: TextInputAction.next,
-                                  controller: _nameController,
-                                  maxLines: null,
-                                  decoration: const InputDecoration(
-
-                                    isDense: true,
-                                    focusedBorder: InputBorder.none,
-
-                                    enabledBorder: InputBorder.none,
-                                  ),
-
-                                ),
-                              ))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: AppSize.s50,
+                          height: AppSize.s60,
                           margin: EdgeInsets.symmetric(vertical: AppSize.s10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +151,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     fontWeight: FontWeight.w500
                                 ),),
                               SizedBox(height: AppSize.s4,),
-                              Expanded(flex:1,child: Container(
+                              Expanded(flex:1,child:
+                              Container(
+
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: ColorManager.secondary,
@@ -228,53 +185,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ],
                           ),
                         ),
+
                         Container(
-                          height: AppSize.s50,
-                          margin: EdgeInsets.symmetric(vertical: AppSize.s10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("teamName".tr(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: ColorManager.black,
-                                    fontSize: FontSize.s12,
-                                    fontWeight: FontWeight.w500
-                                ),),
-                              SizedBox(height: AppSize.s4,),
-                              Expanded(flex:1,child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: ColorManager.secondary,
-                                        width: AppSize.s1
-                                    ),
-                                    color: ColorManager.white,
-                                    borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
-                                ),
-                                child: TextField(
-                                  style: TextStyle(color:ColorManager.black,fontSize: FontSize.s12),
-                                  textAlign: TextAlign.start,
-                                  textCapitalization: TextCapitalization.words,
-                                  keyboardType: TextInputType.name ,
-
-                                  textInputAction: TextInputAction.next,
-                                  controller: _teamNameController,
-                                  maxLines: null,
-                                  decoration: const InputDecoration(
-
-                                    isDense: true,
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                  ),
-
-                                ),
-                              )),
-
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: AppSize.s50,
+                          height: AppSize.s60,
                           margin: EdgeInsets.symmetric(vertical: AppSize.s10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,68 +251,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          height: AppSize.s50,
-                          margin: EdgeInsets.symmetric(vertical: AppSize.s10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("birthDay".tr(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: ColorManager.black,
-                                    fontSize: FontSize.s12,
-                                    fontWeight: FontWeight.w500
-                                ),),
-                              SizedBox(height: AppSize.s4,),
-                              Expanded(flex:1,child: GestureDetector(
-                                onTap: (){
-                                  showDateDialog();
-                                },
-                                child: Container(
-                                    width: AppSize.width,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: ColorManager.secondary,
-                                            width: AppSize.s1
-                                        ),
-                                        color: ColorManager.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(AppSize.s5))
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        Positioned.directional(
-                                            top: 0,
-                                            bottom: 0,
-                                            start: AppSize.s10,
-                                            textDirection: Directionality.of(context), child: Container(
-                                          alignment: AlignmentDirectional.centerStart,
-                                          child: Text(
-                                            birthDay,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: ColorManager.black,
-                                                fontSize: FontSize.s12,
-                                                fontWeight: FontWeight.w500
-                                            ),
-                                          ),
-                                        )),
-                                        Positioned.directional(textDirection: Directionality.of(context), child: Container(
-                                            alignment: AlignmentDirectional.centerEnd,
-                                            child: Image.asset(ImageAssets.birthDayLogo,height: AppSize.s15,
-                                              width: AppSize.s15,)
-                                        ),
-                                          top: 0,
-                                          bottom: 0,
-                                          end: AppSize.s20,)
-                                      ],
-                                    )
-                                ),
-                              )),
 
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -426,7 +278,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      primary: const Color(0xFF122436),
+
 
 
       shape:  RoundedRectangleBorder(
@@ -513,18 +365,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     String userName = _userNameController.text;
     String country = countryText;
     String teamName = _teamNameController.text;
-    if(name.trim()==""){
-      ArtSweetAlert.show(
-          context: context,
-          artDialogArgs: ArtDialogArgs(
-              type: ArtSweetAlertType.danger,
-              title: "error".tr(),
-              text:"nameError".tr(),
-              confirmButtonColor: ColorManager.primary,
-              confirmButtonText: "ok".tr()
-          )
-      );
-    }else if(userName.trim() == ""){
+     if(userName.trim() == ""){
       ArtSweetAlert.show(
           context: context,
           artDialogArgs: ArtDialogArgs(
@@ -535,18 +376,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               confirmButtonText: "ok".tr()
           )
       );
-    }else if(teamName.trim() == ""){
-      ArtSweetAlert.show(
-          context: context,
-          artDialogArgs: ArtDialogArgs(
-              type: ArtSweetAlertType.danger,
-              title: "error".tr(),
-              text:"teamNameError".tr(),
-              confirmButtonColor: ColorManager.primary,
-              confirmButtonText: "ok".tr()
-          )
-      );
-    }else{
+    }
+     else{
       final modelHud = Provider.of<ModelHud>(context,listen: false);
       modelHud.changeIsLoading(true);
       PointServices pointServices = PointServices();

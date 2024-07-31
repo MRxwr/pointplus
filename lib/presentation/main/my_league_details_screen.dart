@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:point/domain/view_my_league_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/point_services.dart';
 import '../../app/constant.dart';
@@ -129,10 +130,15 @@ class _MyLeagueDetailsScreenState extends State<MyLeagueDetailsScreen> {
                                   onTap: (){
                                     String? url = item.url;
                                     if(Uri.parse(url!).isAbsolute){
-                                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
-                                        return  WebViewScreen(url:url,
-                                          title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
-                                      }));
+                                      if(url.contains("instagram")) {
+                                        launchUrl(Uri.parse(url),
+                                          mode: LaunchMode.externalApplication,);
+                                      }else {
+                                        Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (BuildContext context){
+                                          return  WebViewScreen(url:url,
+                                            title:mLanguage == "en"?item.enTitle.toString():item.arTitle.toString() ,);
+                                        }));
+                                      }
                                     }else{
                                       Navigator.of(context,rootNavigator: true).push( MaterialPageRoute(builder: (BuildContext context){
                                         return  PhotoScreen(imageProvider: NetworkImage(

@@ -189,13 +189,16 @@ class Leaderboard {
   String? username;
   String? name;
   String? points;
+  String? id;
 
-  Leaderboard({this.username, this.name, this.points});
+
+  Leaderboard({this.username, this.name, this.points,this.id});
 
   Leaderboard.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     name = json['name'];
     points = json['points'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -203,6 +206,7 @@ class Leaderboard {
     data['username'] = this.username;
     data['name'] = this.name;
     data['points'] = this.points;
+    data['id']= this.id;
     return data;
   }
 }
@@ -251,6 +255,12 @@ class Rounds {
 class Matches {
   String? id;
   String? status;
+  String? isActive;
+  String? stadium;
+  String? matchDate;
+
+  String? matchTime;
+
   List<Team1>? team1;
   List<Team1>? team2;
   Result? result;
@@ -262,11 +272,16 @@ class Matches {
         this.team1,
         this.team2,
         this.result,
-        this.predictions});
+        this.predictions,this.isActive,this.matchDate,this.matchTime,this.stadium});
 
   Matches.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
+    isActive = json['isActive'];
+    matchDate = json['matchDate'];
+    matchTime = json['matchTime'];
+
+    stadium = json['staduim'];
     if (json['team1'] != null) {
       team1 = <Team1>[];
       json['team1'].forEach((v) {
@@ -290,6 +305,10 @@ class Matches {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['status'] = this.status;
+    data['isActive'] = this.isActive;
+    data['matchDate'] = this.matchDate;
+    data['matchTime'] = this.matchTime;
+    data['stadium'] = this.stadium;
     if (this.team1 != null) {
       data['team1'] = this.team1!.map((v) => v.toJson()).toList();
     }
