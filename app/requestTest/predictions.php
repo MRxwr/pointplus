@@ -18,7 +18,7 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 	*/
 	if( $_GET["type"] == "list" ){
 		$data = array(
-			"select" => ["t.id as matchId, t.type, t.staduim, t.matchDate, t.matchTime, t.isActive, t1.enTitle as enTitleTeam1, t1.arTitle as arTitleTeam1, t1.logo as logoTeam1, t2.enTitle as enTitleTeam2, t2.arTitle as arTitleTeam2, t2.logo as logoTeam2, t3.arTitle as leagueAr, t3.enTitle as leagueEn"],
+			"select" => ["t.id as matchId, t.type, t.staduim, t.matchDate, t.matchTime, t.isActive, t.countdown, t1.enTitle as enTitleTeam1, t1.arTitle as arTitleTeam1, t1.logo as logoTeam1, t2.enTitle as enTitleTeam2, t2.arTitle as arTitleTeam2, t2.logo as logoTeam2, t3.arTitle as leagueAr, t3.enTitle as leagueEn"],
 			"join" => ["teams","teams","leagues"],
 			"on" => ["t.team1 = t1.id","t.team2 = t2.id", "t.league = t3.id"]
 		);
