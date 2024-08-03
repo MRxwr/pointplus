@@ -35,7 +35,7 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 					$teams[$i]["goals1"] = "0";
 					$teams[$i]["goals2"] = "0";
 				}
-				list($countdownDate, $countdownTime) = explode('T', $teams[0]["countdown"]);
+				list($countdownDate, $countdownTime) = explode('T', $teams[$i]["countdown"]);
 				$countdownString = "{$countdownDate} {$countdownTime}:00" ;
 				$teams[$i]["startTime"] = date("Y-m-d H:i:s");
 				$teams[$i]["countdown"] = $countdownString;
