@@ -476,60 +476,6 @@ function updateOrderStatusNotification($orderId, $status){
 
 function getTop30($startDate, $endDate){
 	GLOBAL $dbconnect;
-	/*
-	$sql = "SELECT 
-			u.id AS userId, 
-			u.username,
-			SUM(
-				(
-					CASE 
-						WHEN p.matchOutcome = 1 THEN 5 
-						ELSE 0 
-					END 
-					+ 
-					CASE 
-						WHEN p.exactMatch = 1 THEN 5 
-						ELSE 0 
-					END
-				) * 
-				(CASE
-					WHEN p.x2 = 1 THEN 2
-					WHEN p.x3 = 1 THEN 6
-					ELSE 1
-				END)
-			) AS total_points
-		FROM 
-			(
-				SELECT 
-					predictions.userId,
-					predictions.x2,
-					predictions.x3,
-					CASE
-						WHEN (predictions.goals1 = predictions.goals2 AND matches.goals1 = matches.goals2) OR
-							(predictions.goals1 > predictions.goals2 AND matches.goals1 > matches.goals2) OR
-							(predictions.goals1 < predictions.goals2 AND matches.goals1 < matches.goals2) 
-						THEN 1 ELSE 0 
-					END AS matchOutcome,
-					CASE
-						WHEN predictions.goals1 = matches.goals1 AND predictions.goals2 = matches.goals2 
-						THEN 1 ELSE 0 
-					END AS exactMatch
-				FROM 
-					predictions 
-				JOIN 
-					matches ON predictions.matchId = matches.id
-				WHERE 
-					predictions.date BETWEEN '{$startDate}' AND '{$endDate}'
-			) p
-		JOIN 
-			user u ON p.userId = u.id
-		GROUP BY 
-			u.id
-		ORDER BY 
-			total_points DESC
-		LIMIT 50;
-	";
-	*/
 	$sql = "SELECT p.userId, u.username, SUM(p.points) as total_points
 			FROM `predictions` as p 
 			JOIN `user` as u 
@@ -552,6 +498,95 @@ function getTop30($startDate, $endDate){
 	}else{
 		$error = array("msg"=>"could not get the top 50 for this period");
 		return outputError($error);
+	}
+}
+
+function submitCalculatePredictions($matchId){
+	GLOBAL $dbconnect;
+	$updateData = array(
+		"pRank" => "`rank`"
+	);
+	$settings = selectDB("settings","`id` = '1'");
+	if( updatePredictionDB("user",$updateData,"`id` > '0' ") && updatePredictionDB("joinedLeagues",$updateData,"`id` > '0' ") ){
+		if( $matches = selectDB("matches","`id` = '{$matchId}' ") ){
+			//update user points
+			updatePredictionDB("user",array("pPoints"=>"0"),"`id` != '0'");
+			$realResult = [$matches[0]["goals1"],$matches[0]["goals2"]];
+			if( $prediction = selectDB("predictions","`matchId` = '{$matches[0]["id"]}' AND `status` = '0'") ){
+				for( $y =0; $y < sizeof($prediction); $y++ ){
+					$points = 0;
+					$predictionResult = [$prediction[$y]["goals1"],$prediction[$y]["goals2"]];
+					//check match result
+					if( $predictionResult[0] == $realResult[0] && $predictionResult[1] == $realResult[1] ){
+						$points = $points + 5;
+					}
+					//check match winner
+					if( $predictionResult[0] > $predictionResult[1] &&  $realResult[0] > $realResult[1] ){
+						$points = $points + 5;
+					}elseif( $predictionResult[0] < $predictionResult[1] &&  $realResult[0] < $realResult[1] ){
+						$points = $points + 5;
+					}elseif( $predictionResult[0] == $predictionResult[1] &&  $realResult[0] == $realResult[1] ){
+						$points = $points + 5;
+					}
+					//for super match multiply * 2 if no x3 availble and multiply by * 3 if x3 is set 
+					if( $matches[0]["type"] == 1 ){
+						if( $prediction[$y]["x3"] == 1 ){
+							$points = $points * $settings[0]["x3"];
+							updatePredictionDB("user",array("x3"=>1),"`id` = '{$prediction[$y]["userId"]}'");
+						}else{
+							$points = $points * $settings[0]["x2"];
+						}
+					}
+					//x2 
+					if( $prediction[$y]["x2"] == 1 ){
+						$points = $points * $settings[0]["x2"];
+						updatePredictionDB("user",array("x2"=>1),"`id` = '{$prediction[$y]["userId"]}'");
+					}
+					//update predictions table
+					updatePredictionDB("predictions",array("counted"=>1,"points"=>$points,"status"=>1),"`id` = '{$prediction[$y]["id"]}'");
+					//update user points
+					updatePredictionDB("user",array("pPoints"=>"`pPoints` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
+					//update user points
+					updatePredictionDB("user",array("points"=>"`points` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
+				}
+				updatePredictionDB("matches",array("status"=>2),"`id` = '{$matches[0]["id"]}'");
+			}
+		}
+	}
+	$sql = "UPDATE `user` u
+			JOIN
+			(
+				SELECT id, (@rownumber := @rownumber + 1) AS rownum
+				FROM `user`         
+				CROSS JOIN (select @rownumber := 0) r
+				WHERE status = '0'
+				ORDER BY `points` DESC
+			) AS newRow ON u.id = newRow.id    
+			SET `rank` = rownum
+			";
+	$dbconnect->query($sql);
+	$sql = "UPDATE `joinedLeagues` as jl
+			JOIN `user` as u ON u.id = jl.userId
+			SET jl.rank = u.rank
+			WHERE u.id = jl.userId
+			";
+	$dbconnect->query($sql);
+	if( $leagues = selectDB("subLeagues","`status` = '0'") ){
+		for($i = 0; $i < sizeof($leagues); $i++ ){
+			$sql = "UPDATE `joinedLeagues` u
+					JOIN
+					(
+						SELECT userId, (@rownumber := @rownumber + 1) AS rownum
+						FROM `joinedLeagues`         
+						CROSS JOIN (select @rownumber := 0) r
+						WHERE `leagueId` = '{$leagues[$i]["id"]}'
+						ORDER BY `rank` ASC
+					) AS newRow ON u.userId = newRow.userId    
+					SET `rank` = rownum
+					WHERE `leagueId` = '{$leagues[$i]["id"]}'
+					";
+			$dbconnect->query($sql);
+		}
 	}
 }
 ?>
