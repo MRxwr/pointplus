@@ -6,7 +6,8 @@ if ( isset($_POST["team1"]) && !isset($_POST["edit"]) ){
 /*
 if ( isset($_POST["countdown"]) ){
 	$table = "countdown";
-	$data = array('status'=>'1');
+	$data = array('status'=>'1
+	');
 	$where = "`status` = '0'";
 	updateUserDB($table,$data,$where);
 	insertDB($table,$_POST);
@@ -23,6 +24,7 @@ if( isset($_GET["delete"]) || isset($_GET["return"]) || isset($_GET["live"]) ){
 		$table = "matches";
 		$data = array('status'=>'2');
 		$where = "`id` LIKE '".$_GET["delete"]."'";
+		submitCalculatePredictions($_GET["delete"]);
 		updateUserDB($table,$data,$where);
 	}
 	if ( isset($_GET["return"]) ){
