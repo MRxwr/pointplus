@@ -37,7 +37,7 @@ if ( isset($_GET["type"]) ){
 			echo outputError($response);die();
 		}
 	}elseif( $_GET["type"] == "search" ){
-		if( $users = selectDataDB("`id`,`name`,`username`,`points`,`rank`, `pRank`","user","`status` = '0' AND `username` LIKE '%{$_GET["username"]}%' `type` = '2' ORDER BY `username` ASC") ){
+		if( $users = selectDataDB("`id`,`name`,`username`,`points`,`rank`, `pRank`","user","`status` = '0' AND `username` LIKE '%{$_GET["username"]}%' AND `type` = '2' ORDER BY `username` ASC") ){
 			$response["users"] = $users;
 			echo outputData($response);
 		}else{
