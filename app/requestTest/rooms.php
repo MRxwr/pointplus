@@ -58,7 +58,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
     }
     if( $_POST["join"] == 2 ){
         if( isset($_POST["roomCode"]) && !empty($_POST["roomCode"]) && $room = selectDB("quiz_room","`code` LIKE '{$_POST["roomCode"]}' AND `type` = '2' AND `status` = '0' AND `hidden` = '0'") ){
-            if( $rooms = selectDB("quiz_room","`type` = '2' AND `code` LIKE '{$_POST["roomCode"]}' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) NOT LIKE '%{$_POST["userId"]}%'") ){
+            if( $rooms = selectDB("quiz_room","`type` = '2' AND `code` LIKE '{$_POST["roomCode"]}' AND `status` = '0' AND `hidden` = '0' AND `listOfUsers` NOT LIKE '%{$_POST["userId"]}%'") ){
                 $listOfUsers = json_decode($room[0]["listOfUsers"],true);
                 if ( count($listOfUsers) < 6 ){
                     array_push($listOfUsers,array("id"=>$_POST["userId"]));
