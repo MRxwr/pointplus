@@ -136,15 +136,19 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
 }
 
 if( isset($_POST["exit"]) && !empty($_POST["exit"]) ){
+    $found = false;
     if( $room = selectDB("quiz_room","`id` = '{$_POST["roomId"]}'") ){
         $listOfUsers = json_decode($room[0]["listOfUsers"],true);
-        // check if $_POST["userId"] in array and remove it if so
-        if( in_array($_POST["userId"],$listOfUsers) ){
-            $key = array_search($_POST["userId"],$listOfUsers);
-            unset($listOfUsers[$key]);
-        }else{
+        for( $i = 0; $i < count($listOfUsers); $i++ ){
+            if( $listOfUsers[$i]["id"] == $_POST["userId"] ){
+                unset($listOfUsers[$i]);
+                $found = true;
+                break;
+            }
+        }
+        if( !$found ){
             $response["room"] = array();
-            $response["msg"] = "User not in Room";
+            $response["msg"] = "User not found";
             echo outputError($response);die();
         }
         $listOfUsers = array_values($listOfUsers);
