@@ -90,7 +90,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
         }
     }else{
         if( $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' ") ){
-            if( $rooms = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) NOT LIKE '%{$_POST["userId"]}%'") ){
+            if( $rooms = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `listOfUsers` NOT LIKE '%{$_POST["userId"]}%'") ){
                 $listOfUsers = json_decode($room[0]["listOfUsers"],true);
                 if ( count($listOfUsers) < 6 ){
                     array_push($listOfUsers,array("id"=>$_POST["userId"]));
@@ -129,7 +129,7 @@ if( isset($_POST["join"]) AND !empty($_POST["join"]) ){
                 "hidden" => "0",
             );
             insertDB("quiz_room",$dataInsert);
-            $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND JSON_UNQUOTE(JSON_EXTRACT(listOfUsers,'$[*].id')) LIKE '%{$_POST["userId"]}%'");
+            $room = selectDB("quiz_room","`type` = '1' AND `status` = '0' AND `hidden` = '0' AND `listOfUsers` LIKE '%{$_POST["userId"]}%'");
             $response["room"] = array(
                 "id" => $room[0]["id"],
                 "code" => $room[0]["code"],
