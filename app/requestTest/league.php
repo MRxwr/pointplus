@@ -36,6 +36,15 @@ if ( isset($_GET["type"]) ){
 			$response["msg"] = "Please enter user Id";
 			echo outputError($response);die();
 		}
+	}elseif( $_GET["type"] == "search" ){
+		if( $users = selectDataDB("`id`,`name`,`username`,`points`,`rank`, `pRank`","user","`status` = '0' AND `username` LIKE '%{$_GET["username"]}%' AND `type` = '2' ORDER BY `username` ASC") ){
+			$response["users"] = $users;
+			echo outputData($response);
+		}else{
+			$response["users"] = array();
+			$response["msg"] = "No users found";
+			echo outputError($response);die();
+		}
 	}elseif( $_GET["type"] == "create" ){
 		if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
 			$response["msg"] = "Please enter user Id";
