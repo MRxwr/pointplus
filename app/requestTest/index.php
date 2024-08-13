@@ -65,6 +65,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("appFire.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "submitRoom" ){
 	require("submitRoom.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "version" ){
+	require("version.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();
