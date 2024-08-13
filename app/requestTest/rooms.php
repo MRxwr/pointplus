@@ -34,7 +34,7 @@ if( isset($_POST["create"]) && !empty($_POST["create"]) ){
     echo outputData($response);die();
 }
 
-if( isset($_POST["roomId"]) && !empty($_POST["roomId"]) ){
+if( isset($_POST["roomId"]) && !empty($_POST["roomId"]) && !isset($_POST["exit"]) ){
     if( $room = selectDB("quiz_room","`status` = '0' AND `hidden` = '0' AND `id` = '{$_POST["roomId"]}'") ){
         $response["room"] = array(
             "id" => $room[0]["id"],
