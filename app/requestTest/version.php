@@ -1,6 +1,6 @@
 <?php 
-if( isset($_GET["action"]) && !empty($_GET["action"]) ){
-    if( $_GET["action"] == "update" ){
+if( isset($_GET["type"]) && !empty($_GET["type"]) ){
+    if( $_GET["type"] == "update" ){
         if( !isset($_POST["ios"]) || empty($_POST["ios"]) ){
             $error["msg"] = popupMsg($requestLang,"Please enter ios version number","الرجاء ادخال رقم الاصدار ios");
             echo outputError($error);die();
@@ -18,7 +18,7 @@ if( isset($_GET["action"]) && !empty($_GET["action"]) ){
             $response["versions"] = $versions[0];
             echo outputData($response);
         }
-    }elseif( $_GET["action"] == "list" ){
+    }elseif( $_GET["type"] == "list" ){
         if( $versions = selectDB2("`ios`,`android`","versions","`id` = '1'" ) ){
             $response["versions"] = $versions[0];
             echo outputData($response);
@@ -28,7 +28,7 @@ if( isset($_GET["action"]) && !empty($_GET["action"]) ){
         echo outputError($error);die();
     }
 }else{
-    $error["msg"] = popupMsg($requestLang,"Please enter a correct action","الرجاء التحقق من العملية");
+    $error["msg"] = popupMsg($requestLang,"Please enter a correct type","الرجاء التحقق من العملية");
     echo outputError($error);die();
 }
 
