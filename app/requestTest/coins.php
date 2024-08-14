@@ -11,7 +11,7 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 		echo outputData($response);
 	}elseif( isset($_POST["redeem"]) && !empty($_POST["redeem"]) ){
 		if( $user = selectDB("user","`id` = '{$_GET["userId"]}'") ){
-			if ( $user[0]["redeemedPoints"] - $user[0]["points"] <= 100 ){
+			if ( abs($user[0]["redeemedPoints"] - $user[0]["points"]) < 100 ){
 				$response = array(
 					"enMsg" => "Not enough points to be redeemed.",
 					"arMsg" => "لا تملك نقاط كافيه"
