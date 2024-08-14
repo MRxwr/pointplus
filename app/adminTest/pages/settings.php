@@ -15,6 +15,7 @@ if( isset($_POST["resetData"]) ){
 	$table = "user";
 	$data = array(
 		"points" => 0,
+		"pPoints" => 0,
 		"redeemedPoints" => 0,
 		"rank" => 0,
 		"pRank" => 0,
