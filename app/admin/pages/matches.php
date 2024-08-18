@@ -3,25 +3,43 @@ if ( isset($_POST["team1"]) && !isset($_POST["edit"]) ){
 	$table = "matches";
 	insertDB($table,$_POST);
 }
+/*
 if ( isset($_POST["countdown"]) ){
 	$table = "countdown";
-	$data = array('status'=>'1');
+	$data = array('status'=>'1
+	');
 	$where = "`status` = '0'";
 	updateUserDB($table,$data,$where);
 	insertDB($table,$_POST);
 }
-if ( isset($_GET["delete"]) ){
-	$table = "matches";
-	$data = array('status'=>'2');
-	$where = "`id` LIKE '".$_GET["delete"]."'";
-	updateUserDB($table,$data,$where);
+	*/
+if( isset($_GET["delete"]) || isset($_GET["return"]) || isset($_GET["live"]) ){
+	if ( isset($_GET["live"]) ){
+		$table = "matches";
+		$data = array('status'=>'1');
+		$where = "`id` LIKE '".$_GET["live"]."'";
+		updateUserDB($table,$data,$where);
+	}
+	if ( isset($_GET["delete"]) ){
+		$table = "matches";
+		$data = array('status'=>'2');
+		$where = "`id` LIKE '".$_GET["delete"]."'";
+		submitCalculatePredictions($_GET["delete"]);
+		updateUserDB($table,$data,$where);
+	}
+	if ( isset($_GET["return"]) ){
+		$table = "matches";
+		$data = array('status'=>'0');
+		$where = "`id` LIKE '".$_GET["return"]."'";
+		updateUserDB($table,$data,$where);
+	}
+	?>
+	<script>
+		window.location.href = "?page=matches";
+	</script>
+	<?php
 }
-if ( isset($_GET["return"]) ){
-	$table = "matches";
-	$data = array('status'=>'0');
-	$where = "`id` LIKE '".$_GET["return"]."'";
-	updateUserDB($table,$data,$where);
-}
+
 if ( isset($_GET["edit"]) ){
 	$table = "matches";
 	$where = "`id` LIKE '".$_GET["id"]."'";
@@ -35,6 +53,7 @@ if ( isset($_POST["edit"]) ){
 	$data = $_POST;
 	updateUserDB($table,$data,$where);
 }
+/*
 if ( $countdown = selectDB("countdown","`status` = '0'") ){
 	$countdownString = $countdown[0]["countdown"];
 	$startTimeString = $countdown[0]["startTime"];
@@ -42,7 +61,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 	$countdownString = "";
 	$startTimeString = "";
 }
-
+*/
 ?>
 
 <div class="right-sidebar-backdrop"></div>
@@ -56,7 +75,8 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 		
 			
 <!-- /Title -->
-
+<?php
+/*
 <div class="row">
 
 <div class="col-md-12">
@@ -110,7 +130,8 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 </div>
 
 </div>
-
+*/
+?>
 
 <div class="row">
 
@@ -183,7 +204,28 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 </select>
 </div>
 </div>
-</div>	
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">FROM</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+<input name="startTime" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["startTime"]}'";}else{echo "value=''";} ?> type="datetime-local">
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label class="control-label mb-10" for="exampleInputuname_1">TO</label>
+<div class="input-group">
+<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
+<input name="countdown" class="form-control" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["countdown"]}'";}else{echo "value=''";} ?> type="datetime-local">
+
+</div>
+</div>
+</div>
 
 <div class="col-md-3">
 <div class="form-group">
@@ -312,7 +354,7 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 
 <div class="col-md-12">
 <button type="submit" class="btn btn-success mr-10">Submit</button>
-<input type="hidden" name="status" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["status"]}'";}else{echo "value='1'";} ?>>
+<input type="hidden" name="status" <?php if(isset($_GET["edit"])){ echo "value='{$data[0]["status"]}'";}else{echo "value='0'";} ?>>
 <input type="hidden" name="date" value="<?php echo $date ?>">
 <?php if(isset($_GET["edit"])){?>
 <input type="hidden" name="edit" value="<?php echo $_GET["id"] ?>">
@@ -334,15 +376,15 @@ if ( $countdown = selectDB("countdown","`status` = '0'") ){
 <!-- Row -->
 <?php
 if ( !isset($_GET["edit"]) ){
-$status 		= array('1','0');
-$arrayOfTitles 	= array('Active matches','Inactive matches');
-$myTable 		= array('myTable1','myTable2');
-$panel 			= array('panel-default','panel-danger');
-$textColor 		= array('txt-dark','txt-light');
-$icon 			= array('fa fa-trash-o','fa fa-refresh');
-$action			= array('delete=','return=');
+$status 		= array('0','1','2');
+$arrayOfTitles 	= array('Pending matches','Active matches','Inactive matches');
+$myTable 		= array('myTable3','myTable1','myTable2');
+$panel 			= array('panel-warning','panel-default','panel-danger');
+$textColor 		= array('txt-dark','txt-dark','txt-light');
+$icon 			= array('fa fa-thumbs-up','fa fa-trash-o','fa fa-refresh');
+$action			= array('live=','delete=','return=');
 
-for($i = 0; $i < 2 ; $i++ ){
+for($i = 0; $i < sizeof($status) ; $i++ ){
 ?>
 
 <div class="row">

@@ -15,7 +15,6 @@ if( isset($_POST["resetData"]) ){
 	$table = "user";
 	$data = array(
 		"points" => 0,
-		"pPoints" => 0,
 		"redeemedPoints" => 0,
 		"rank" => 0,
 		"pRank" => 0,
@@ -36,7 +35,7 @@ if( isset($_POST["resetData"]) ){
 	
 	$table = "countdown";
 	$where = "0";
-	deleteDB($table,$where);
+	var_dump(deleteDB($table,$where));
 }
 
 if ( isset($_GET["edit"]) ){
@@ -119,26 +118,6 @@ if( $getRoundMatches = selectDB("matches","`status` = '0' ORDER BY `round` DESC"
 	<option value="0">No</option>
 	<option value="1">Yes</option>
 </select>
-</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="form-group">
-<label class="control-label mb-10" for="exampleInputuname_1">X2</label>
-<div class="input-group">
-<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="number" step="1" min="1" class="form-control" id="exampleInputuname_1" placeholder="1" name="x2" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["x2"] ?>"<?php }?> required>
-</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="form-group">
-<label class="control-label mb-10" for="exampleInputuname_1">X3 [ super match ]</label>
-<div class="input-group">
-<div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="number" step="1" min="1" class="form-control" id="exampleInputuname_1" placeholder="1" name="x3" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["x3"] ?>"<?php }?> required>
 </div>
 </div>
 </div>

@@ -4,7 +4,7 @@ if ( isset($_POST["name"]) && !isset($_POST["edit"]) ){
 	insertDB($table,$_POST);
 }
 if ( isset($_GET["delete"]) ){
-	$table = "addresses"; 
+	$table = "addresses";
 	$data = array('status'=>'1');
 	$where = "`id` LIKE '".$_GET["delete"]."'";
 	updateDB($table,$data,$where);

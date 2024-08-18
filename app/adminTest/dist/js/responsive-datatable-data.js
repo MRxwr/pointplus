@@ -13,9 +13,3 @@ $(document).ready(function() {
 		responsive: true
 	} );
 } );
-
-$(document).ready(function() {
-	$('#myTable3').DataTable( {
-		responsive: true
-	} );
-} );
