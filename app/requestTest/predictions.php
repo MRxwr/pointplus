@@ -35,9 +35,7 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 					$teams[$i]["goals1"] = "0";
 					$teams[$i]["goals2"] = "0";
 				}
-				// if $teams[$i]["countdown"] !isset make it now
-				// if $teams[$i]["countdown"] isset make it countdown
-				if( !isset($teams[$i]["countdown"]) ){
+				if( !isset($teams[$i]["countdown"]) || ( isset($teams[$i]["countdown"]) && $teams[$i]["countdown"] == " :00")){
 					$teams[$i]["countdown"] = date("Y-m-d H:i:s" , strtotime($teams[$i]["matchDate"] . " + 7 days"));
 				}
 				list($countdownDate, $countdownTime) = explode('T', $teams[$i]["countdown"]);
