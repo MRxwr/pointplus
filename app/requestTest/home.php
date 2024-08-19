@@ -142,6 +142,7 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 			"matchDate" => $matches[$i]["matchDate"],
 			"matchTime" => $matches[$i]["matchTime"],
 			"isActive" => $matches[$i]["isActive"],
+			"type" => $matches[$i]["type"],
 			"team1"=>$team1,
 			"team2"=>$team2,
 			"result"=>array(
