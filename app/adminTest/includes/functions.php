@@ -55,7 +55,7 @@ function selectDB($table, $where){
 	}
 }
 
-function selectDB2($select, $table, $where){
+function selectDB2($select, $table, $where){ 
     GLOBAL $dbconnect;
     $check = [';', '"'];
     $where = str_replace($check, "", $where);
