@@ -105,7 +105,7 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 }
 
 // getting all game week rounds
-if ( $rounds = selectDataDB("`round`","matches","`status` != '2' GROUP BY `round` ORDER BY `round` DESC") ){
+if ( $rounds = selectDataDB("`round`","matches","`status` != '0' GROUP BY `round` ORDER BY `round` DESC") ){
 	$response["rounds"] = $rounds;
 }else{
 	$response["rounds"] = array();
