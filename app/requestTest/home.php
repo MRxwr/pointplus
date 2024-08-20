@@ -74,7 +74,7 @@ if ( $winners = selectDataDB("`id`,`username`, `name`, `team`, `winner`","user",
 }
 
 // getting all game week rounds
-if ( $rounds = selectDataDB("`round`","matches","`status` != '2' GROUP BY `round` ORDER BY `round` DESC") ){
+if ( $rounds = selectDataDB("`round`","matches","`status` != '0' GROUP BY `round` ORDER BY `round` DESC") ){
 	$response["rounds"] = $rounds;
 }else{
 	$response["rounds"] = array();
