@@ -23,8 +23,6 @@ if ( $headerAPI != "pointsCreateKW" ){
 
 $unsetData = ["userId","status","date", "username", "password", "cookie", "name", "email", "forgetPassword"];
 
-$settingsAdmin = selectDB("settings","`id` = '1'");
-
 if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("home.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "user" ){
@@ -65,8 +63,6 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("appFire.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "submitRoom" ){
 	require("submitRoom.php");
-}elseif( isset($_GET["action"]) && $_GET["action"] == "version" ){
-	require("version.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();

@@ -5,7 +5,6 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 	}else{
 		$response["banners"] = array();
 	}
-	/*
 	if ( $countdown = selectDB("countdown","`status` = '0' ORDER BY `id` DESC LIMIT 1") ){
 		list($countdownDate, $countdownTime) = explode('T', $countdown[0]["countdown"]);
 		$countdownString = "{$countdownDate} {$countdownTime}:00" ;
@@ -15,16 +14,11 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 		$countdownString = "";
 		$startTimeString = "";
 	}
-	*/
 	if( $_GET["type"] == "list" ){
 		$data = array(
-			"select" => ["t.id as matchId, t.type, t.staduim, t.matchDate, t.matchTime, t.isActive, t.countdown, t1.enTitle as enTitleTeam1, t1.arTitle as arTitleTeam1, t1.logo as logoTeam1, t2.enTitle as enTitleTeam2, t2.arTitle as arTitleTeam2, t2.logo as logoTeam2, t3.arTitle as leagueAr, t3.enTitle as leagueEn"],
+			"select" => ["t.id as matchId, t.type, t.staduim, t.matchDate, t.matchTime, t.isActive, t1.enTitle as enTitleTeam1, t1.arTitle as arTitleTeam1, t1.logo as logoTeam1, t2.enTitle as enTitleTeam2, t2.arTitle as arTitleTeam2, t2.logo as logoTeam2, t3.arTitle as leagueAr, t3.enTitle as leagueEn"],
 			"join" => ["teams","teams","leagues"],
 			"on" => ["t.team1 = t1.id","t.team2 = t2.id", "t.league = t3.id"]
-		);
-		$response["isOn"] = array(
-			"x3" => $settingsAdmin[0]["x3"],
-			"x2" => $settingsAdmin[0]["x2"]
 		);
 		if( $teams = selectJoinDB("matches",$data,"t.status = '1' ORDER BY t.id DESC, t.round DESC") ){
 			for ( $i = 0; $i < sizeof($teams); $i++){
@@ -35,13 +29,9 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 					$teams[$i]["goals1"] = "0";
 					$teams[$i]["goals2"] = "0";
 				}
-				list($countdownDate, $countdownTime) = explode('T', $teams[$i]["countdown"]);
-				$countdownString = "{$countdownDate} {$countdownTime}:00" ;
-				$teams[$i]["startTime"] = date("Y-m-d H:i:s");
-				$teams[$i]["countdown"] = $countdownString;
 			}
-			$response["countdown"] = date("Y-m-d H:i:s");
-			$response["startTime"] = date("Y-m-d H:i:s");
+			$response["countdown"] = $countdownString;
+			$response["startTime"] = $startTimeString;
 			$response["teams"] = $teams;
 			
 			$user = selectDB("user","`id` = '{$_POST["userId"]}'");
@@ -51,8 +41,8 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 			);
 		}else{
 			//$response["countdown"] = date("Y-m-d H:i:s" , strtotime($date . " + 7 days"));
-			$response["countdown"] = date("Y-m-d H:i:s");
-			$response["startTime"] = date("Y-m-d H:i:s");
+			$response["countdown"] = $countdownString;
+			$response["startTime"] = $startTimeString;
 			$response["teams"] = array();
 			$user = selectDB("user","`id` = '{$_POST["userId"]}'");
 			$response["user"] = array(

@@ -105,7 +105,7 @@ if ( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
 }
 
 // getting all game week rounds
-if ( $rounds = selectDataDB("`round`","matches","`status` != '0' GROUP BY `round` ORDER BY `round` DESC") ){
+if ( $rounds = selectDataDB("`round`","matches","`status` != '2' GROUP BY `round` ORDER BY `round` DESC") ){
 	$response["rounds"] = $rounds;
 }else{
 	$response["rounds"] = array();
@@ -117,7 +117,7 @@ if( isset($_GET["round"]) && !empty($_GET["round"]) ){
 }
 
 // get rounds matches 
-if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = selectDB("matches","`status` != '0' AND ( `status` != '1' OR `isActive` = '0' )AND `round` = {$rounds[0]["round"]} ORDER BY `id` DESC") ){
+if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = selectDB("matches","`status` != '2' AND ( `status` != '1' OR `isActive` = '0' )AND `round` = {$rounds[0]["round"]} ORDER BY `id` DESC") ){
 	for( $i = 0; $i < sizeof($matches); $i++ ){
 		if( $team = selectDataDB("`arTitle`,`enTitle`,`logo`","teams","`id` = '{$matches[$i]["team1"]}'") ){
 			$team1 = $team;
@@ -149,14 +149,14 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 				//check for x3
 				if( $matches[$i]["type"] == 1 ){
 					if( $prediction[0]["x3"] == 1 ){
-						$points = $points * $settingsAdmin[0]["x3"];
+						$points = $points * 2 * 3;
 					}else{
-						$points = $points * $settingsAdmin[0]["x2"];
+						$points = $points * 2;
 					}
 				}
 				//check for x2
 				if( $prediction[0]["x2"] == 1 ){
-					$points = $points * $settingsAdmin[0]["x2"];
+					$points = $points * 2;
 				}
 				$userPredictionResponse = array(
 					"goals1" => $prediction[0]["goals1"],
@@ -191,14 +191,14 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 				//check for x3
 				if( $matches[$i]["type"] == 1 ){
 					if( $prediction[0]["x3"] == 1 ){
-						$points = $points * $settingsAdmin[0]["x3"];
+						$points = $points * 2 * 3;
 					}else{
-						$points = $points * $settingsAdmin[0]["x2"];
+						$points = $points * 2;
 					}
 				}
 				//check for x2
 				if( $prediction[0]["x2"] == 1 ){
-					$points = $points * $settingsAdmin[0]["x2"];
+					$points = $points * 2;
 				}
 				$comparePredictionResponse = array(
 					"goals1" => $prediction[0]["goals1"],
