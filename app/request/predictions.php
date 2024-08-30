@@ -5,6 +5,10 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 	}else{
 		$response["banners"] = array();
 	}
+	if ( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
+		$response["msg"] = "Please set user id";
+		echo outputError($response);die();
+	}
 	/*
 	if ( $countdown = selectDB("countdown","`status` = '0' ORDER BY `id` DESC LIMIT 1") ){
 		list($countdownDate, $countdownTime) = explode('T', $countdown[0]["countdown"]);
