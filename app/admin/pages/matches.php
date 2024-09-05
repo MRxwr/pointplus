@@ -13,7 +13,7 @@ if ( isset($_POST["countdown"]) ){
 	insertDB($table,$_POST);
 }
 	*/
-if( isset($_GET["delete"]) || isset($_GET["return"]) || isset($_GET["live"]) ){
+if( isset($_GET["delete"]) || isset($_GET["return"]) || isset($_GET["live"]) || isset($_GET["removeWithoutCalculation"]) ){
 	if ( isset($_GET["live"]) ){
 		$table = "matches";
 		$data = array('status'=>'1');
@@ -25,6 +25,12 @@ if( isset($_GET["delete"]) || isset($_GET["return"]) || isset($_GET["live"]) ){
 		$data = array('status'=>'2');
 		$where = "`id` LIKE '".$_GET["delete"]."'";
 		submitCalculatePredictions($_GET["delete"]);
+		updateUserDB($table,$data,$where);
+	}
+	if ( isset($_GET["removeWithoutCalculation"]) ){
+		$table = "matches";
+		$data = array('status'=>'2');
+		$where = "`id` LIKE '".$_GET["removeWithoutCalculation"]."'";
 		updateUserDB($table,$data,$where);
 	}
 	if ( isset($_GET["return"]) ){
@@ -461,6 +467,11 @@ while ( $row = $result->fetch_assoc() ){
 
 <a href="?page=matches&edit=1&id=<?php echo $row["id"] ?>" style="margin:3px"><i class="fa fa-edit"></i></a>
 
+<?php 
+if( $row["status"] != "2"){
+	echo "<a href='?page=matches&removeWithoutCalculation={$row["id"]}' style='margin:3px; color:red'><i class='fa fa-trash-o'></i></a>";
+}
+?>
 <a href="?page=matches&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px"><i class="<?php echo $icon[$i] ?>"></i></a>
 
 </td>
