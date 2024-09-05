@@ -475,7 +475,8 @@ while ( $row = $result->fetch_assoc() ){
 <?php 
 if( $row["status"] != "2"){
 	$removeMatchMsg = direction("Are you sure you want to remove this match without calculation?", "هل تريد بالتاكيد حذف هذه المباراة بدون حساب؟");
-	echo "<a href='?page=matches&removeWithoutCalculation={$row["id"]}' style='margin:3px; color:red' onclick='return confirm('{$removeMatchMsg}')'><i class='fa fa-ban'></i></a>";
+	$removeJS = "return confirm('{$removeMatchMsg}')";
+	echo "<a href='?page=matches&removeWithoutCalculation={$row["id"]}' style='margin:3px; color:red' onclick='{$removeJS}'><i class='fa fa-ban'></i></a>";
 }
 ?>
 <a href="?page=matches&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px" onclick="return confirm('<?php echo $actionMsg[$i] ?>')"><i class="<?php echo $icon[$i] ?>"></i></a>
