@@ -389,6 +389,11 @@ $panel 			= array('panel-warning','panel-default','panel-danger');
 $textColor 		= array('txt-dark','txt-dark','txt-light');
 $icon 			= array('fa fa-thumbs-up','fa fa-trash-o','fa fa-refresh');
 $action			= array('live=','delete=','return=');
+$actionMsg      = array(
+	direction('Are you sure you want to activate this match?', 'هل تريد بالتاكيد تفعيل هذخ المباراة؟'),
+	direction('Are you sure you want to submit this match?', 'هل تريد بالتاكيد حساب هذه المباراة؟'),
+	direction('Are you sure you want to re-submit this match?', 'هل تريد بالتاكيد اعادة هذه المباراة؟')
+	);
 
 for($i = 0; $i < sizeof($status) ; $i++ ){
 ?>
@@ -469,10 +474,11 @@ while ( $row = $result->fetch_assoc() ){
 
 <?php 
 if( $row["status"] != "2"){
-	echo "<a href='?page=matches&removeWithoutCalculation={$row["id"]}' style='margin:3px; color:red'><i class='fa fa-trash-o'></i></a>";
+	$removeMatchMsg = direction("Are you sure you want to remove this match without calculation?", "هل تريد بالتاكيد حذف هذه المباراة بدون حساب؟");
+	echo "<a href='?page=matches&removeWithoutCalculation={$row["id"]}' style='margin:3px; color:red' onclick='return confirm('{$removeMatchMsg}')'><i class='fa fa-ban'></i></a>";
 }
 ?>
-<a href="?page=matches&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px"><i class="<?php echo $icon[$i] ?>"></i></a>
+<a href="?page=matches&<?php echo $action[$i] . $row["id"] ?>" style="margin:3px" onclick="return confirm('<?php echo $actionMsg[$i] ?>')"><i class="<?php echo $icon[$i] ?>"></i></a>
 
 </td>
 </tr>
