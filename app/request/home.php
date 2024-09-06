@@ -62,7 +62,7 @@ if ( isset($_GET["id"]) && !empty($_GET["id"]) ){
 // get top 3 users
 if ( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`status` = '0' AND `type` = '2' AND `rank` != '0' ORDER BY `rank` ASC LIMIT 3") ){
 	$response["leaderboard"] = $leaderboard;
-}elseif( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`status` = '0' AND `type` = '2' AND `rank` = '0' ORDER BY `rank` RAND() LIMIT 3") ){
+}elseif( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`status` = '0' AND `type` = '2' AND `rank` = '0' ORDER BY RAND() LIMIT 3") ){
 	$response["leaderboard"] = $leaderboard;
 }else{
 	$response["leaderboard"] = array();
