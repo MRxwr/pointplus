@@ -174,7 +174,7 @@ function selectDataDB($select, $table, $where){
 		}
 	}else{
 		$error = array("msg"=>"select table error");
-		return 0;
+		return outputError($error);
 	}
 }
 
