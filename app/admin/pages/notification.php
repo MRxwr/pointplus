@@ -1,24 +1,26 @@
 <?php
 //require('../admin/includes/config.php');
 if ( isset($_POST["title"]) ){
-	$curl = curl_init();
-	curl_setopt_array($curl, array(
-	  CURLOPT_URL => 'https://api.imgur.com/3/upload',
-	  CURLOPT_RETURNTRANSFER => true,
-	  CURLOPT_ENCODING => '',
-	  CURLOPT_MAXREDIRS => 10,
-	  CURLOPT_TIMEOUT => 0,
-	  CURLOPT_FOLLOWLOCATION => true,
-	  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	  CURLOPT_CUSTOMREQUEST => 'POST',
-	  CURLOPT_POSTFIELDS => array('image'=> new CURLFILE($_FILES["image"]["tmp_name"])),
-	  CURLOPT_HTTPHEADER => array(
-		'Authorization: Client-ID 386563124e58e6c'
-	  ),
-	));
-	$response = curl_exec($curl);
-	curl_close($curl);
-	$response = json_decode($response,true);
+	if ( isset($_FILES["image"]["tmp_name"]) && is_uploaded_file($_FILES["image"]["tmp_name"]) ){
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://api.imgur.com/3/upload',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => array('image'=> new CURLFILE($_FILES["image"]["tmp_name"])),
+			CURLOPT_HTTPHEADER => array(
+				'Authorization: Client-ID 386563124e58e6c'
+			),
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		$response = json_decode($response,true);
+	}
 	if( isset($response["data"]["link"]) ){
 		$image = $response["data"]["link"];
 	}else{
