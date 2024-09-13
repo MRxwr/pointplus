@@ -1,12 +1,6 @@
 <?php
 //require('../admin/includes/config.php');
 if ( isset($_POST["title"]) ){
-	$server_key = 'AAAABgr1QF4:APA91bHYhGKGfLUCXFPmapE1pnYhDXnqWFifKe0ooeSEU6cv1lTc_l7DSJKprWX5YSNC-Gmq_e201Tc0eB6-lz_rwt-X3Hep_XGJ4X-haHnOLf73tGyfexTpRF9Vn2moVCdgQHjSp85o';
-	$url = 'https://fcm.googleapis.com/fcm/send';
-	$headers = array(
-		'Content-Type:application/json',
-		'Authorization:key='.$server_key
-	);
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
 	  CURLOPT_URL => 'https://api.imgur.com/3/upload',
@@ -25,69 +19,45 @@ if ( isset($_POST["title"]) ){
 	$response = curl_exec($curl);
 	curl_close($curl);
 	$response = json_decode($response,true);
-	$sql = "SELECT * FROM `user` WHERE `firebase` != '' GROUP BY `firebase`";
-	$result = $dbconnect->query($sql);
 	if( isset($response["data"]["link"]) ){
 		$image = $response["data"]["link"];
 	}else{
 		$image = "";
 	}
-	$title = $_POST["title"];
-	$body = $_POST["msg"];
-	while( $row = $result->fetch_assoc() ){
-		$to[] = $row["firebase"];
-		$data = array(
-			"userId" => $row["id"],
-			"notification" => $title . " - " . $body,
-			"image" => $image
-		);
-		insertDB("notification",$data);
-	}
-	$json_data = array(
-		"notification" => array(
-			"body" => "{$body}",
-			"text" => "{$body}",
-			"title" => "{$title}",
-			"sound" => "default",
-			"content_available" => "true",
-			"priority" => "high",
-			"badge" => "1",
-			"image" => "{$image}"
-		),
-		"data" => array(
-			"body" => "{$body}",
-			"title" => "{$title}",
-			"text" => "{$body}",
-			"sound" => "default",
-			"content_available" => "true",
-			"priority" => "high",
-			"badge" => "1",
-			"image" => "{$image}"
-		)
-	);
 
-	$maxBatchSize = 1000;
-	$messageData = $json_data;
-	// Split the registration IDs into batches of 1000 or fewer
-	$batches = array_chunk($to, $maxBatchSize);
-	foreach ($batches as $batch) {
-		// Create a new $json_data for each batch
-		$json_data = array(
-			"registration_ids" => $batch,
-			"notification" => $messageData["notification"],
-			"data" => $messageData["data"]
-		);
-		$data = json_encode($json_data);
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		$response = curl_exec($ch);
-		curl_close($ch);
+	if( $users = selectDB("users","`firebase` != '' GROUP BY `firebase`") ){
+		for ($i=0; $i < 1; $i++) {
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS =>"{
+				'message': 
+					{
+						'token': 'fUFXZMAjSwa2d-ev0L4LoU:APA91bGp1hy27dlgGruuvtN4SDpyMHiDuFw8aS-uUysbnmZG31AI8IAnPHtDjo36xRwX4PxAgqKvL1pDlbXJQX7HVxCrNTjDjLMUQtZgpIZHNm0GSu7IxfwiG3Xhb-iWcLlr-c7NM3uf',
+						'notification': 
+							{
+								'body': '{$_POST["title"]}',
+								'title': '{$_POST["msg"]}',
+								'image': '{$image}'
+							}
+					}
+				}
+			",
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json',
+				'Authorization: Bearer ya29.a0AcM612zoe3otNgcGL7ZUzIJaCvr5dB69hfx1rVDiJeCOLnCcq7D4fooOOii0JY920mmiJnVm4H4TwjSTLiStgejO-wtRXT8VNkw5mrLJSj95rszsjE-XAnjYsDezIrdQLczD5krvD4JimioZycXXi3n-TTcEaY-pJID1-QUeaCgYKAbMSARESFQHGX2Mis4bt5AWmLm1v0S0MwFP0Pg0175'
+			),
+			));
+			$response = curl_exec($curl);
+			curl_close($curl);
+		}
 	}
 }
 ?>
