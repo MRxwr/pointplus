@@ -59,7 +59,9 @@ if ( isset($_POST["title"]) ){
 			));
 			$response = curl_exec($curl);
 			curl_close($curl);
+			var_dump($response);
 		}
+		
 	}
 }
 ?>
