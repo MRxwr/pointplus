@@ -563,19 +563,18 @@ function submitCalculatePredictions($matchId){
 					}elseif( $predictionResult[0] == $predictionResult[1] &&  $realResult[0] == $realResult[1] ){
 						$points = $points + 5;
 					}
-					//for super match multiply * 2 if no x3 availble and multiply by * 3 if x3 is set 
+					//for super match multiply * 2
 					if( $matches[0]["type"] == 1 ){
-						if( $prediction[$y]["x3"] == 1 ){
-							$points = $points * $settings[0]["x3"];
-							updatePredictionDB("user",array("x3"=>1),"`id` = '{$prediction[$y]["userId"]}'");
-						}else{
-							$points = $points * $settings[0]["x2"];
-						}
+						$points = $points * 2;
 					}
 					//x2 
 					if( $prediction[$y]["x2"] == 1 ){
 						$points = $points * $settings[0]["x2"];
 						updatePredictionDB("user",array("x2"=>1),"`id` = '{$prediction[$y]["userId"]}'");
+					}
+					if( $prediction[$y]["x3"] == 1 ){
+						$points = $points * $settings[0]["x3"];
+						updatePredictionDB("user",array("x3"=>1),"`id` = '{$prediction[$y]["userId"]}'");
 					}
 					//update predictions table
 					updatePredictionDB("predictions",array("counted"=>1,"points"=>$points,"status"=>1),"`id` = '{$prediction[$y]["id"]}'");

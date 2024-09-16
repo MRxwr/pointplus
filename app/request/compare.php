@@ -190,15 +190,15 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 				}
 				//check for x3
 				if( $matches[$i]["type"] == 1 ){
-					if( $prediction[0]["x3"] == 1 ){
-						$points = $points * $settingsAdmin[0]["x3"];
-					}else{
-						$points = $points * $settingsAdmin[0]["x2"];
-					}
+					$points = $points * 2;
 				}
 				//check for x2
 				if( $prediction[0]["x2"] == 1 ){
 					$points = $points * $settingsAdmin[0]["x2"];
+				}
+				//check for x3
+				if( $prediction[0]["x3"] == 1 ){
+					$points = $points * $settingsAdmin[0]["x3"];
 				}
 				$comparePredictionResponse = array(
 					"goals1" => $prediction[0]["goals1"],
