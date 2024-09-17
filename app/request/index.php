@@ -67,6 +67,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("submitRoom.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "version" ){
 	require("version.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "firebaseToken" ){
+	require("firebaseToken.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();
