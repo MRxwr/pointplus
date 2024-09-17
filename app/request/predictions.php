@@ -73,12 +73,14 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 					$theMatch = selectDB("matches","`id` = '{$_POST["matchId"][0]}'");
 					$theCountDown = str_replace("T", " ", $theMatch[0]["countdown"]);
 					$theDate = date("Y-m-d H:i");
+					/*
 					if( strtotime($theCountDown) > strtotime($theDate) ){
 						echo "Still time left";
 					}else{
 						echo "No Time Left";
 					}
 					die();
+					*/
 					$_POST["x2"][$i] = ($userData[0]["x2"] == 1 ? 0 : $_POST["x2"][$i]);
 					$_POST["x3"][$i] = ($userData[0]["x3"] == 1 ? 0 : $_POST["x3"][$i]);
 					$dataUpdate = array(
@@ -95,19 +97,23 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 						"x2"=> $_POST["x2"][$i],
 						"x3"=> $_POST["x3"][$i]
 					);
-					if( $_POST["x2"][$i] == 1 ){
-						updateDB("user",array("x2"=>1),"`id` = '{$_POST["userId"]}'");
-					}
-					if( $_POST["x3"][$i] == 1 ){
-						updateDB("user",array("x3"=>1),"`id` = '{$_POST["userId"]}'");
-					}
-					if ( selectDB("predictions","`userId` = '{$_POST["userId"]}' AND `matchId` = '{$_POST["matchId"][$i]}'") ){
-						updateDB("predictions",$dataUpdate,"`userId` = '{$_POST["userId"]}' AND `matchId` = '{$_POST["matchId"][$i]}'");
-						$response["match"][]["msg"] = "Updated successfully.";
-					}elseif( insertDB("predictions",$dataInsert) ){
-						$response["match"][]["msg"] = "Added successfully.";
+					if( strtotime($theCountDown) > strtotime($theDate) ){
+						if( $_POST["x2"][$i] == 1 ){
+							updateDB("user",array("x2"=>1),"`id` = '{$_POST["userId"]}'");
+						}
+						if( $_POST["x3"][$i] == 1 ){
+							updateDB("user",array("x3"=>1),"`id` = '{$_POST["userId"]}'");
+						}
+						if ( selectDB("predictions","`userId` = '{$_POST["userId"]}' AND `matchId` = '{$_POST["matchId"][$i]}'") ){
+							updateDB("predictions",$dataUpdate,"`userId` = '{$_POST["userId"]}' AND `matchId` = '{$_POST["matchId"][$i]}'");
+							$response["match"][]["msg"] = "Updated successfully.";
+						}elseif( insertDB("predictions",$dataInsert) ){
+							$response["match"][]["msg"] = "Added successfully.";
+						}else{
+							$response["match"][]["msg"] = "Something wrong happened, please try again.";
+						}
 					}else{
-						$response["match"][]["msg"] = "Something wrong happened, please try again.";
+						$response["match"][]["msg"] = "Sorry time is up.";
 					}
 				}
 				$user = selectDB("user","`id` = '{$_POST["userId"]}'");
