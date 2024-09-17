@@ -1,17 +1,16 @@
 <?php
-require 'vendor/autoload.php'; // Ensure you have the Google API Client installed
-
+require_once("../../vendor/autoload.php");
 use Google\Client;
 
-// Function to generate an OAuth 2.0 access token
 function getAccessToken() {
-    $serviceAccountKeyFile = 'path/to/your/serviceAccountKey.json';  // Replace with the correct path
+    // Path to your service account key
+    $serviceAccountKeyFile = '../../../points-a1a14-firebase-adminsdk-wggts-9dc0474399.json';
 
     // Initialize the Google API Client
     $client = new Client();
     $client->setAuthConfig($serviceAccountKeyFile);
 
-    // Define the scope for Firebase Cloud Messaging (FCM)
+    // Define the scopes you need (for FCM, you need cloud messaging scope)
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
     // Fetch the access token
@@ -20,31 +19,25 @@ function getAccessToken() {
     return $token['access_token'];
 }
 
-// Function to send a notification to a topic with an image
-function sendNotificationToTopic($topic, $notificationData) {
-    $accessToken = getAccessToken();  // Generate the OAuth 2.0 token
+function subscribeTokensToTopic($tokens, $topic) {
+    $accessToken = getAccessToken();  // OAuth token generated earlier (use the method from previous steps)
 
-    $url = "https://fcm.googleapis.com/v1/projects/YOUR_PROJECT_ID/messages:send";  // Replace with your project ID
+    $url = "https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send";
 
-    // Notification message with an image
+    // Prepare the data for the POST request
     $data = [
-        "message" => [
-            "topic" => $topic,  // The topic name
-            "notification" => [
-                "title" => $notificationData['title'],
-                "body" => $notificationData['body'],
-                "image" => $notificationData['image'],  // URL to the image
-            ],
-            "data" => $notificationData['data']  // Optional custom data
-        ]
+        "to" => "/topics/" . $topic,  // Topic name
+        "registration_tokens" => $tokens  // Array of device tokens
     ];
+
+    var_dump(array($data, $accessToken));
 
     // Initialize cURL
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Authorization: Bearer ' . $accessToken,  // Use the OAuth 2.0 token for authentication
+        'Authorization: Bearer ' . $accessToken,
         'Content-Type: application/json',
     ]);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -65,14 +58,10 @@ function sendNotificationToTopic($topic, $notificationData) {
 }
 
 // Example usage
-$notificationData = [
-    'title' => 'Hello, World!',
-    'body' => 'This is a notification with an image.',
-    'image' => 'https://example.com/path/to/your/image.jpg',  // Replace with a valid image URL
-    'data' => ['key1' => 'value1', 'key2' => 'value2']  // Optional custom data
-];
-$topic = "your_topic_name";  // The same topic you subscribed the devices to
-sendNotificationToTopic($topic, $notificationData);
-
-
+$topic = "all_users";  // Replace with the topic name you want to subscribe the devices to
+$users = selectDB("user","`id` != '0' GROUP BY `firebase` LIMIT 0, 1000");
+for( $i = 0; $i < count($users); $i++ ){
+    $tokens[] = $users[$i]["firebase"];
+}
+subscribeTokensToTopic($tokens, $topic);
 ?>
