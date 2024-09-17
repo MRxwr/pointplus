@@ -30,6 +30,8 @@ function subscribeTokensToTopic($tokens, $topic) {
         "registration_tokens" => $tokens  // Array of device tokens
     ];
 
+    var_dump(array($data, $accessToken));
+
     // Initialize cURL
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
