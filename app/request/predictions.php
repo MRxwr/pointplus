@@ -72,7 +72,9 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 				for( $i = 0; $i < sizeof($_POST["matchId"]); $i++){
 					$theMatch = selectDB("matches","`id` = '{$_POST["matchId"][0]}'");
 					if( $theMatch[0]["countdown"] > date("Y-m-dTH:i") ){
-						echo date("Y-m-dTH:i");die();
+						//gonvert to +3gmt date("Y-m-dTH:i")
+						$theDate = date("Y-m-dTH:i", strtotime($theMatch[0]["countdown"] . " + 3 hours"));
+						echo $theDate;die();
 					}
 					$_POST["x2"][$i] = ($userData[0]["x2"] == 1 ? 0 : $_POST["x2"][$i]);
 					$_POST["x3"][$i] = ($userData[0]["x3"] == 1 ? 0 : $_POST["x3"][$i]);
