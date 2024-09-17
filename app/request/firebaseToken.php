@@ -21,6 +21,6 @@ function getAccessToken() {
 
 // Example usage
 $accessToken = getAccessToken();
-echo "Access Token: " . $accessToken;
+echo outputData($accessToken);
 
 ?>
