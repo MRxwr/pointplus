@@ -57,7 +57,7 @@ function subscribeTokensToTopic($tokens, $topic) {
 
 // Example usage
 $topic = "all_users";  // Replace with the topic name you want to subscribe the devices to
-$users = selectDB("users","`id` != '0' GROUP BY `firebase` LIMIT 0, 1000");
+$users = selectDB("user","`id` != '0' GROUP BY `firebase` LIMIT 0, 1000");
 for( $i = 0; $i < count($users); $i++ ){
     $tokens[] = $users[$i]["firebase"];
 }
