@@ -73,7 +73,7 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 					$theMatch = selectDB("matches","`id` = '{$_POST["matchId"][0]}'");
 					$theCountDown = str_replace("T", " ", $theMatch[0]["countdown"]);
 					$theDate = date("Y-m-d H:i");
-					if( $theCountDown > $theDate ){
+					if( strtotime($theCountDown) > strtotime($theDate) ){
 						echo "Still time left";
 					}else{
 						echo "No Time Left";
