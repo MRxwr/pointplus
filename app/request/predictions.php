@@ -9,17 +9,6 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 		$response["msg"] = "Please set user id";
 		echo outputError($response);die();
 	}
-	/*
-	if ( $countdown = selectDB("countdown","`status` = '0' ORDER BY `id` DESC LIMIT 1") ){
-		list($countdownDate, $countdownTime) = explode('T', $countdown[0]["countdown"]);
-		$countdownString = "{$countdownDate} {$countdownTime}:00" ;
-		list($startTimeDate, $startTimeTime) = explode('T', $countdown[0]["startTime"]);
-		$startTimeString = date("Y-m-d H:i:s");
-	}else{
-		$countdownString = "";
-		$startTimeString = "";
-	}
-	*/
 	if( $_GET["type"] == "list" ){
 		$data = array(
 			"select" => ["t.id as matchId, t.type, t.staduim, t.matchDate, t.matchTime, t.isActive, t.countdown, t1.enTitle as enTitleTeam1, t1.arTitle as arTitleTeam1, t1.logo as logoTeam1, t2.enTitle as enTitleTeam2, t2.arTitle as arTitleTeam2, t2.logo as logoTeam2, t3.arTitle as leagueAr, t3.enTitle as leagueEn"],
@@ -81,6 +70,10 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 		}elseif( $userData = selectDB("user","`id` = '{$_POST["userId"]}'") ){
 			if ( selectDB("matches","`id` = '{$_POST["matchId"][0]}'") ){
 				for( $i = 0; $i < sizeof($_POST["matchId"]); $i++){
+					$theMatch = selectDB("matches","`id` = '{$_POST["matchId"][0]}'");
+					if( $theMatch[0]["countdown"] > date("Y-m-dTH:i") ){
+						echo date("Y-m-dTH:i");die();
+					}
 					$_POST["x2"][$i] = ($userData[0]["x2"] == 1 ? 0 : $_POST["x2"][$i]);
 					$_POST["x3"][$i] = ($userData[0]["x3"] == 1 ? 0 : $_POST["x3"][$i]);
 					$dataUpdate = array(
