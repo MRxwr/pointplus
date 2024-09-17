@@ -22,15 +22,13 @@ function getAccessToken() {
 function subscribeTokensToTopic($tokens, $topic) {
     $accessToken = getAccessToken();  // OAuth token generated earlier (use the method from previous steps)
 
-    $url = "https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send";
+    $url = "https://iid.googleapis.com/iid/v1:batchAdd";
 
     // Prepare the data for the POST request
     $data = [
         "to" => "/topics/" . $topic,  // Topic name
         "registration_tokens" => $tokens  // Array of device tokens
     ];
-
-    var_dump(array($data, $accessToken));
 
     // Initialize cURL
     $ch = curl_init();
