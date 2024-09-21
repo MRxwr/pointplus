@@ -90,7 +90,7 @@ function subscribeTokensToTopic($tokens, $topic) {
     
     // FCM project ID and topic
     $projectId = 'points-a1a14';  // Confirm this is your actual Firebase project ID
-    $topic = 'all_users';  // Name of the topic (without "/topics/")
+    $topic = 'all_user';  // Name of the topic (without "/topics/")
     
     // Device tokens to be subscribed
     $deviceTokens = [];
