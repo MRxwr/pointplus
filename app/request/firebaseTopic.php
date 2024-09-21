@@ -70,7 +70,7 @@ function subscribeTokensToTopic($tokens, $topic) {
 }
     */
     require_once("../../vendor/autoload.php");
-    
+
     use Google\Client;
     use GuzzleHttp\Client as GuzzleClient;
     
@@ -90,7 +90,7 @@ function subscribeTokensToTopic($tokens, $topic) {
     
     // FCM project ID and topic
     $projectId = 'points-a1a14';
-    $topic = '/topics/all_users';
+    $topic = 'all_users'; // The topic name
     
     // Device tokens to be subscribed
     $deviceTokens = [];
@@ -104,20 +104,21 @@ function subscribeTokensToTopic($tokens, $topic) {
     $guzzleClient = new GuzzleClient();
     
     try {
-        // Send POST request to FCM to subscribe the tokens to the topic
-        $response = $guzzleClient->post('https://iid.googleapis.com/iid/v1:batchAdd', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Content-Type' => 'application/json',
-            ],
-            'json' => [
-                'to' => $topic,
-                'registration_tokens' => $deviceTokens,
-            ]
-        ]);
-    
-        // Output the response from FCM
-        echo 'Response: ' . $response->getBody();
+        foreach ($deviceTokens as $deviceToken) {
+            // Send POST request to FCM to subscribe each device token to the topic
+            $response = $guzzleClient->post('https://fcm.googleapis.com/v1/projects/'.$projectId.'/rel/topics/'.$topic, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'to' => $deviceToken,
+                ]
+            ]);
+        
+            // Output the response from FCM
+            echo 'Response: ' . $response->getBody();
+        }
     
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
