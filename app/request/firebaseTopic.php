@@ -69,60 +69,58 @@ function subscribeTokensToTopic($tokens, $topic) {
     curl_close($ch);
 }
     */
-require_once("../../vendor/autoload.php");
-use Google\Client;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\RequestException;
-
-// Initialize Google Client
-$client = new Client();
-$client->setAuthConfig('../../../points-a1a14-firebase-adminsdk-wggts-9dc0474399.json');
-$client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-
-// Get the access token
-echo $token = $client->fetchAccessTokenWithAssertion()['access_token'];
-
-// Firebase project ID (replace with your Firebase project ID)
-$projectId = 'points-a1a14';
-
-// Topic to which devices will be subscribed
-$topic = 'all_users';
-$users = selectDB("user","`id` != '0' GROUP BY `firebase` ORDER BY `id` ASC LIMIT 0,999");
-for( $i = 0; $i < count($users); $i++ ){
-    $tokens[] = $users[$i]["firebase"];
-}
-// Device tokens to be subscribed to the topic
-$deviceTokens = $tokens;
-
-// Prepare the request data
-$postData = [
-    'registration_tokens' => $deviceTokens
-];
-
-// FCM URL for subscribing to a topic
-$url = "https://iid.googleapis.com/iid/v1:batchAdd";
-
-// Create a new Guzzle HTTP client
-$guzzleClient = new GuzzleClient();
-
-try {
-    // Send the POST request to FCM
-    $response = $guzzleClient->post($url, [
-        'headers' => [
-            'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
-        ],
-        'json' => [
-            'to' => '/topics/' . $topic,
-            'registration_tokens' => $deviceTokens
-        ]
-    ]);
-
-    // Get the response body
-    $body = $response->getBody();
-    echo "Response: " . $body;
-
-} catch (RequestException $e) {
-    echo "Error: " . $e->getMessage();
-}
+    require_once("../../vendor/autoload.php");
+    
+    use Google\Client;
+    use GuzzleHttp\Client as GuzzleClient;
+    
+    // Initialize Google Client
+    $client = new Client();
+    $client->setAuthConfig('../../../points-a1a14-firebase-adminsdk-wggts-9dc0474399.json');
+    $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+    
+    // Get access token
+    $accessToken = $client->fetchAccessTokenWithAssertion();
+    
+    if (!isset($accessToken['access_token'])) {
+        die('Failed to fetch access token');
+    }
+    
+    $token = $accessToken['access_token'];
+    
+    // FCM project ID and topic
+    $projectId = 'points-a1a14';
+    $topic = '/topics/all_users';
+    
+    // Device tokens to be subscribed
+    $deviceTokens = [];
+    
+    $users = selectDB("user","`id` != '0' GROUP BY `firebase` ORDER BY `id` ASC LIMIT 0,999");
+    for( $i = 0; $i < count($users); $i++ ){
+        $deviceTokens[] = $users[$i]["firebase"];
+    }
+    
+    // Create a new Guzzle HTTP client
+    $guzzleClient = new GuzzleClient();
+    
+    try {
+        // Send POST request to FCM to subscribe the tokens to the topic
+        $response = $guzzleClient->post('https://iid.googleapis.com/iid/v1:batchAdd', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+            ],
+            'json' => [
+                'to' => $topic,
+                'registration_tokens' => $deviceTokens,
+            ]
+        ]);
+    
+        // Output the response from FCM
+        echo 'Response: ' . $response->getBody();
+    
+    } catch (Exception $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
+    
 ?>
