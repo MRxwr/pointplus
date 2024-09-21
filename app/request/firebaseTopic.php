@@ -88,40 +88,40 @@ function subscribeTokensToTopic($tokens, $topic) {
     
     $token = $accessToken['access_token'];
     
-    // FCM project ID and topic
-    $topic = 'all_user';  // Topic name (make sure it's a valid name)
-    
-    // Device tokens to be subscribed
-    $deviceTokens = [];
-    
-    $users = selectDB("user","`id` != '0' GROUP BY `firebase` ORDER BY `id` ASC LIMIT 0,999");
-    for( $i = 0; $i < count($users); $i++ ){
-        $deviceTokens[] = $users[$i]["firebase"];
-    }
+    // Device tokens to send notifications (example with multiple tokens)
+    $deviceTokens = [
+        'fUFXZMAjSwa2d-ev0L4LoU:APA91bGp1hy27dlgGruuvtN4SDpyMHiDuFw8aS-uUysbnmZG31AI8IAnPHtDjo36xRwX4PxAgqKvL1pDlbXJQX7HVxCrNTjDjLMUQtZgpIZHNm0GSu7IxfwiG3Xhb-iWcLlr-c7NM3uf',
+        'dNhhMxYblkF8pf_YhB7KGD:APA91bEVlozfW7Ymna4Y-b_heoGyjsexI6RWJVDCdahx0TIg0ubqONNSb7sXHtpN8LjEPy7Z5LnhvgGzIkBMFRePSs1aMzwUStaffEFuiZNESMBOe_0bDhiVFJPmOT4SmobwaZDGgzXD',
+        // Add more tokens as needed (up to 1000 tokens per request)
+    ];
     
     // Create a new Guzzle HTTP client
     $guzzleClient = new GuzzleClient();
     
     try {
-        // Send POST request to FCM to subscribe the device tokens to the topic
-        $response = $guzzleClient->post('https://iid.googleapis.com/iid/v1:batchAdd', [
+        // Send POST request to FCM to send a notification to multiple device tokens
+        $response = $guzzleClient->post('https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,  // OAuth2 token here
+                'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
-                'access_token_auth' => true,
             ],
             'json' => [
-                'to' => '/topics/' . $topic,
-                'registration_tokens' => $deviceTokens,
+                'message' => [
+                    'tokens' => $deviceTokens, // use the tokens field here
+                    'notification' => [
+                        'body' => 'test body e i',
+                        'title' => 'test title',
+                        'image' => 'https://i.imgur.com/DWEb3J0.jpeg'
+                    ]
+                ]
             ]
         ]);
     
         // Output the response from FCM
-        echo 'Response: ' . $response->getBody();
+        echo 'Response: ' . $response->getBody() . "\n";
     
     } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage() . "\n";
     }
-    
     
 ?>
