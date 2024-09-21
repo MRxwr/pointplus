@@ -80,7 +80,7 @@ $client->setAuthConfig('../../../points-a1a14-firebase-adminsdk-wggts-9dc0474399
 $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
 // Get the access token
-$token = $client->fetchAccessTokenWithAssertion()['access_token'];
+echo $token = $client->fetchAccessTokenWithAssertion()['access_token'];
 
 // Firebase project ID (replace with your Firebase project ID)
 $projectId = 'points-a1a14';
