@@ -80,8 +80,8 @@ function subscribeTokensToTopic($tokens, $topic) {
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
     
     // Get access token
-    echo $accessToken = $client->fetchAccessTokenWithAssertion();
-    
+    $accessToken = $client->fetchAccessTokenWithAssertion();
+    echo json_encode($accessToken);
     if (!isset($accessToken['access_token'])) {
         die('Failed to fetch access token');
     }
