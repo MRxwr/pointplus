@@ -89,8 +89,8 @@ function subscribeTokensToTopic($tokens, $topic) {
     $token = $accessToken['access_token'];
     
     // FCM project ID and topic
-    $projectId = 'points-a1a14';
-    $topic = 'all_users'; // The topic name
+    $projectId = 'points-a1a14';  // Confirm this is your actual Firebase project ID
+    $topic = 'all_users';  // Name of the topic (without "/topics/")
     
     // Device tokens to be subscribed
     $deviceTokens = [];
@@ -104,8 +104,9 @@ function subscribeTokensToTopic($tokens, $topic) {
     $guzzleClient = new GuzzleClient();
     
     try {
+        // Loop through device tokens and subscribe them to the topic
         foreach ($deviceTokens as $deviceToken) {
-            // Send POST request to FCM to subscribe each device token to the topic
+            // Send POST request to FCM to subscribe the device token to the topic
             $response = $guzzleClient->post('https://fcm.googleapis.com/v1/projects/'.$projectId.'/rel/topics/'.$topic, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -115,7 +116,7 @@ function subscribeTokensToTopic($tokens, $topic) {
                     'to' => $deviceToken,
                 ]
             ]);
-        
+    
             // Output the response from FCM
             echo 'Response: ' . $response->getBody();
         }
