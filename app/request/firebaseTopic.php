@@ -106,8 +106,9 @@ function subscribeTokensToTopic($tokens, $topic) {
         // Send POST request to FCM to subscribe the device tokens to the topic
         $response = $guzzleClient->post('https://iid.googleapis.com/iid/v1:batchAdd', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'Authorization' => 'Bearer ' . $token,  // OAuth2 token here
                 'Content-Type' => 'application/json',
+                'access_token_auth' => true,
             ],
             'json' => [
                 'to' => '/topics/' . $topic,
