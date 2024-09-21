@@ -87,7 +87,7 @@ $projectId = 'points-a1a14';
 
 // Topic to which devices will be subscribed
 $topic = 'all_users';
-$users = selectDB("user","`id` != '0' ORDER BY `id` ASC GROUP BY `firebase` LIMIT 0,999");
+$users = selectDB("user","`id` != '0' GROUP BY `firebase` ORDER BY `id` ASC LIMIT 0,999");
 for( $i = 0; $i < count($users); $i++ ){
     $tokens[] = $users[$i]["firebase"];
 }
