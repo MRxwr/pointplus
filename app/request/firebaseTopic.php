@@ -76,7 +76,7 @@ function subscribeTokensToTopic($tokens, $topic) {
     
     // Initialize Google Client
     $client = new Client();
-    $client->setAuthConfig('../../../points-a1a14-firebase-adminsdk-wggts-9dc0474399.json');
+    $client->setAuthConfig('../../../points-a1a14-firebase-adminsdk-wggts-d65c7381c1.json');
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
     
     // Get access token

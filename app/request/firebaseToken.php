@@ -4,7 +4,7 @@ use Google\Client;
 
 function getAccessToken() {
     // Path to your service account key
-    $serviceAccountKeyFile = '../../../points-a1a14-firebase-adminsdk-wggts-9dc0474399.json';
+    $serviceAccountKeyFile = '../../../points-a1a14-firebase-adminsdk-wggts-d65c7381c1.json';
 
     // Initialize the Google API Client
     $client = new Client();
