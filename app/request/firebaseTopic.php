@@ -81,7 +81,7 @@ function subscribeTokensToTopic($tokens, $topic) {
     
     // Get access token
     $accessToken = $client->fetchAccessTokenWithAssertion();
-    echo json_encode($accessToken);
+    
     if (!isset($accessToken['access_token'])) {
         die('Failed to fetch access token');
     }
@@ -89,8 +89,7 @@ function subscribeTokensToTopic($tokens, $topic) {
     $token = $accessToken['access_token'];
     
     // FCM project ID and topic
-    $projectId = 'points-a1a14';  // Confirm this is your actual Firebase project ID
-    $topic = 'all_user';  // Name of the topic (without "/topics/")
+    $topic = 'all_user';  // Topic name (make sure it's a valid name)
     
     // Device tokens to be subscribed
     $deviceTokens = [];
@@ -104,25 +103,24 @@ function subscribeTokensToTopic($tokens, $topic) {
     $guzzleClient = new GuzzleClient();
     
     try {
-        // Loop through device tokens and subscribe them to the topic
-        foreach ($deviceTokens as $deviceToken) {
-            // Send POST request to FCM to subscribe the device token to the topic
-            $response = $guzzleClient->post('https://fcm.googleapis.com/v1/projects/'.$projectId.'/rel/topics/'.$topic, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => [
-                    'to' => $deviceToken,
-                ]
-            ]);
+        // Send POST request to FCM to subscribe the device tokens to the topic
+        $response = $guzzleClient->post('https://iid.googleapis.com/iid/v1:batchAdd', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+            ],
+            'json' => [
+                'to' => '/topics/' . $topic,
+                'registration_tokens' => $deviceTokens,
+            ]
+        ]);
     
-            // Output the response from FCM
-            echo 'Response: ' . $response->getBody();
-        }
+        // Output the response from FCM
+        echo 'Response: ' . $response->getBody();
     
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
     }
+    
     
 ?>
