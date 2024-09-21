@@ -107,12 +107,12 @@ function subscribeTokensToTopic($tokens, $topic) {
             ],
             'json' => [
                 'message' => [
+                    'token' => $deviceTokens[0], // use the tokens field here
                     'notification' => [
                         'body' => 'test body e i',
                         'title' => 'test title',
                         'image' => 'https://i.imgur.com/DWEb3J0.jpeg'
-                    ],
-                    'tokens' => $deviceTokens, // use the tokens field here
+                    ]
                 ]
             ]
         ]);
