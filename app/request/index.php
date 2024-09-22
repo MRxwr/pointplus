@@ -71,6 +71,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("firebaseToken.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "firebaseTopic" ){
 	require("firebaseTopic.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "firebaseNotification" ){
+	require("firebaseNotification.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();
