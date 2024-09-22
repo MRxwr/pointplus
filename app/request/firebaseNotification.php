@@ -19,36 +19,38 @@ function getAccessToken() {
     return $token['access_token'];
 }
 
+$bearer = getAccessToken();
 $notificationData = array(
     "message" => array(
-        "token" => "fUFXZMAjSwa2d-ev0L4LoU:APA91bGp1hy27dlgGruuvtN4SDpyMHiDuFw8aS-uUysbnmZG31AI8IAnPHtDjo36xRwX4PxAgqKvL1pDlbXJQX7HVxCrNTjDjLMUQtZgpIZHNm0GSu7IxfwiG3Xhb-iWcLlr-c7NM3uf",
         "notification" => array( 
-            "title" => "test title",
-            "body"  => "test body test",
-            "image" => "https://i.imgur.com/DWEb3J0.jpeg"
+            "title" => "{$_POST["title"]}",
+            "body"  => "{$_POST["message"]}",
+            "image" => "{$_POST["image"]}",
         )
     )
 );
 
-$curl = curl_init();
-
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => json_encode($notificationData),
-  CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json',
-    'Authorization: Bearer ' . getAccessToken()
-  ),
-));
-
-$response = curl_exec($curl);
-
-curl_close($curl);
+if( $users = selectDB("users", "`id` != '0' GROUP BY `firebase` ORDER BY `id` ASC") ){
+    for( $i = 0; $i < sizeof($users); $i++){
+        $notificationData["message"]["token"] = $users[$i]["firebase"];
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => json_encode($notificationData),
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $bearer
+          ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+}
 ?>

@@ -27,42 +27,30 @@ if ( isset($_POST["title"]) ){
 		$image = "";
 	}
 
-	if( $users = selectDB("users","`firebase` != '' GROUP BY `firebase`") ){
-		for ($i=0; $i < 1; $i++) {
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://fcm.googleapis.com/v1/projects/points-a1a14/messages:send',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS =>"{
-				'message': 
-					{
-						'token': 'fUFXZMAjSwa2d-ev0L4LoU:APA91bGp1hy27dlgGruuvtN4SDpyMHiDuFw8aS-uUysbnmZG31AI8IAnPHtDjo36xRwX4PxAgqKvL1pDlbXJQX7HVxCrNTjDjLMUQtZgpIZHNm0GSu7IxfwiG3Xhb-iWcLlr-c7NM3uf',
-						'notification': 
-							{
-								'body': '{$_POST["title"]}',
-								'title': '{$_POST["msg"]}',
-								'image': '{$image}'
-							}
-					}
-				}
-			",
-			CURLOPT_HTTPHEADER => array(
-				'Content-Type: application/json',
-				'Authorization: Bearer ya29.a0AcM612zoe3otNgcGL7ZUzIJaCvr5dB69hfx1rVDiJeCOLnCcq7D4fooOOii0JY920mmiJnVm4H4TwjSTLiStgejO-wtRXT8VNkw5mrLJSj95rszsjE-XAnjYsDezIrdQLczD5krvD4JimioZycXXi3n-TTcEaY-pJID1-QUeaCgYKAbMSARESFQHGX2Mis4bt5AWmLm1v0S0MwFP0Pg0175'
-			),
-			));
-			$response = curl_exec($curl);
-			curl_close($curl);
-			var_dump($response);
-		}
-		
-	}
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+	CURLOPT_URL => 'https://pointplus.app/app/request/?action=firebaseNotification',
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => '',
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 0,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => 'GET',
+	CURLOPT_POSTFIELDS => array(
+		'title' => "{$_POST["title"]}",
+		'body' => "{$_POST["msg"]}",
+		'image' => $image
+	),
+	CURLOPT_HTTPHEADER => array(
+		'pointsheader: pointsCreateKW'
+	),
+	));
+	$response = curl_exec($curl);
+	curl_close($curl);
+	echo $response;
+
+	header("Location: notification.php");die();
 }
 ?>
 
