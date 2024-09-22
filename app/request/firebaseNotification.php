@@ -26,7 +26,7 @@ $notificationData = array(
     )
 );
 
-if( $users = selectDB("user", "`id` != '0' GROUP BY `firebase` ORDER BY `id` ASC") ){
+if( $users = selectDB("user", "`id` = '5'") ){
     for( $i = 0; $i < sizeof($users); $i++){
         $notificationData["message"]["token"] = $users[$i]["firebase"];
         $curl = curl_init();
