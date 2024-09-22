@@ -148,3 +148,29 @@ if ( isset($_POST["title"]) ){
 </div>
 
 <!-- /Main Content -->
+
+<script>
+	$("form").on("submit", function(e) {
+		var form = new FormData();
+		form.append("title", $("input[name='title']").val());
+		form.append("body", $("input[name='title']").val());
+		form.append("image", "");
+		var settings = {
+		"url": "https://pointplus.app/app/request/?action=firebaseNotification",
+		"method": "POST",
+		"timeout": 0,
+		"headers": {
+			"pointsheader": "pointsCreateKW"
+		},
+		"processData": false,
+		"mimeType": "multipart/form-data",
+		"contentType": false,
+		"data": form
+		};
+		$.ajax(settings).done(function (response) {
+			console.log(response);
+		});
+		return false
+	})
+	
+</script>
