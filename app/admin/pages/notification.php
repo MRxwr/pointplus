@@ -1,6 +1,7 @@
 <?php
 //require('../admin/includes/config.php');
 if ( isset($_POST["title"]) ){
+	/*
 	if ( isset($_FILES["image"]["tmp_name"]) && is_uploaded_file($_FILES["image"]["tmp_name"]) ){
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -50,7 +51,9 @@ if ( isset($_POST["title"]) ){
 	curl_close($curl);
 
 	header("Location: notification.php");die();
+	*/
 }
+	
 ?>
 
 <div class="right-sidebar-backdrop"></div>
@@ -81,7 +84,7 @@ if ( isset($_POST["title"]) ){
 <div class="col-sm-12 col-xs-12">
 <div class="form-wrap">
 
-<form action="" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
 
 <div class="col-md-4">
 <div class="form-group">
@@ -153,7 +156,7 @@ if ( isset($_POST["title"]) ){
 	$("form").on("submit", function(e) {
 		var form = new FormData();
 		form.append("title", $("input[name='title']").val());
-		form.append("body", $("input[name='title']").val());
+		form.append("body", $("input[name='msg']").val());
 		form.append("image", "");
 		var settings = {
 		"url": "https://pointplus.app/app/request/?action=firebaseNotification",
