@@ -171,7 +171,9 @@ if ( isset($_POST["title"]) ){
 		"data": form
 		};
 		$.ajax(settings).done(function (response) {
-			console.log(response);
+			alert("Notification sent successfully");
+			$("input[name='title']").val("");
+			$("input[name='msg']").val("");
 		});
 		return false
 	})
