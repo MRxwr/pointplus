@@ -14,6 +14,13 @@ if ( isset($_GET["id"]) && !empty($_GET["id"]) ){
 		$response["user"]["notifications"] = "0";
 	}
 	if( $user = selectDB('user', "`id` = '{$_GET["id"]}'") ){
+		if( $user[0]["status"] == 1 ){
+			$error = array("msg"=>"Your account has been blocked. Please aconatct administration.");
+			echo outputError($error);die();
+		}elseif( $user[0]["status"] == 2 ){
+			$error = array("msg"=>"No user with this email.");
+			echo outputError($error);die();
+		}
 		$response["user"]["points"] = $user[0]["points"];
 		$response["user"]["rank"] = $user[0]["rank"];
 		$response["user"]["pRank"] = $user[0]["pRank"];
