@@ -14,7 +14,7 @@ if ( isset($_GET["type"]) ){
 				"on" => [" t.id = t1.userId"," t1.leagueId = t2.id"]
 			);
 			if( $leagues = selectJoinDB('user',$data,"t.id = '{$_GET["userId"]}'") ){
-				if( $leagues = [0]["userStatus"] == 1 ){
+				if( $leagues[0]["userStatus"] == 1 ){
 					$error = array("msg"=>"Your account has been blocked. Please aconatct administration.");
 					echo outputError($error);die();
 				}elseif( $leagues[0]["userStatus"] == 2 ){
