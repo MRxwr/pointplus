@@ -53,6 +53,13 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
 				"x3" => $user[0]["x3"]
 			);
 		}
+		if( $user[0]["status"] == 1 ){
+			$error = array("msg"=>"Your account has been blocked. Please aconatct administration.");
+			echo outputError($error);die();
+		}elseif( $user[0]["status"] == 2 ){
+			$error = array("msg"=>"No user with this email.");
+			echo outputError($error);die();
+		}
 		echo outputData($response);die();
 	}elseif( $_GET["type"] == "update" ){
 		if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
