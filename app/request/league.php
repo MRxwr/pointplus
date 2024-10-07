@@ -9,11 +9,18 @@ if ( isset($_GET["type"]) ){
 	if ( $_GET["type"] == "list" ){
 		if ( isset($_GET["userId"]) AND !empty($_GET["userId"]) ){
 			$data= array(
-				"select"=>["t2.id","t1.rank","t.points","t2.title","t1.rank as subLeagRank","t1.pRank as subLeagPRank"],
+				"select"=>["t2.id","t1.rank","t.points","t.status as userStatus","t2.title","t1.rank as subLeagRank","t1.pRank as subLeagPRank"],
 				"join" => ["joinedLeagues","subLeagues"],
 				"on" => [" t.id = t1.userId"," t1.leagueId = t2.id"]
 			);
 			if( $leagues = selectJoinDB('user',$data,"t.id = '{$_GET["userId"]}'") ){
+				if( $leagues = [0]["userStatus"] == 1 ){
+					$error = array("msg"=>"Your account has been blocked. Please aconatct administration.");
+					echo outputError($error);die();
+				}elseif( $leagues[0]["userStatus"] == 2 ){
+					$error = array("msg"=>"No user with this email.");
+					echo outputError($error);die();
+				}
 				$response["leagues"] = $leagues;
 			}else{
 				$response["leagues"]["msg"] = "You have not joined any league yet.";
