@@ -3,7 +3,7 @@
 require_once('includes/config.php');
 // loading functions
 require_once('includes/functions.php');
-/*
+
 // checking login
 if ( isset($_COOKIE["createSystem"]) && !empty($_COOKIE["createSystem"]) ){
 	require_once('includes/checkLogin.php');
@@ -12,7 +12,7 @@ if ( isset($_COOKIE["createSystem"]) && !empty($_COOKIE["createSystem"]) ){
 }else{
 	header('LOCATION: pages/logout.php');
 }
-*/
+
 // header
 require_once('templates/header.php');
 

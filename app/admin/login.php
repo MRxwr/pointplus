@@ -1,5 +1,4 @@
 <?php
-/*
 require_once('includes/config.php');
 require_once('includes/functions.php');
 if ( isset($_POST["username"]) && !empty($_POST["username"] )){
@@ -17,7 +16,6 @@ if ( isset($_POST["username"]) && !empty($_POST["username"] )){
 		$error = 1;
 	}
 }
-	*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
