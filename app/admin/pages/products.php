@@ -199,11 +199,7 @@ $sql = "SELECT t.*
 		";
 $result = $dbconnect->query($sql);
 while ( $row = $result->fetch_assoc() ){
-	if ($row["type"] == 0 ){
-		$type = "Top";
-	}else{
-		$type = "Fixed";
-	}
+
 ?>
 <tr>
 <td><?php echo substr($row["date"],0,11) ?></td>
