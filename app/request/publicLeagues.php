@@ -10,8 +10,7 @@ if( $_GET["type"] == "list" ){
                 FROM publicLeagues pl
                 LEFT JOIN joinedPublicLeagues jpl ON pl.id = jpl.publicLeagueId AND jpl.userId = '{$_GET["userId"]}'
                 WHERE pl.status = '0' AND pl.hidden = '0'";
-        
-        $leagues = queryDB($sql);        $leagues = queryDB($sql);
+        $leagues = queryDB($sql);
     }else{
         // If no userId provided, get leagues with joined field set to false in query
         $sql = "SELECT 
