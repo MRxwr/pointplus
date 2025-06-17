@@ -7,10 +7,10 @@ if( $_GET["type"] == "list" ){
             "select" => array(
                 "t.id", "t.code", "t.enTitle", "t.arTitle", "t.enDetails", "t.arDetails", 
                 "t.country", "t.logo", "t.coverImage",
-                "CASE WHEN t2.id IS NOT NULL THEN 1 ELSE 0 END as joined"
+                "CASE WHEN t1.id IS NOT NULL THEN 1 ELSE 0 END as joined"
             ),
             "join" => array("joinedPublicLeagues"),
-            "on" => array("t.id = t2.publicLeagueId AND t2.userId = '{$_GET["userId"]}'")
+            "on" => array("t.id = t1.publicLeagueId AND t1.userId = '{$_GET["userId"]}'")
         );
         $leagues = selectJoinDB('publicLeagues', $joinData, "t.status = '0' AND t.hidden = '0'");
         
