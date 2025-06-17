@@ -123,23 +123,65 @@ if ( isset($_GET["type"]) ){
 				$response["users"] = array();
 				$response["msg"] = "No users found";
 				echo outputError($response);die();
+			}		}else{
+			// Parse date range if provided
+			$startDate = null;
+			$endDate = null;
+			$useDateRange = false;
+			
+			if(isset($_GET["dateRange"]) && !empty($_GET["dateRange"])) {
+				// Parse format: "2025-01-10 - 2025-02-10"
+				$dateRange = trim($_GET["dateRange"]);
+				$dates = explode(" - ", $dateRange);
+				
+				if(count($dates) == 2) {
+					$startDate = trim($dates[0]);
+					$endDate = trim($dates[1]);
+					
+					// Validate date format (basic validation)
+					if(preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+						$useDateRange = true;
+					} else {
+						$startDate = null;
+						$endDate = null;
+					}
+				}
 			}
-		}else{
-			if( isset($_GET["lastGw"]) && !empty($_GET["lastGw"]) ){
-				$data = array(
-					"select"=>["t.id","t.name","t.username","t.pPoints as points","t1.rank","t1.pRank"],
-					"join"=>["joinedLeagues"],
-					"on"=>["t.id = t1.userId"]
-				);
-				if( $joinedUsers = selectJoinDB("user",$data,"t1.leagueId = '{$_GET["leagueId"]}' ORDER BY (t.pPoints = 0), t.pPoints DESC") ){
+			
+			// Fallback to individual date parameters if dateRange not provided
+			if(!$useDateRange) {
+				if(isset($_GET["startDate"]) && isset($_GET["endDate"])) {
+					$startDate = $_GET["startDate"];
+					$endDate = $_GET["endDate"];
+					if(preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+						$useDateRange = true;
+					}
+				}
+			}
+			
+			if($useDateRange && $startDate && $endDate) {
+				// Get users with points from specific date range
+				$sql = "SELECT 
+							u.id, u.name, u.username, 
+							COALESCE(SUM(p.points), 0) as points,
+							jl.rank, jl.pRank
+						FROM joinedLeagues jl
+						JOIN user u ON jl.userId = u.id
+						LEFT JOIN predictions p ON u.id = p.userId 
+							AND p.date BETWEEN '{$startDate}' AND '{$endDate}'
+						WHERE jl.leagueId = '{$_GET["leagueId"]}'
+						GROUP BY u.id, u.name, u.username, jl.rank, jl.pRank
+						ORDER BY points DESC, u.rank ASC";
+						if($joinedUsers = queryDB($sql)) {
 					$response["users"] = $joinedUsers;
 					echo outputData($response);
-				}else{
+				} else {
 					$response["users"] = array();
 					$response["msg"] = "No users found";
 					echo outputError($response);die();
 				}
-			}else{
+			} else {
+				// Default behavior - show all-time points
 				$data = array(
 					"select"=>["t.id","t.name","t.username","t.points","t1.rank","t1.pRank"],
 					"join"=>["joinedLeagues"],
