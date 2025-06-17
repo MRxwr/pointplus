@@ -121,7 +121,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">English Details</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<textarea class="tinymce" id="exampleInputuname_1" name="enDetails" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enDetails"] ?>"<?php }?>></textarea></div>
+<textarea class="tinymce" id="exampleInputuname_1" name="enDetails"><?php if(isset($_GET["edit"])){ echo htmlspecialchars($data[0]["enDetails"]); }?></textarea></div>
 </div>
 </div>
 
@@ -130,7 +130,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">Arabic Details</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<textarea class="tinymce" id="exampleInputuname_1" name="arDetails" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arDetails"] ?>"<?php }?>></textarea></div>
+<textarea class="tinymce" id="exampleInputuname_1" name="arDetails"><?php if(isset($_GET["edit"])){ echo htmlspecialchars($data[0]["arDetails"]); }?></textarea></div>
 </div>
 </div>
 
@@ -139,7 +139,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">English Terms</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<textarea class="tinymce" id="exampleInputuname_1" name="enTerms" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enTerms"] ?>"<?php }?>></textarea>
+<textarea class="tinymce" id="exampleInputuname_1" name="enTerms"><?php if(isset($_GET["edit"])){ echo htmlspecialchars($data[0]["enTerms"]); }?></textarea>
 </div>
 </div>
 </div>
@@ -149,7 +149,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">Arabic Terms</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<textarea class="tinymce" id="exampleInputuname_1" name="arTerms" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arTerms"] ?>"<?php }?>></textarea>
+<textarea class="tinymce" id="exampleInputuname_1" name="arTerms"><?php if(isset($_GET["edit"])){ echo htmlspecialchars($data[0]["arTerms"]); }?></textarea>
 </div>
 </div>
 </div>
