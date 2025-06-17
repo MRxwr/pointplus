@@ -73,6 +73,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("firebaseTopic.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "firebaseNotification" ){
 	require("firebaseNotification.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "publicLeagues" ){
+	require("publicLeagues.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();

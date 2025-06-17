@@ -1,13 +1,45 @@
 <?php
-function direction($valEn,$valAr){
-	GLOBAL $directionHTML;
-	if ( $directionHTML == "rtl" ){
-		$response = $valAr;
-	}else{
-		$response = $valEn;
-	}
-	return $response;
-}
+/*
+ * PointPlus - Custom Functions File
+ * 
+ * This file contains unique functions specific to the PointPlus application.
+ * Common database and utility functions have been moved to the functions/ subdirectory
+ * to avoid duplication and improve code organization.
+ * 
+ * Remaining functions:
+ * - randomCode() - Generate random codes for subLeagues
+ * - randomCodeQuiz() - Generate random codes for quiz rooms
+ * - popupMsg() - Handle multilingual popup messages
+ * - selectDBUpdated() - Updated version of selectDB with prepared statements
+ * - selectDataDB() - Select specific data fields from database
+ * - updatePredictionDB() - Update predictions with numeric values
+ * - updateUserDB() - Update user data with string values
+ * - payment() - Handle payment API integration
+ * - checkPayment() - Check payment status
+ * - newOrderNoti() - Send new order notifications
+ * - updateOrderStatusNotification() - Send order status update notifications
+ * - getTop30() - Get top 30 users for a date range
+ * - submitCalculatePredictions() - Calculate and update prediction points
+ * 
+ * For database operations (selectDB, insertDB, updateDB, deleteDB, etc.),
+ * see: includes/functions/sql.php
+ * 
+ * For general utilities (direction, outputData, array_sort, etc.),
+ * see: includes/functions/general.php
+ */
+
+// Include all function files from the functions subdirectory
+require_once(__DIR__ . '/functions/sql.php');
+require_once(__DIR__ . '/functions/general.php');
+require_once(__DIR__ . '/functions/system.php');
+require_once(__DIR__ . '/functions/payment.php');
+require_once(__DIR__ . '/functions/cart.php');
+require_once(__DIR__ . '/functions/currency.php');
+require_once(__DIR__ . '/functions/notification.php');
+require_once(__DIR__ . '/functions/products.php');
+require_once(__DIR__ . '/functions/svg.php');
+require_once(__DIR__ . '/functions/vouchers.php');
+
 
 function randomCode(){
 	jump:
@@ -31,55 +63,9 @@ function randomCodeQuiz(){
 	}
 }
 
-function selectDB($table, $where){
-	GLOBAL $dbconnect;
-	GLOBAL $date;
-	$check = [';','"'];
-	$where = str_replace($check,"",$where);
-	$sql = "SELECT * FROM `".$table."`";
-	if ( !empty($where) ){
-		$sql .= " WHERE " . $where;
-	}
-	if($result = $dbconnect->query($sql)){
-		while($row = $result->fetch_assoc() ){
-			$array[] = $row;
-		}
-		if ( isset($array) AND is_array($array) ){
-			return $array;
-		}else{
-			return 0;
-		}
-	}else{
-		$error = array("msg"=>"select table error");
-		return outputError($error);
-	}
-}
 
-function selectDB2($select, $table, $where){ 
-    GLOBAL $dbconnect;
-    $check = [';', '"'];
-    $where = str_replace($check, "", $where);
-    $sql = "SELECT {$select} FROM `{$table}`";
-    if (!empty($where)) {
-        $sql .= " WHERE {$where}";
-    }
-    if ($stmt = $dbconnect->prepare($sql)) {
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $array = array();
-        while ($row = $result->fetch_assoc()) {
-            $array[] = $row;
-        }
-        if (isset($array) && is_array($array)) {
-            return $array;
-        } else {
-            return 0;
-        }
-    } else {
-        $error = array("msg" => "select table error");
-        return outputError($error);
-    }
-}
+
+
 
 function popupMsg($lang,$valEn,$valAr){
 	if ( $lang == "ar" ){
@@ -116,43 +102,7 @@ function selectDBUpdated($table, $where){
     }
 }
 
-function selectJoinDB($table, $joinData, $where){
-	GLOBAL $dbconnect;
-	GLOBAL $date;
-	$check = [';','"'];
-	$where = str_replace($check,"",$where);
-	$sql = "SELECT ";
-	for($i = 0 ; $i < sizeof($joinData["select"]) ; $i++ ){
-		$sql .= $joinData["select"][$i];
-		if ( $i+1 != sizeof($joinData["select"]) ){
-			$sql .= ", ";
-		}
-	}
-	$sql .=" FROM `".$table."` as t ";
-	for($i = 0 ; $i < sizeof($joinData["join"]) ; $i++ ){
-		$counter = $i+1;
-		$sql .= " JOIN `".$joinData["join"][$i]."` as t{$counter} ";
-		if( isset($joinData["on"][$i]) && !empty($joinData["on"][$i]) ){
-			$sql .= " ON ".$joinData["on"][$i]." ";
-		}
-	}
-	if ( !empty($where) ){
-		$sql .= " WHERE " . $where;
-	}
-	if($result = $dbconnect->query($sql)){
-		while($row = $result->fetch_assoc() ){
-			$array[] = $row;
-		}
-		if ( isset($array) AND is_array($array) ){
-			return $array;
-		}else{
-			return 0;
-		}
-	}else{
-		$error = array("msg"=>"select table error");
-		return outputError($error);
-	}
-}
+
 
 function selectDataDB($select, $table, $where){
 	GLOBAL $dbconnect;
@@ -178,67 +128,11 @@ function selectDataDB($select, $table, $where){
 	}
 }
 
-function deleteDB($table, $where){
-	GLOBAL $dbconnect;
-	GLOBAL $date;
-	$check = [';','"'];
-	$where = str_replace($check,"",$where);
-	$sql = "DELETE FROM `".$table."`";
-	if ( !empty($where) ){
-		$sql .= " WHERE " . $where;
-	}
-	if($result = $dbconnect->query($sql)){
-		return 1;
-	}else{
-		$error = array("msg"=>"delete table error");
-		return outputError($error);
-	}
-}
 
-function insertDB($table, $data){
-	GLOBAL $dbconnect;
-	$keys = array_keys($data);
-	$sql = "INSERT INTO `".$table."`(";
-	for($i = 0 ; $i < sizeof($keys) ; $i++ ){
-		$sql .= "`".$keys[$i]."`";
-		if ( isset($keys[$i+1]) ){
-			$sql .= ", ";
-		}
-	}
-	$sql .= ")VALUES(";
-	for($i = 0 ; $i < sizeof($data) ; $i++ ){
-		$sql .= "'".$data[$keys[$i]]."'";
-		if ( isset($keys[$i+1]) ){
-			$sql .= ", ";
-		}
-	}		
-	$sql .= ")";
-	if($dbconnect->query($sql)){
-		return 1;
-	}else{
-		$error = array("msg"=>"insert table error");
-		return outputError($error);
-	}
-}
 
-function updateDB($table ,$data, $where){
-	GLOBAL $dbconnect;
-	$keys = array_keys($data);
-	$sql = "UPDATE `".$table."` SET ";
-	for($i = 0 ; $i < sizeof($data) ; $i++ ){
-		$sql .= "`".$keys[$i]."` = '{$data[$keys[$i]]}'";
-		if ( isset($keys[$i+1]) ){
-			$sql .= ", ";
-		}
-	}		
-	$sql .= " WHERE " . $where;
-	if($dbconnect->query($sql)){
-		return 1;
-	}else{
-		$error = array("msg"=>"update table error");
-		return outputError($error);
-	}
-}
+
+
+
 
 function updatePredictionDB($table ,$data, $where){
 	GLOBAL $dbconnect;
@@ -286,40 +180,11 @@ function updateUserDB($table ,$data, $where){
 	}
 }
 
-function updateItemQuantity($data){
-	GLOBAL $dbconnect;
-	GLOBAL $date;
-	$check = [';','"',"'"];
-	$data = str_replace($check,"",$data);
-	$sql = "UPDATE `items`
-			SET 
-			`quantity` = `quantity`-".$data["quantity"]."
-			WHERE
-			`id` LIKE '".$data["id"]."'
-			";
-	if($dbconnect->query($sql)){
-		return 1;
-	}else{
-		$error = array("msg"=>"update quantity error");
-		return outputError($error);
-	}
-}
 
-function outputData($data){
-	$response["ok"] = true;
-	$response["error"] = "0";
-	$response["status"] = "successful";
-	$response["data"] = $data;
-	return json_encode($response);
-}
 
-function outputError($data){
-	$response["ok"] = false;
-	$response["error"] = "1";
-	$response["status"] = "Error";
-	$response["data"] = $data;
-	return json_encode($response);
-}
+
+
+
 
 function payment($data){
 	$curl = curl_init();
@@ -377,33 +242,7 @@ function checkPayment($data){
 	return $array;
 }
 
-function array_sort($array, $on, $order){
-    $new_array = array();
-    $sortable_array = array();
-    if(count($array) > 0){
-        foreach ($array as $k => $v) {
-            if (is_array($v)) {
-                foreach ($v as $k2 => $v2) {
-                    if ($k2 == $on) {
-                        $sortable_array[$k] = $v2;
-                    }
-                }
-            }else{
-                $sortable_array[$k] = $v;
-            }
-        }
-        switch($order){
-            case SORT_ASC: asort($sortable_array);
-            break;
-            case SORT_DESC: arsort($sortable_array);
-            break;
-        }
-        foreach ($sortable_array as $k => $v) {
-            $new_array[$k] = $array[$k];
-        }
-    }
-    return $new_array;
-}
+
 
 function newOrderNoti($orderId){
 	$server_key = 'AAAAxivBwO8:APA91bGTS7WajBuXnAJeDKxD2cd4s5ZlwzJ_OhA887ofazTNVozq5aRydpI0zXJnMvvl4JSOYA934Aa50aBjnM3D56K2yyGOW3TpyI0Oh-xrUFCrYm8WTEYQL3YX2C0GI9YZO-PtqxqO'; 
@@ -624,33 +463,5 @@ function submitCalculatePredictions($matchId){
 	}
 }
 
-function selectDBNew($table, $placeHolders, $where, $order){
-    GLOBAL $dbconnect;
-    $check = [';', '"'];
-    $where = str_replace($check, "", $where);
-    $sql = "SELECT * FROM `{$table}`";
-    if(!empty($where)) {
-        $sql .= " WHERE {$where}";
-    }
-    if(!empty($order)) {
-        $sql .= " ORDER BY {$order}";
-    }
-    if($stmt = $dbconnect->prepare($sql)) {
-        $types = str_repeat('s', count($placeHolders));
-        $stmt->bind_param($types, ...$placeHolders);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $array = array();
-        while ($row = $result->fetch_assoc()) {
-            $array[] = $row;
-        }
-        if(isset($array) && is_array($array)) {
-            return $array;
-        }else{
-            return 0;
-        }
-    }else{
-        return 0;
-    }
-}
+
 ?>
