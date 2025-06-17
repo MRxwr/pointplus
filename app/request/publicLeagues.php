@@ -1,6 +1,31 @@
 <?php
 if( $_GET["type"] == "list" ){
-    if( $leagues = selectDataDB("`id`, `code`, `enTitle`, `arTitle`, `enDetails`, `arDetails`, `country`, `logo`,`coverImage`", 'publicLeagues', "`status` = '0' AND `hidden` = '0'") ){
+    // Check if user is provided to determine join status
+    if( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
+        // Use LEFT JOIN to get leagues with join status in single query
+        $joinData = array(
+            "select" => array(
+                "t.id", "t.code", "t.enTitle", "t.arTitle", "t.enDetails", "t.arDetails", 
+                "t.country", "t.logo", "t.coverImage",
+                "CASE WHEN t2.id IS NOT NULL THEN 1 ELSE 0 END as joined"
+            ),
+            "join" => array("joinedPublicLeagues"),
+            "on" => array("t.id = t2.publicLeagueId AND t2.userId = '{$_GET["userId"]}'")
+        );
+        $leagues = selectJoinDB('publicLeagues', $joinData, "t.status = '0' AND t.hidden = '0'");
+        
+        // Convert joined field to boolean
+        if($leagues){
+            foreach($leagues as $key => $league){
+                $leagues[$key]["joined"] = (bool)$league["joined"];
+            }
+        }
+    }else{
+        // If no userId provided, just get leagues without join status
+        $leagues = selectDataDB("`id`, `code`, `enTitle`, `arTitle`, `enDetails`, `arDetails`, `country`, `logo`,`coverImage`", 'publicLeagues', "`status` = '0' AND `hidden` = '0'");
+    }
+    
+    if($leagues){
         $response["leagues"] = $leagues;
     }else{
         $response["leagues"] = array();
