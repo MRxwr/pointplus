@@ -11,17 +11,17 @@ if( $_GET["type"] == "list" ){
                 LEFT JOIN joinedPublicLeagues jpl ON pl.id = jpl.publicLeagueId AND jpl.userId = '{$_GET["userId"]}'
                 WHERE pl.status = '0' AND pl.hidden = '0'";
         
-        $leagues = queryDB($sql);
-        
-        // Convert joined field to boolean
-        if($leagues){
-            foreach($leagues as $key => $league){
-                $leagues[$key]["joined"] = (bool)$league["joined"];
-            }
-        }
+        $leagues = queryDB($sql);        $leagues = queryDB($sql);
     }else{
-        // If no userId provided, just get leagues without join status
-        $leagues = selectDataDB("`id`, `code`, `enTitle`, `arTitle`, `enDetails`, `arDetails`, `country`, `logo`,`coverImage`", 'publicLeagues', "`status` = '0' AND `hidden` = '0'");
+        // If no userId provided, get leagues with joined field set to false in query
+        $sql = "SELECT 
+                    id, code, enTitle, arTitle, enDetails, arDetails, 
+                    country, logo, coverImage,
+                    false as joined
+                FROM publicLeagues 
+                WHERE status = '0' AND hidden = '0'";
+        
+        $leagues = queryDB($sql);
     }
     if($leagues){
         $response["leagues"] = $leagues;
