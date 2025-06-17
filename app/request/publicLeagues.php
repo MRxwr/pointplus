@@ -99,7 +99,7 @@ if( $_GET["type"] == "list" ){
         $totalFollowers = $totalResult ? $totalResult[0]["total"] : 0;
         
         // Get paginated followers
-        $followersSql = "SELECT u.username, u.points, u.rank, u.pRank 
+        $followersSql = "SELECT u.id, u.username, u.points, u.rank, u.pRank 
                          FROM joinedPublicLeagues jpl 
                          JOIN user u ON jpl.userId = u.id 
                          WHERE jpl.publicLeagueId = '{$_GET["leagueId"]}' 
