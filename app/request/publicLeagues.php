@@ -85,17 +85,53 @@ if( $_GET["type"] == "list" ){
             $league["joined"] = 1;
         }else{
             $league["joined"] = 0;
-        }
-        // get all  joined users
-        $joinData = array(
-            "select" => ["t1.username", "t1.points", "t1.rank","t1.pRank"],
-            "join" => ["user"],
-            "on" => ["t.userId" => "t1.id"],
-        );
-        if( $joinedUsers = selectJoinDB('joinedPublicLeagues', $joinData, "t.publicLeagueId = '{$_GET["leagueId"]}'") ){
-            $league["followers"] = $joinedUsers;
+        }        // get all joined users with pagination
+        $page = isset($_GET["page"]) && !empty($_GET["page"]) ? (int)$_GET["page"] : 1;
+        $limit = isset($_GET["limit"]) && !empty($_GET["limit"]) ? (int)$_GET["limit"] : 20;
+        $offset = ($page - 1) * $limit;
+        
+        // Get total count of followers
+        $countSql = "SELECT COUNT(*) as total 
+                     FROM joinedPublicLeagues jpl 
+                     JOIN user u ON jpl.userId = u.id 
+                     WHERE jpl.publicLeagueId = '{$_GET["leagueId"]}'";
+        $totalResult = queryDB($countSql);
+        $totalFollowers = $totalResult ? $totalResult[0]["total"] : 0;
+        
+        // Get paginated followers
+        $followersSql = "SELECT u.username, u.points, u.rank, u.pRank 
+                         FROM joinedPublicLeagues jpl 
+                         JOIN user u ON jpl.userId = u.id 
+                         WHERE jpl.publicLeagueId = '{$_GET["leagueId"]}' 
+                         ORDER BY u.rank ASC 
+                         LIMIT {$limit} OFFSET {$offset}";
+        
+        $joinedUsers = queryDB($followersSql);
+        
+        if($joinedUsers){
+            $league["followers"] = array(
+                "data" => $joinedUsers,
+                "pagination" => array(
+                    "currentPage" => $page,
+                    "totalPages" => ceil($totalFollowers / $limit),
+                    "totalItems" => (int)$totalFollowers,
+                    "itemsPerPage" => $limit,
+                    "hasNextPage" => $page < ceil($totalFollowers / $limit),
+                    "hasPrevPage" => $page > 1
+                )
+            );
         }else{
-            $league["followers"] = array();
+            $league["followers"] = array(
+                "data" => array(),
+                "pagination" => array(
+                    "currentPage" => $page,
+                    "totalPages" => 0,
+                    "totalItems" => 0,
+                    "itemsPerPage" => $limit,
+                    "hasNextPage" => false,
+                    "hasPrevPage" => false
+                )
+            );
         }
         echo outputData($league);
     }else{
