@@ -1,5 +1,17 @@
 <?php
 if( $_GET["type"] == "list" ){
+    // Pagination parameters
+    $page = isset($_GET["page"]) && !empty($_GET["page"]) ? (int)$_GET["page"] : 1;
+    $limit = isset($_GET["limit"]) && !empty($_GET["limit"]) ? (int)$_GET["limit"] : 20;
+    $offset = ($page - 1) * $limit;
+    
+    // Get total count of leagues
+    $countSql = "SELECT COUNT(*) as total 
+                 FROM publicLeagues 
+                 WHERE status = '0' AND hidden = '0'";
+    $totalResult = queryDB($countSql);
+    $totalLeagues = $totalResult ? $totalResult[0]["total"] : 0;
+    
     // Check if user is provided to determine join status
     if( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
         // Use custom query with LEFT JOIN to get all leagues with join status
@@ -9,7 +21,9 @@ if( $_GET["type"] == "list" ){
                     CASE WHEN jpl.id IS NOT NULL THEN 1 ELSE 0 END as joined
                 FROM publicLeagues pl
                 LEFT JOIN joinedPublicLeagues jpl ON pl.id = jpl.publicLeagueId AND jpl.userId = '{$_GET["userId"]}'
-                WHERE pl.status = '0' AND pl.hidden = '0'";
+                WHERE pl.status = '0' AND pl.hidden = '0'
+                ORDER BY pl.id DESC
+                LIMIT {$limit} OFFSET {$offset}";
         $leagues = queryDB($sql);
     }else{
         // If no userId provided, get leagues with joined field set to false in query
@@ -18,14 +32,37 @@ if( $_GET["type"] == "list" ){
                     country, logo, coverImage,
                     false as joined
                 FROM publicLeagues 
-                WHERE status = '0' AND hidden = '0'";
+                WHERE status = '0' AND hidden = '0'
+                ORDER BY id DESC
+                LIMIT {$limit} OFFSET {$offset}";
         
         $leagues = queryDB($sql);
     }
+    
     if($leagues){
-        $response["leagues"] = $leagues;
+        $response["leagues"] = array(
+            "data" => $leagues,
+            "pagination" => array(
+                "currentPage" => $page,
+                "totalPages" => ceil($totalLeagues / $limit),
+                "totalItems" => (int)$totalLeagues,
+                "itemsPerPage" => $limit,
+                "hasNextPage" => $page < ceil($totalLeagues / $limit),
+                "hasPrevPage" => $page > 1
+            )
+        );
     }else{
-        $response["leagues"] = array();
+        $response["leagues"] = array(
+            "data" => array(),
+            "pagination" => array(
+                "currentPage" => $page,
+                "totalPages" => 0,
+                "totalItems" => 0,
+                "itemsPerPage" => $limit,
+                "hasNextPage" => false,
+                "hasPrevPage" => false
+            )
+        );
     }
     echo outputData($response);
 }elseif( $_GET["type"] == "join" ){
