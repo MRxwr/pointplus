@@ -29,11 +29,11 @@ if( $_GET["type"] == "list" ){
     }
     echo outputData($response);
 }elseif( $_GET["type"] == "join" ){
-    if( !isset($_GET["leagueId"]) || empty($_GET["leagueId"]) ){
+    if( !isset($_POST["leagueId"]) || empty($_POST["leagueId"]) ){
         $response["msg"] = "Please provide a public league Id.";
         echo outputError($response);die();
     }
-    if( !isset($_GET["userId"]) || empty($_GET["userId"]) ){
+    if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
         $response["msg"] = "Please provide a user ID.";
         echo outputError($response);die();
     }
