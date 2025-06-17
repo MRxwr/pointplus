@@ -46,7 +46,7 @@ if( $_GET["type"] == "list" ){
             // Insert user into league
             insertDB("joinedPublicLeagues", [
                 "userId" => $_GET["userId"],
-                "leagueId" => $_GET["leagueId"],
+                "publicLeagueId" => $_GET["leagueId"],
             ]);
             $response["msg"] = "Successfully joined the league.";
             echo outputData($response);
