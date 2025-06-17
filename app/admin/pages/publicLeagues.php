@@ -166,11 +166,12 @@ if( $countries = selectDB("cities","`CountryName` != '' GROUP BY `CountryName` O
     for( $i = 0; $i < sizeof($countries) ; $i++ ){
         $country = $countries[$i];
     ?>
-    <option value="<?php echo $country["id"] ?>" <?php if(isset($_GET["edit"]) && $data[0]["country"] == $country["id"]){?>selected<?php }?>><?php echo $country["name"] ?></option>
+    <option value="<?php echo $country["id"] ?>" <?php if(isset($_GET["edit"]) && $data[0]["country"] == $country["CountryName"]){?>selected<?php }?>><?php echo $country["CountryName"] ?></option>
     <?php
     }
 }
 ?>
+</select>
 </div>
 </div>
 </div>
