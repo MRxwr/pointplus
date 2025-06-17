@@ -79,6 +79,7 @@ if( $_GET["type"] == "list" ){
         echo outputError($response);die();
     }
     if( $league = selectDataDB("`id`, `code`, `enTitle`, `arTitle`, `enDetails`, `arDetails`, `country`, `logo`,`coverImage`, `enTerms`, `arTerms`", 'publicLeagues', "`id` = '{$_GET["leagueId"]}' AND `status` = '0' AND `hidden` = '0'") ){
+        $league = $league[0];
         // Check if user is joined
         if( isset($_GET["userId"]) && !empty($_GET["userId"]) && selectDB("joinedPublicLeagues", "`userId` = '{$_GET["userId"]}' AND `publicLeagueId` = '{$_GET["leagueId"]}'") ){
             $league["joined"] = true;
