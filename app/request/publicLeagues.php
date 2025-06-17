@@ -82,9 +82,9 @@ if( $_GET["type"] == "list" ){
         $league = $league[0];
         // Check if user is joined
         if( isset($_GET["userId"]) && !empty($_GET["userId"]) && selectDB("joinedPublicLeagues", "`userId` = '{$_GET["userId"]}' AND `publicLeagueId` = '{$_GET["leagueId"]}'") ){
-            $league["joined"] = true;
+            $league["joined"] = 1;
         }else{
-            $league["joined"] = false;
+            $league["joined"] = 0;
         }
         // get all  joined users
         $joinData = array(
