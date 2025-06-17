@@ -92,7 +92,7 @@ if( $_GET["type"] == "list" ){
             "join" => ["user"],
             "on" => ["t.userId" => "t1.id"],
         );
-        if( $joinedUsers = selectJoinDB('joinedPublicLeagues', $joinData, "t.id = '{$_GET["leagueId"]}'") ){
+        if( $joinedUsers = selectJoinDB('joinedPublicLeagues', $joinData, "t.publicLeagueId = '{$_GET["leagueId"]}'") ){
             $league["followers"] = $joinedUsers;
         }else{
             $league["followers"] = array();
