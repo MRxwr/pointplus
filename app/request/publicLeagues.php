@@ -96,7 +96,7 @@ if( $_GET["type"] == "list" ){
         }else{
             $league["followers"] = array();
         }
-        echo outputData($response);
+        echo outputData($league);
     }else{
         $response["msg"] = "League not found or not available.";
         echo outputError($response);die();
