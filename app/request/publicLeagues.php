@@ -127,23 +127,15 @@ if( $_GET["type"] == "list" ){
         $limit = isset($_GET["limit"]) && !empty($_GET["limit"]) ? (int)$_GET["limit"] : 20;
         $offset = ($page - 1) * $limit;
         
-        // Get total count of followers
-        $countSql = "SELECT COUNT(*) as total 
-                     FROM joinedPublicLeagues jpl 
-                     JOIN user u ON jpl.userId = u.id 
-                     WHERE jpl.publicLeagueId = '{$_GET["leagueId"]}'";
-        $totalResult = queryDB($countSql);
-        $totalFollowers = $totalResult ? $totalResult[0]["total"] : 0;
+        // Optional date filtering for period-specific points
+        $startDate = isset($_GET["startDate"]) ? $_GET["startDate"] : null;
+        $endDate = isset($_GET["endDate"]) ? $_GET["endDate"] : null;
         
-        // Get paginated followers
-        $followersSql = "SELECT u.id, u.username, u.points, u.rank, u.pRank 
-                         FROM joinedPublicLeagues jpl 
-                         JOIN user u ON jpl.userId = u.id 
-                         WHERE jpl.publicLeagueId = '{$_GET["leagueId"]}' 
-                         ORDER BY u.rank ASC 
-                         LIMIT {$limit} OFFSET {$offset}";
+        // Get total count of followers using the new function
+        $totalFollowers = getPublicLeagueUsersCount($_GET["leagueId"]);
         
-        $joinedUsers = queryDB($followersSql);
+        // Get paginated followers using the new optimized function
+        $joinedUsers = getPublicLeagueTopUsers($_GET["leagueId"], $startDate, $endDate, $limit, $offset);
         
         if($joinedUsers){
             $league["followers"] = array(

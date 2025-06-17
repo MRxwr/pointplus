@@ -320,93 +320,61 @@ function getTop30($startDate, $endDate){
 	}
 }
 
-function submitCalculatePredictions($matchId){
+function getPublicLeagueTopUsers($publicLeagueId, $startDate = null, $endDate = null, $limit = 20, $offset = 0){
 	GLOBAL $dbconnect;
-	$updateData = array(
-		"pRank" => "`rank`"
-	);
-	$settings = selectDB("settings","`id` = '1'");
-	if( updatePredictionDB("user",$updateData,"`id` > '0' ") && updatePredictionDB("joinedLeagues",$updateData,"`id` > '0' ") ){
-		if( $matches = selectDB("matches","`id` = '{$matchId}' ") ){
-			//update user points
-			updatePredictionDB("user",array("pPoints"=>"0"),"`id` != '0'");
-			$realResult = [$matches[0]["goals1"],$matches[0]["goals2"]];
-			if( $prediction = selectDB("predictions","`matchId` = '{$matches[0]["id"]}' AND `status` = '0'") ){
-				for( $y =0; $y < sizeof($prediction); $y++ ){
-					$points = 0;
-					$predictionResult = [$prediction[$y]["goals1"],$prediction[$y]["goals2"]];
-					//check match result
-					if( $predictionResult[0] == $realResult[0] && $predictionResult[1] == $realResult[1] ){
-						$points = $points + 5;
-					}
-					//check match winner
-					if( $predictionResult[0] > $predictionResult[1] &&  $realResult[0] > $realResult[1] ){
-						$points = $points + 5;
-					}elseif( $predictionResult[0] < $predictionResult[1] &&  $realResult[0] < $realResult[1] ){
-						$points = $points + 5;
-					}elseif( $predictionResult[0] == $predictionResult[1] &&  $realResult[0] == $realResult[1] ){
-						$points = $points + 5;
-					}
-					//for super match multiply * 2
-					if( $matches[0]["type"] == 1 ){
-						$points = $points * 2;
-					}
-					//x2 
-					if( $prediction[$y]["x2"] == 1 ){
-						$points = $points * $settings[0]["x2"];
-						updatePredictionDB("user",array("x2"=>1),"`id` = '{$prediction[$y]["userId"]}'");
-					}
-					if( $prediction[$y]["x3"] == 1 ){
-						$points = $points * $settings[0]["x3"];
-						updatePredictionDB("user",array("x3"=>1),"`id` = '{$prediction[$y]["userId"]}'");
-					}
-					//update predictions table
-					updatePredictionDB("predictions",array("counted"=>1,"points"=>$points,"status"=>1),"`id` = '{$prediction[$y]["id"]}'");
-					//update user points
-					updatePredictionDB("user",array("pPoints"=>"`pPoints` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
-					//update user points
-					updatePredictionDB("user",array("points"=>"`points` + {$points}"),"`id` = '{$prediction[$y]["userId"]}'");
-				}
-				updatePredictionDB("matches",array("status"=>2),"`id` = '{$matches[0]["id"]}'");
-			}
-		}
+	
+	// Build the date condition if dates are provided
+	$dateCondition = "";
+	if($startDate && $endDate) {
+		$dateCondition = "AND p.date BETWEEN '{$startDate}' AND '{$endDate}'";
 	}
-	$sql = "UPDATE `user` u
-			JOIN
-			(
-				SELECT id, (@rownumber := @rownumber + 1) AS rownum
-				FROM `user`         
-				CROSS JOIN (select @rownumber := 0) r
-				WHERE status = '0'
-				ORDER BY `points` DESC
-			) AS newRow ON u.id = newRow.id    
-			SET `rank` = rownum
-			";
-	$dbconnect->query($sql);
-	$sql = "UPDATE `joinedLeagues` as jl
-			JOIN `user` as u ON u.id = jl.userId
-			SET jl.rank = u.rank
-			WHERE u.id = jl.userId
-			";
-	$dbconnect->query($sql);
-	if( $leagues = selectDB("subLeagues","`status` = '0'") ){
-		for($i = 0; $i < sizeof($leagues); $i++ ){
-			$sql = "UPDATE `joinedLeagues` u
-					JOIN
-					(
-						SELECT userId, (@rownumber := @rownumber + 1) AS rownum
-						FROM `joinedLeagues`         
-						CROSS JOIN (select @rownumber := 0) r
-						WHERE `leagueId` = '{$leagues[$i]["id"]}'
-						ORDER BY `rank` ASC
-					) AS newRow ON u.userId = newRow.userId    
-					SET `rank` = rownum
-					WHERE `leagueId` = '{$leagues[$i]["id"]}'
-					";
-			$dbconnect->query($sql);
+	
+	$sql = "SELECT 
+				jpl.userId, 
+				u.username, 
+				u.points, 
+				u.rank, 
+				u.pRank,
+				COALESCE(SUM(p.points), 0) as period_points
+			FROM joinedPublicLeagues jpl
+			JOIN user u ON jpl.userId = u.id
+			LEFT JOIN predictions p ON u.id = p.userId {$dateCondition}
+			WHERE jpl.publicLeagueId = '{$publicLeagueId}' 
+			AND u.status = '0'
+			GROUP BY jpl.userId, u.username, u.points, u.rank, u.pRank
+			ORDER BY u.rank ASC 
+			LIMIT {$limit} OFFSET {$offset}";
+			
+	if($result = $dbconnect->query($sql)){
+		while($row = $result->fetch_assoc() ){
+			$array[] = $row;
 		}
+		if ( isset($array) AND is_array($array) ){
+			return $array;
+		}else{
+			return 0;
+		}
+	}else{
+		$error = array("msg"=>"could not get the top users for this public league");
+		return outputError($error);
 	}
 }
 
+function getPublicLeagueUsersCount($publicLeagueId){
+	GLOBAL $dbconnect;
+	
+	$sql = "SELECT COUNT(*) as total
+			FROM joinedPublicLeagues jpl
+			JOIN user u ON jpl.userId = u.id
+			WHERE jpl.publicLeagueId = '{$publicLeagueId}' 
+			AND u.status = '0'";
+			
+	if($result = $dbconnect->query($sql)){
+		$row = $result->fetch_assoc();
+		return (int)$row['total'];
+	}else{
+		return 0;
+	}
+}
 
-?>
+// ...existing code...
