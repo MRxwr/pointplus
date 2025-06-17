@@ -127,9 +127,34 @@ if( $_GET["type"] == "list" ){
         $limit = isset($_GET["limit"]) && !empty($_GET["limit"]) ? (int)$_GET["limit"] : 20;
         $offset = ($page - 1) * $limit;
         
-        // Optional date filtering for period-specific points
-        $startDate = isset($_GET["startDate"]) ? $_GET["startDate"] : null;
-        $endDate = isset($_GET["endDate"]) ? $_GET["endDate"] : null;
+        // Parse date range if provided
+        $startDate = null;
+        $endDate = null;
+        
+        if(isset($_GET["dateRange"]) && !empty($_GET["dateRange"])) {
+            // Parse format: "2025-01-10 - 2025-02-10"
+            $dateRange = trim($_GET["dateRange"]);
+            $dates = explode(" - ", $dateRange);
+            
+            if(count($dates) == 2) {
+                $startDate = trim($dates[0]);
+                $endDate = trim($dates[1]);
+                
+                // Validate date format (basic validation)
+                if(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+                    $startDate = null;
+                    $endDate = null;
+                }
+            }
+        }
+        
+        // Fallback to individual date parameters if dateRange not provided
+        if(!$startDate && isset($_GET["startDate"])) {
+            $startDate = $_GET["startDate"];
+        }
+        if(!$endDate && isset($_GET["endDate"])) {
+            $endDate = $_GET["endDate"];
+        }
         
         // Get total count of followers using the new function
         $totalFollowers = getPublicLeagueUsersCount($_GET["leagueId"]);
