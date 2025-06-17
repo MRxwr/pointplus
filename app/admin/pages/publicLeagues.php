@@ -121,8 +121,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">English Details</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="text" class="form-control" id="exampleInputuname_1" placeholder="Enter username" name="enDetails" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enDetails"] ?>"<?php }?> required>
-</div>
+<textarea class="tinymce" id="exampleInputuname_1" name="enDetails" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enDetails"] ?>"<?php }?>></textarea></div>
 </div>
 </div>
 
@@ -131,8 +130,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">Arabic Details</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="text" class="form-control" id="exampleInputuname_1" placeholder="Enter username" name="arDetails" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arDetails"] ?>"<?php }?> required>
-</div>
+<textarea class="tinymce" id="exampleInputuname_1" name="arDetails" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arDetails"] ?>"<?php }?>></textarea></div>
 </div>
 </div>
 
@@ -141,7 +139,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">English Terms</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<textarea class="form-control" id="exampleInputuname_1" name="enTerms" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enTerms"] ?>"<?php }?>></textarea>
+<textarea class="tinymce" id="exampleInputuname_1" name="enTerms" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["enTerms"] ?>"<?php }?>></textarea>
 </div>
 </div>
 </div>
@@ -151,7 +149,7 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">Arabic Terms</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<textarea class="form-control" id="exampleInputuname_1" name="arTerms" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arTerms"] ?>"<?php }?>></textarea>
+<textarea class="tinymce" id="exampleInputuname_1" name="arTerms" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["arTerms"] ?>"<?php }?>></textarea>
 </div>
 </div>
 </div>
@@ -161,7 +159,18 @@ if ( isset($_POST["edit"]) ){
 <label class="control-label mb-10" for="exampleInputuname_1">Country</label>
 <div class="input-group">
 <div class="input-group-addon"><i class="fa fa-text-width"></i></div>
-<input type="text" class="form-control" id="exampleInputuname_1" placeholder="Enter username" name="country" <?php if(isset($_GET["edit"])){?>value="<?php echo $data[0]["country"] ?>"<?php }?> required>
+<select class="form-control" id="exampleInputuname_1" name="country" required>
+<option value="">Select Country</option>
+<?php
+if( $countries = selectDB("cities","GROUP BY `CountryName` ORDER BY `CountryName` ASC") ){
+    for( $i = 0; $i < sizeof($countries) ; $i++ ){
+        $country = $countries[$i];
+    ?>
+    <option value="<?php echo $country["id"] ?>" <?php if(isset($_GET["edit"]) && $data[0]["country"] == $country["id"]){?>selected<?php }?>><?php echo $country["name"] ?></option>
+    <?php
+    }
+}
+?>
 </div>
 </div>
 </div>
@@ -310,3 +319,9 @@ if( $leagues = selectDB("publicLeagues","`status` = '{$status[$i]}'") ){
 	
 </div>
 <!-- /Main Content -->
+
+<!-- Tinymce JavaScript -->
+<script src="../vendors/bower_components/tinymce/tinymce.min.js"></script>
+					
+<!-- Tinymce Wysuhtml5 Init JavaScript -->
+<script src="dist/js/tinymce-data.js"></script>
