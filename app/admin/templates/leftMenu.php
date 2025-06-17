@@ -18,6 +18,15 @@
 				<div class="clearfix"></div>
 			</a>	
 
+			<a class="" href="?page=publicLeagues" >
+				<div class="pull-left">
+					<i class="fa fa-globe mr-20"></i>
+					<span class="right-nav-text">Public Leagues</span>
+				</div>
+				<div class="pull-right"></div>
+				<div class="clearfix"></div>
+			</a>	
+			
 			<a class="" href="?page=leagues" >
 				<div class="pull-left">
 					<i class="fa fa-globe mr-20"></i>
