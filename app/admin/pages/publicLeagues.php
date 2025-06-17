@@ -162,7 +162,7 @@ if ( isset($_POST["edit"]) ){
 <select class="form-control" id="exampleInputuname_1" name="country" required>
 <option value="">Select Country</option>
 <?php
-if( $countries = selectDB("cities","GROUP BY `CountryName` ORDER BY `CountryName` ASC") ){
+if( $countries = selectDB("cities","`CountryName` != '' GROUP BY `CountryName` ORDER BY `CountryName` ASC") ){
     for( $i = 0; $i < sizeof($countries) ; $i++ ){
         $country = $countries[$i];
     ?>
