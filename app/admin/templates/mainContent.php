@@ -47,6 +47,8 @@ if ( !isset($_GET["page"]) ){
 	require_once('pages/quizCategory.php');
 }elseif( $_GET["page"] == "quizQuestion" ){
 	require_once('pages/quizQuestion.php');
+}elseif( $_GET["page"] == "publicLeagues" ){
+	require_once('pages/publicLeagues.php');
 }else{
 	require_once('pages/home.php');
 }
