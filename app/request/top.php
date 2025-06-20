@@ -6,11 +6,6 @@ if ( $banners = selectDataDB("`id`, `enTitle`, `arTitle`, `image`, `url`, `type`
     $response["banners"] = array();
 }
 
-if ( $list = selectDataDB("`id`,`enTitle`,`arTitle`",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC") ){
-    $response["list"] = $list;
-}else{
-    $response["list"] = array();
-}
 // get top 3 users
 if ( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`status` = '0' AND `type` = '2' AND `rank` != '0' ORDER BY `rank` ASC LIMIT 3") ){
 	$response["leaderboard"] = $leaderboard;
@@ -18,6 +13,12 @@ if ( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`st
 	$response["leaderboard"] = $leaderboard;
 }else{
 	$response["leaderboard"] = array();
+}
+
+if ( $list = selectDataDB("`id`,`enTitle`,`arTitle`",'tops',"`status` = '0' AND `hidden` = '0' ORDER BY `id` DESC") ){
+    $response["list"] = $list;
+}else{
+    $response["list"] = array();
 }
 
 if( isset($_GET["topId"]) && !empty($_GET["topId"]) ){
