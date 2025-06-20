@@ -155,9 +155,11 @@ if( $_GET["type"] == "list" ){
         if(!$endDate && isset($_GET["endDate"])) {
             $endDate = $_GET["endDate"];
         }
-        
-        // Get total count of followers using the new function
+          // Get total count of followers using the new function
         $totalFollowers = getPublicLeagueUsersCount($_GET["leagueId"]);
+        
+        // Add total followers count to league data
+        $league["totalFollowers"] = (int)$totalFollowers;
         
         // Get paginated followers using the new optimized function
         $joinedUsers = getPublicLeagueTopUsers($_GET["leagueId"], $startDate, $endDate, $limit, $offset);
