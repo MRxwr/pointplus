@@ -75,6 +75,32 @@ if ( $leaderboard = selectDataDB("`id`,`username`, `name`, `points`","user","`st
 	$response["leaderboard"] = array();
 }
 
+//get flagged public leagues
+    
+// Check if user is provided to determine join status
+if( isset($_GET["id"]) && !empty($_GET["id"]) ){
+	$sql = "SELECT 
+			pl.id, pl.code, pl.enTitle, pl.arTitle, pl.enDetails, pl.arDetails, 
+			pl.country, pl.logo, pl.coverImage,
+			CASE WHEN jpl.id IS NOT NULL THEN 1 ELSE 0 END as joined
+			FROM publicLeagues pl
+			LEFT JOIN joinedPublicLeagues jpl ON pl.id = jpl.publicLeagueId AND jpl.userId = '{$_GET["id"]}'
+			WHERE pl.status = '0' AND pl.hidden = '0'
+			ORDER BY pl.id DESC
+			LIMIT 6";
+	$response["publicLeagues"] = queryDB($sql);
+}else{
+	$sql = "SELECT 
+			id, code, enTitle, arTitle, enDetails, arDetails, 
+			country, logo, coverImage,
+			0 as joined
+			FROM publicLeagues 
+			WHERE status = '0' AND hidden = '0'
+			ORDER BY id DESC
+			LIMIT 6";
+	$response["publicLeagues"] = queryDB($sql);
+}
+
 // getting winners
 if ( $winners = selectDataDB("`id`,`username`, `name`, `team`, `winner`","user","`status` = '0' AND `type` = '2' AND `winner` != '0'") ){
 	$response["winners"] = $winners;
