@@ -101,7 +101,7 @@ if( $_GET["type"] == "list" ){
         $response["msg"] = "Please provide a user ID.";
         echo outputError($response);die();
     }
-    if( selectDB("joinedPublicLeagues", "`id` = '{$_GET["leagueId"]}' AND `userId` = '{$_GET["userId"]}'") ){
+    if( selectDB("joinedPublicLeagues", "`publicLeagueId` = '{$_GET["leagueId"]}' AND `userId` = '{$_GET["userId"]}'") ){
         // Remove user from league
         deleteDB("joinedPublicLeagues", "`userId` = '{$_GET["userId"]}' AND `publicLeagueId` = '{$_GET["leagueId"]}'");
         $response["msg"] = "Successfully left the league.";
