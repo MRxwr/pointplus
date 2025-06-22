@@ -11,29 +11,40 @@ if( $_GET["type"] == "list" ){
                  WHERE status = '0' AND hidden = '0'";
     $totalResult = queryDB($countSql);
     $totalLeagues = $totalResult ? $totalResult[0]["total"] : 0;
-    
-    // Check if user is provided to determine join status
+      // Check if user is provided to determine join status
     if( isset($_GET["userId"]) && !empty($_GET["userId"]) ){
-        // Use custom query with LEFT JOIN to get all leagues with join status
+        // Use custom query with LEFT JOIN to get all leagues with join status and follower count
         $sql = "SELECT 
                     pl.id, pl.code, pl.enTitle, pl.arTitle, pl.enDetails, pl.arDetails, 
                     pl.country, pl.logo, pl.coverImage,
-                    CASE WHEN jpl.id IS NOT NULL THEN 1 ELSE 0 END as joined
+                    CASE WHEN jpl.id IS NOT NULL THEN 1 ELSE 0 END as joined,
+                    COALESCE(fc.follower_count, 0) as totalFollowers
                 FROM publicLeagues pl
                 LEFT JOIN joinedPublicLeagues jpl ON pl.id = jpl.publicLeagueId AND jpl.userId = '{$_GET["userId"]}'
+                LEFT JOIN (
+                    SELECT publicLeagueId, COUNT(*) as follower_count 
+                    FROM joinedPublicLeagues 
+                    GROUP BY publicLeagueId
+                ) fc ON pl.id = fc.publicLeagueId
                 WHERE pl.status = '0' AND pl.hidden = '0'
                 ORDER BY pl.id DESC
                 LIMIT {$limit} OFFSET {$offset}";
         $leagues = queryDB($sql);
     }else{
-        // If no userId provided, get leagues with joined field set to false in query
+        // If no userId provided, get leagues with joined field set to false and follower count
         $sql = "SELECT 
-                    id, code, enTitle, arTitle, enDetails, arDetails, 
-                    country, logo, coverImage,
-                    false as joined
-                FROM publicLeagues 
-                WHERE status = '0' AND hidden = '0'
-                ORDER BY id DESC
+                    pl.id, pl.code, pl.enTitle, pl.arTitle, pl.enDetails, pl.arDetails, 
+                    pl.country, pl.logo, pl.coverImage,
+                    false as joined,
+                    COALESCE(fc.follower_count, 0) as totalFollowers
+                FROM publicLeagues pl
+                LEFT JOIN (
+                    SELECT publicLeagueId, COUNT(*) as follower_count 
+                    FROM joinedPublicLeagues 
+                    GROUP BY publicLeagueId
+                ) fc ON pl.id = fc.publicLeagueId
+                WHERE pl.status = '0' AND pl.hidden = '0'
+                ORDER BY pl.id DESC
                 LIMIT {$limit} OFFSET {$offset}";
         
         $leagues = queryDB($sql);
