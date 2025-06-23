@@ -143,8 +143,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 		}
 		if( $prediction = selectDB("predictions","`matchId` = '{$matches[$i]["id"]}' AND `userId` = '{$_GET["id"]}'") ){
 			$predictionResponse = array(
-				"goals1" => $prediction[0]["goals1"],
-				"goals2" => $prediction[0]["goals2"],
+				"goals1" => (STRING)$prediction[0]["goals1"],
+				"goals2" => (STRING)$prediction[0]["goals2"],
 				"points" => (string)$prediction[0]["points"]
 			);
 			if( $matches[$i]["isActive"] == 0 && $matches[$i]["status"] == 1 ){
@@ -193,8 +193,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 			"team1"=>$team1,
 			"team2"=>$team2,
 			"result"=>array(
-				"goals1"=>$matches[$i]["goals1"],
-				"goals2"=>$matches[$i]["goals2"]
+				"goals1"=>(STRING)$matches[$i]["goals1"],
+				"goals2"=>(STRING)$matches[$i]["goals2"]
 				),
 			"predictions"=>$predictionResponse
 		);
