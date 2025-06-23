@@ -128,8 +128,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
         // main user per match
 		if( $prediction = selectDB("predictions","`matchId` = '{$matches[$i]["id"]}' AND `userId` = '{$_GET["userId"]}'") ){
 			$userPredictionResponse = array(
-				"goals1" => $prediction[0]["goals1"],
-				"goals2" => $prediction[0]["goals2"],
+				"goals1" => (STRING)$prediction[0]["goals1"],
+				"goals2" => (STRING)$prediction[0]["goals2"],
 				"points" => (string)$prediction[0]["points"]
 			);
 			if( $matches[$i]["isActive"] == 0 && $matches[$i]["status"] == 1 ){
@@ -159,8 +159,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 					$points = $points * $settingsAdmin[0]["x2"];
 				}
 				$userPredictionResponse = array(
-					"goals1" => $prediction[0]["goals1"],
-					"goals2" => $prediction[0]["goals2"],
+					"goals1" => (STRING)$prediction[0]["goals1"],
+					"goals2" => (STRING)$prediction[0]["goals2"],
 					"points" => (string)$points,
 				);
 			}
@@ -170,8 +170,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
         // compare user per match
         if( $prediction = selectDB("predictions","`matchId` = '{$matches[$i]["id"]}' AND `userId` = '{$_GET["compareId"]}'") ){
 			$comparePredictionResponse = array(
-				"goals1" => $prediction[0]["goals1"],
-				"goals2" => $prediction[0]["goals2"],
+				"goals1" => (STRING)$prediction[0]["goals1"],
+				"goals2" => (STRING)$prediction[0]["goals2"],
 				"points" => (string)$prediction[0]["points"]
 			);
 			if( $matches[$i]["isActive"] == 0 && $matches[$i]["status"] == 1 ){
@@ -201,8 +201,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 					$points = $points * $settingsAdmin[0]["x3"];
 				}
 				$comparePredictionResponse = array(
-					"goals1" => $prediction[0]["goals1"],
-					"goals2" => $prediction[0]["goals2"],
+					"goals1" => (STRING)$prediction[0]["goals1"],
+					"goals2" => (STRING)$prediction[0]["goals2"],
 					"points" => (string)$points,
 				);
 			}
