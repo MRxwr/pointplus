@@ -193,8 +193,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 			"team1"=>$team1,
 			"team2"=>$team2,
 			"result"=>array(
-				"goals1"=>(STRING)$matches[$i]["goals1"],
-				"goals2"=>(STRING)$matches[$i]["goals2"]
+				"goals1"=>$matches[$i]["goals1"],
+				"goals2"=>$matches[$i]["goals2"]
 				),
 			"predictions"=>$predictionResponse
 		);
