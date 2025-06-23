@@ -82,21 +82,33 @@ if( isset($_GET["id"]) && !empty($_GET["id"]) ){
 	$sql = "SELECT 
 			pl.id, pl.code, pl.enTitle, pl.arTitle, pl.enDetails, pl.arDetails, 
 			pl.country, pl.logo, pl.coverImage,
-			CASE WHEN jpl.id IS NOT NULL THEN 1 ELSE 0 END as joined
+			CASE WHEN jpl.id IS NOT NULL THEN 1 ELSE 0 END as joined,
+			COALESCE(fc.follower_count, 0) as totalFollowers
 			FROM publicLeagues pl
 			LEFT JOIN joinedPublicLeagues jpl ON pl.id = jpl.publicLeagueId AND jpl.userId = '{$_GET["id"]}'
+			LEFT JOIN (
+				SELECT publicLeagueId, COUNT(*) as follower_count 
+				FROM joinedPublicLeagues 
+				GROUP BY publicLeagueId
+			) fc ON pl.id = fc.publicLeagueId
 			WHERE pl.status = '0' AND pl.hidden = '0'
 			ORDER BY pl.id DESC
 			LIMIT 6";
 	$response["publicLeagues"] = queryDB($sql);
 }else{
 	$sql = "SELECT 
-			id, code, enTitle, arTitle, enDetails, arDetails, 
-			country, logo, coverImage,
-			0 as joined
-			FROM publicLeagues 
-			WHERE status = '0' AND hidden = '0'
-			ORDER BY id DESC
+			pl.id, pl.code, pl.enTitle, pl.arTitle, pl.enDetails, pl.arDetails, 
+			pl.country, pl.logo, pl.coverImage,
+			0 as joined,
+			COALESCE(fc.follower_count, 0) as totalFollowers
+			FROM publicLeagues pl
+			LEFT JOIN (
+				SELECT publicLeagueId, COUNT(*) as follower_count 
+				FROM joinedPublicLeagues 
+				GROUP BY publicLeagueId
+			) fc ON pl.id = fc.publicLeagueId
+			WHERE pl.status = '0' AND pl.hidden = '0'
+			ORDER BY pl.id DESC
 			LIMIT 6";
 	$response["publicLeagues"] = queryDB($sql);
 }
