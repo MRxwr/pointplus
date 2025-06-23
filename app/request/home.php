@@ -174,8 +174,8 @@ if ( isset($rounds[0]["round"]) && !empty($rounds[0]["round"]) && $matches = sel
 					$points = $points * $settingsAdmin[0]["x3"];
 				}
 				$predictionResponse = array(
-					"goals1" => $prediction[0]["goals1"],
-					"goals2" => $prediction[0]["goals2"],
+					"goals1" => (STRING)$prediction[0]["goals1"],
+					"goals2" => (STRING)$prediction[0]["goals2"],
 					"points" => (string)$points,
 				);
 			}
