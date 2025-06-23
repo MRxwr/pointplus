@@ -21,6 +21,16 @@ if ( $headerAPI != "pointsCreateKW" ){
 	echo outputError($error);die();
 }
 
+if( isset($_GET["lang"]) && !empty($_GET["lang"]) ){
+	if( $_GET["lang"] == "ar" ){
+		$requestLang = "ar";
+	}else{
+		$requestLang = "en";
+	}
+}else{
+	$requestLang = "en";
+}
+
 $unsetData = ["userId","status","date", "username", "password", "cookie", "name", "email", "forgetPassword"];
 
 $settingsAdmin = selectDB("settings","`id` = '1'");
