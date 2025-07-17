@@ -238,7 +238,7 @@ if( $getRoundMatches = selectDB("matches","`status` = '0' ORDER BY `round` DESC"
 <button type="submit" class="btn btn-success mr-10">Submit</button>
 <input type="hidden" name="date" value="<?php echo $date ?>">
 <?php if(isset($_GET["edit"])){?>
-<input type="hidden" name="edit" value="<?php echo $_GET["id"] ?>">
+<input type="hidden" name="edit" value="<?php echo $_GET["edit"] ?>">
 <?php }?>
 </div>
 
