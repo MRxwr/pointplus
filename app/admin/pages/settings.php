@@ -28,7 +28,7 @@ if( isset($_POST["resetData"]) ){
 	
 	$table = "predictions";
 	$where = "0";
-	deleteDB($table,$where);
+	deleteDB($table,$where);die();
 	
 	$table = "matches";
 	$where = "0";

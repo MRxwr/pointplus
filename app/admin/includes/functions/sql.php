@@ -4,7 +4,7 @@ function deleteDB($table, $where){
     GLOBAL $dbconnect, $userID, $empUsername, $_GET;
     $check = [';', '"'];
     $where = str_replace($check, "", $where);
-    $sql = "DELETE FROM `" . $table . "` WHERE " . $where;
+    echo $sql = "DELETE FROM `" . $table . "` WHERE " . $where;
     if( isset($_GET["v"]) && !empty($_GET["v"]) ){
         $array = array(
             "userId" => $userID,
