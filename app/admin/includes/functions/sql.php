@@ -17,7 +17,7 @@ function deleteDB($table, $where){
     }
     if ($stmt = $dbconnect->prepare($sql)) {
         if ($stmt->execute()) {
-            return 1;
+            return 1; 
         } else {
             $error = array("msg" => "delete table error");
             return 0;
