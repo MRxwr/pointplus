@@ -27,15 +27,15 @@ if( isset($_POST["resetData"]) ){
 	updateUserDB($table,$data,$where);
 	
 	$table = "predictions";
-	$where = "0";
-	deleteDB($table,$where);die();
+	$where = "`id` != '0'";
+	deleteDB($table,$where);
 	
 	$table = "matches";
-	$where = "0";
+	$where = "`id` != '0'";
 	deleteDB($table,$where);
 	
 	$table = "countdown";
-	$where = "0";
+	$where = "`id` != '0'";
 	deleteDB($table,$where);
 }
 
