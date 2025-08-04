@@ -29,6 +29,7 @@ if ( isset($_GET["id"]) && !empty($_GET["id"]) ){
 		$response["user"]["rank"] = "0";
 		$response["user"]["pRank"] = "0";
 	}
+	$response["user"]["isVerified"] = ( $user[0]["isVerified"] == 1 ) ? 1 : 0;
 	$data= array(
 				"select"=>["t.round","SUM(t1.points) AS totalPoints"],
 				"join" => ["predictions"],
