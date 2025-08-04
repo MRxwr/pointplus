@@ -87,6 +87,8 @@ if( isset($_GET["action"]) && $_GET["action"] == "home" ){
 	require("publicLeagues.php");
 }elseif( isset($_GET["action"]) && $_GET["action"] == "gamesPage" ){
 	require("gamesPage.php");
+}elseif( isset($_GET["action"]) && $_GET["action"] == "otp" ){
+	require("otp.php");
 }else{
 	$error = array("msg"=>"please select the correct action");
 	echo outputError($error);die();

@@ -281,4 +281,36 @@ function whatsappUltraMsg($order){
 		$data = array();
 	}
 }
+
+function whatsappUltraMsgVerify($to, $code){
+	if( $whatsappNoti = selectDB("settings","`id` = '1'") ){
+		$data = array(
+			'token' => "{$whatsappNoti[0]["whatsappToken"]}",
+			'to' => "{$to}",
+			'body' => "Hello, your verification code is: {$code}. Please use it to complete your registration. \n\n 7yyak.com",
+		);
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.ultramsg.com/{$whatsappNoti[0]["InstanceId"]}/messages/chat",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_SSL_VERIFYHOST => 0,
+			CURLOPT_SSL_VERIFYPEER => 0,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => http_build_query($data),
+			CURLOPT_HTTPHEADER => array(
+				"content-type: application/x-www-form-urlencoded"
+			),
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		return $response;
+	}else{
+		$data = array();
+		return $data;
+	}
+}
 ?>
