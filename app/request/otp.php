@@ -5,6 +5,10 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
         echo outputError($response);die();
     }
     if( $_GET["type"] == "requestOTP" ){
+        if( !isset($_POST["mobile"]) || empty($_POST["mobile"]) ){
+            $response["msg"] = "Please provide a mobile number.";
+            echo outputError($response);die();
+        }
         if( $user = selectDataDB("`mobile`, `isVerified`", "user", "`id` = '{$_POST["userId"]}'") ){
             if( $user[0]["isVerified"] == 1 ){
                 $response["msg"] = "User is already verified.";
@@ -12,17 +16,18 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
             }else{
                 $otp = rand(1000, 9999);
                 if( updateDB("user", ["otp" => $otp], "`id` = '{$_POST["userId"]}'" ) ){
-                    whatsappUltraMsgVerify($user[0]["mobile"], $otp);
+                    whatsappUltraMsgVerify($_POST["mobile"], $otp);
                     $response["msg"] = "OTP sent to your mobile.";
+                    echo outputData($response);die();
                 }else{
                     $response["msg"] = "Failed to send OTP.";
+                    echo outputError($response);die();
                 }
             }
         }else{
             $response["msg"] = "User not found.";
             echo outputError($response);die();
         }
-        echo outputData($response);die();
     }elseif( $_GET["type"] == "checkOTP" ){
         if( !isset($_POST["otp"]) || empty($_POST["otp"]) ){
             $response["msg"] = "Please provide an OTP.";
