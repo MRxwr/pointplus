@@ -1,5 +1,5 @@
 <?php
-if( $user = selectDB2('sum(total) as totalPoints','quiz_room', "`userId` LIKE '{$_GET["userId"]}'")){
+if( $user = selectDB2('sum(total) as totalPoints','quiz_room', "`winner` LIKE '{$_GET["userId"]}'")){
 	$response = array(
         "totalPoints" => $user[0]["totalPoints"] ? $user[0]["totalPoints"] : "0"
     );
