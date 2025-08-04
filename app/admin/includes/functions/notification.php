@@ -287,7 +287,7 @@ function whatsappUltraMsgVerify($to, $code){
 		$data = array(
 			'token' => "{$whatsappNoti[0]["whatsappToken"]}",
 			'to' => "{$to}",
-			'body' => "Hello, your verification code is: {$code}. Please use it to complete your profile verification in point+ app. \n\n This is an automated message from point+ app.\n\nBest Regards, \nhttps://pointplus.app/",
+			'body' => "Hello, your verification code is: {$code}. Please use it to complete your profile verification in point+ app. \n\nThis is an automated message from point+ app.\n\nBest Regards, \nhttps://pointplus.app/",
 		);
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
