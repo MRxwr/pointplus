@@ -28,7 +28,7 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
             $response["msg"] = "Please provide an OTP.";
             echo outputError($response);die();
         }
-        if( $user = selectDataDB("`mobile`, `isVerified`", "user", "`id` = '{$_POST["userId"]}'") ){
+        if( $user = selectDataDB("`otp`, `isVerified`", "user", "`id` = '{$_POST["userId"]}'") ){
             if( $user[0]["isVerified"] == 1 ){
                 $response["msg"] = "User is already verified.";
                 echo outputData($response);die();
