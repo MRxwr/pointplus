@@ -33,13 +33,17 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
             $response["msg"] = "Please provide an OTP.";
             echo outputError($response);die();
         }
+        if( !isset($_POST["mobile"]) || empty($_POST["mobile"]) ){
+            $response["msg"] = "Please provide a mobile number.";
+            echo outputError($response);die();
+        }
         if( $user = selectDataDB("`otp`, `isVerified`", "user", "`id` = '{$_POST["userId"]}'") ){
             if( $user[0]["isVerified"] == 1 ){
                 $response["msg"] = "User is already verified.";
                 echo outputData($response);die();
             }else{
                 if( $user[0]["otp"] == $_POST["otp"] ){
-                    if( updateDB("user", ["isVerified" => 1, "otp" => ""], "`id` = '{$_POST["userId"]}'" ) ){
+                    if( updateDB("user", ["isVerified" => 1, "otp" => "", "mobile" => $_POST["mobile"]], "`id` = '{$_POST["userId"]}'" ) ){
                         $response["msg"] = "User verified successfully.";
                         echo outputData($response);die();
                     }else{
