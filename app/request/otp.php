@@ -1,17 +1,17 @@
 <?php 
 if( isset($_GET["type"]) && !empty($_GET["type"]) ){
-    if( !isset($_GET["userId"]) || empty($_GET["userId"]) ){
+    if( !isset($_POST["userId"]) || empty($_POST["userId"]) ){
         $response["msg"] = "Please provide a user ID.";
         echo outputError($response);die();
     }
     if( $_GET["type"] == "requestOTP" ){
-        if( $user = selectDataDB("`mobile`, `isVerified`", "user", "`id` = '{$_GET["userId"]}'") ){
+        if( $user = selectDataDB("`mobile`, `isVerified`", "user", "`id` = '{$_POST["userId"]}'") ){
             if( $user[0]["isVerified"] == 1 ){
                 $response["msg"] = "User is already verified.";
                 echo outputData($response);die();
             }else{
                 $otp = rand(1000, 9999);
-                if( updateDB("user", ["otp" => $otp], "`id` = '{$_GET["userId"]}'" ) ){
+                if( updateDB("user", ["otp" => $otp], "`id` = '{$_POST["userId"]}'" ) ){
                     whatsappUltraMsgVerify($user[0]["mobile"], $otp);
                     $response["msg"] = "OTP sent to your mobile.";
                 }else{
@@ -24,17 +24,17 @@ if( isset($_GET["type"]) && !empty($_GET["type"]) ){
         }
         echo outputData($response);die();
     }elseif( $_GET["type"] == "checkOTP" ){
-        if( !isset($_GET["otp"]) || empty($_GET["otp"]) ){
+        if( !isset($_POST["otp"]) || empty($_POST["otp"]) ){
             $response["msg"] = "Please provide an OTP.";
             echo outputError($response);die();
         }
-        if( $user = selectDataDB("`mobile`, `isVerified`", "user", "`id` = '{$_GET["userId"]}'") ){
+        if( $user = selectDataDB("`mobile`, `isVerified`", "user", "`id` = '{$_POST["userId"]}'") ){
             if( $user[0]["isVerified"] == 1 ){
                 $response["msg"] = "User is already verified.";
                 echo outputData($response);die();
             }else{
-                if( $user[0]["otp"] == $_GET["otp"] ){
-                    if( updateDB("user", ["isVerified" => 1, "otp" => ""], "`id` = '{$_GET["userId"]}'" ) ){
+                if( $user[0]["otp"] == $_POST["otp"] ){
+                    if( updateDB("user", ["isVerified" => 1, "otp" => ""], "`id` = '{$_POST["userId"]}'" ) ){
                         $response["msg"] = "User verified successfully.";
                         echo outputData($response);die();
                     }else{
